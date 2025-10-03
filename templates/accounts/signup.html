@@ -1,0 +1,988 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    .signup-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        display: flex;
+        align-items: center;
+        padding-top: 100px; /* Account for fixed navbar */
+        padding-bottom: 40px;
+    }
+    
+    .signup-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        max-width: 600px;
+        width: 100%;
+    }
+    
+    .signup-header {
+        text-align: center;
+        padding: 40px 40px 20px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        position: relative;
+    }
+    
+    .signup-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: white;
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .signup-body {
+        padding: 20px 40px 40px;
+    }
+    
+    .form-floating-modern {
+        position: relative;
+        margin-bottom: 24px;
+    }
+    
+    .form-control-modern {
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+        width: 100%;
+    }
+    
+    .form-control-modern:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+    
+    .form-control-modern.is-valid {
+        border-color: var(--success-color);
+        background: #f0fdf4;
+    }
+    
+    .form-control-modern.is-invalid {
+        border-color: var(--danger-color);
+        background: #fef2f2;
+    }
+    
+    .form-label-modern {
+        position: absolute;
+        left: 20px;
+        top: 16px;
+        background: transparent;
+        padding: 0 8px;
+        color: #64748b;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .form-control-modern:focus + .form-label-modern,
+    .form-control-modern:not(:placeholder-shown) + .form-label-modern {
+        top: -8px;
+        left: 16px;
+        font-size: 12px;
+        color: var(--primary-color);
+        background: white;
+        font-weight: 600;
+    }
+
+    .form-select-modern {
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+        width: 100%;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 12px center;
+        background-repeat: no-repeat;
+        background-size: 16px 12px;
+    }
+
+    .form-select-modern:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+
+    /* Fix for select label positioning when option is selected */
+    .form-select-modern:focus + .form-label-modern,
+    .form-select-modern:valid + .form-label-modern {
+        top: -8px;
+        left: 16px;
+        font-size: 12px;
+        color: var(--primary-color);
+        background: white;
+        font-weight: 600;
+    }
+
+    .file-input-modern {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+    }
+
+    .file-input-modern input[type=file] {
+        position: absolute;
+        left: -9999px;
+    }
+
+    .file-input-label {
+        border: 2px dashed #e2e8f0;
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        background: #f8fafc;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        display: block;
+    }
+
+    .file-input-label:hover {
+        border-color: var(--primary-color);
+        background: white;
+    }
+
+    .file-input-label.has-file {
+        border-color: var(--success-color);
+        background: #f0fdf4;
+    }
+    
+    .password-toggle {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .password-toggle:hover {
+        color: var(--primary-color);
+    }
+
+    .password-strength {
+        margin-top: 8px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-size: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .password-strength.weak {
+        background: #fef2f2;
+        color: #dc2626;
+        border: 1px solid #fecaca;
+    }
+
+    .password-strength.medium {
+        background: #fef3c0;
+        color: #d97706;
+        border: 1px solid #fed7aa;
+    }
+
+    .password-strength.strong {
+        background: #f0fdf4;
+        color: #16a34a;
+        border: 1px solid #bbf7d0;
+    }
+    
+    .btn-signup {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        border: none;
+        border-radius: 12px;
+        padding: 16px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        width: 100%;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-signup:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-signup:active {
+        transform: translateY(0);
+    }
+    
+    .btn-signup.loading {
+        pointer-events: none;
+        opacity: 0.8;
+    }
+    
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .btn-signup.loading .loading-overlay {
+        transform: translateX(0);
+    }
+    
+    .error-message {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .success-message {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #16a34a;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .form-help-text {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .form-help-text.text-danger {
+        color: #dc2626;
+    }
+    
+    .signin-link {
+        text-align: center;
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    .signin-link a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .signin-link a:hover {
+        color: var(--primary-dark);
+        text-decoration: underline;
+    }
+    
+    .security-badge {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 20px;
+        color: #64748b;
+        font-size: 12px;
+    }
+    
+    .security-badge i {
+        color: var(--success-color);
+    }
+    
+    /* Accessibility improvements */
+    .form-control-modern:focus,
+    .form-select-modern:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
+    
+    /* Animation for card entrance */
+    .signup-card {
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Two column layout for larger forms */
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+    }
+
+    .form-full-width {
+        grid-column: 1 / -1;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .signup-container {
+            padding: 90px 16px 20px;
+        }
+        
+        .signup-card {
+            margin: 0;
+        }
+        
+        .signup-header, .signup-body {
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="signup-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-10 col-lg-8">
+                <div class="signup-card">
+                    <div class="signup-header">
+                        <div class="mb-2">
+                            <i class="fas fa-user-plus" style="font-size: 3rem; opacity: 0.9;"></i>
+                        </div>
+                        <h1 class="h3 mb-2 fw-bold">Join AcePrep</h1>
+                        <p class="mb-0 opacity-90">Create your account to start your interview preparation journey</p>
+                    </div>
+                    
+                    <div class="signup-body">
+                        <!-- Display messages -->
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="{% if message.tags == 'error' %}error-message{% else %}success-message{% endif %}" role="alert">
+                                    <i class="fas {% if message.tags == 'error' %}fa-exclamation-triangle{% else %}fa-check-circle{% endif %}"></i>
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                        <!-- Display form errors -->
+                        {% if form.non_field_errors %}
+                            <div class="error-message" role="alert">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <form method="post" enctype="multipart/form-data" id="signupForm" novalidate>
+                            {% csrf_token %}
+                            
+                            <!-- Name Fields -->
+                            <div class="form-row">
+                                <div class="form-floating-modern">
+                                    <input 
+                                        type="text" 
+                                        class="form-control-modern {% if form.first_name.errors %}is-invalid{% endif %}" 
+                                        id="{{ form.first_name.id_for_label }}" 
+                                        name="{{ form.first_name.name }}"
+                                        value="{% if form.first_name.value %}{{ form.first_name.value }}{% endif %}"
+                                        placeholder=" "
+                                        required
+                                        autocomplete="given-name"
+                                        aria-describedby="{% if form.first_name.errors %}firstname-error{% endif %} firstname-help"
+                                    >
+                                    <label for="{{ form.first_name.id_for_label }}" class="form-label-modern">
+                                        <i class="fas fa-user me-2"></i>First Name
+                                    </label>
+                                    {% if form.first_name.errors %}
+                                        <div class="form-help-text text-danger" id="firstname-error" role="alert">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                            {% for error in form.first_name.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <div class="form-help-text" id="firstname-help">
+                                            <i class="fas fa-info-circle"></i>
+                                            Enter your first name
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-floating-modern">
+                                    <input 
+                                        type="text" 
+                                        class="form-control-modern {% if form.last_name.errors %}is-invalid{% endif %}" 
+                                        id="{{ form.last_name.id_for_label }}" 
+                                        name="{{ form.last_name.name }}"
+                                        value="{% if form.last_name.value %}{{ form.last_name.value }}{% endif %}"
+                                        placeholder=" "
+                                        required
+                                        autocomplete="family-name"
+                                        aria-describedby="{% if form.last_name.errors %}lastname-error{% endif %} lastname-help"
+                                    >
+                                    <label for="{{ form.last_name.id_for_label }}" class="form-label-modern">
+                                        <i class="fas fa-user me-2"></i>Last Name
+                                    </label>
+                                    {% if form.last_name.errors %}
+                                        <div class="form-help-text text-danger" id="lastname-error" role="alert">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                            {% for error in form.last_name.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <div class="form-help-text" id="lastname-help">
+                                            <i class="fas fa-info-circle"></i>
+                                            Enter your last name
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Username Field -->
+                            <div class="form-floating-modern">
+                                <input 
+                                    type="text" 
+                                    class="form-control-modern {% if form.username.errors %}is-invalid{% endif %}" 
+                                    id="{{ form.username.id_for_label }}" 
+                                    name="{{ form.username.name }}"
+                                    value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                                    placeholder=" "
+                                    required
+                                    autocomplete="username"
+                                    aria-describedby="{% if form.username.errors %}username-error{% endif %} username-help"
+                                >
+                                <label for="{{ form.username.id_for_label }}" class="form-label-modern">
+                                    <i class="fas fa-at me-2"></i>Username
+                                </label>
+                                {% if form.username.errors %}
+                                    <div class="form-help-text text-danger" id="username-error" role="alert">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {% for error in form.username.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="form-help-text" id="username-help">
+                                        <i class="fas fa-info-circle"></i>
+                                        Choose a unique username
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Email Field -->
+                            <div class="form-floating-modern">
+                                <input 
+                                    type="email" 
+                                    class="form-control-modern {% if form.email.errors %}is-invalid{% endif %}" 
+                                    id="{{ form.email.id_for_label }}" 
+                                    name="{{ form.email.name }}"
+                                    value="{% if form.email.value %}{{ form.email.value }}{% endif %}"
+                                    placeholder=" "
+                                    required
+                                    autocomplete="email"
+                                    aria-describedby="{% if form.email.errors %}email-error{% endif %} email-help"
+                                >
+                                <label for="{{ form.email.id_for_label }}" class="form-label-modern">
+                                    <i class="fas fa-envelope me-2"></i>Email Address
+                                </label>
+                                {% if form.email.errors %}
+                                    <div class="form-help-text text-danger" id="email-error" role="alert">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {% for error in form.email.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="form-help-text" id="email-help">
+                                        <i class="fas fa-info-circle"></i>
+                                        We'll use this to send you important updates
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- User Type Field -->
+                            <div class="form-floating-modern">
+                                <select 
+                                    class="form-select-modern {% if form.user_type.errors %}is-invalid{% endif %}" 
+                                    id="{{ form.user_type.id_for_label }}" 
+                                    name="{{ form.user_type.name }}"
+                                    required
+                                    aria-describedby="{% if form.user_type.errors %}usertype-error{% endif %} usertype-help"
+                                >
+                                    {% for value, label in form.user_type.field.choices %}
+                                        {% if value %}
+                                            <option value="{{ value }}" {% if form.user_type.value == value %}selected{% endif %}>{{ label }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                <label for="{{ form.user_type.id_for_label }}" class="form-label-modern">
+                                    <i class="fas fa-graduation-cap me-2"></i>I'm preparing for
+                                </label>
+                                {% if form.user_type.errors %}
+                                    <div class="form-help-text text-danger" id="usertype-error" role="alert">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {% for error in form.user_type.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="form-help-text" id="usertype-help">
+                                        <i class="fas fa-info-circle"></i>
+                                        This helps us personalize your experience
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Resume Upload Field -->
+                            <div class="form-floating-modern">
+                                <div class="file-input-modern">
+                                    <input 
+                                        type="file" 
+                                        id="{{ form.resume.id_for_label }}" 
+                                        name="{{ form.resume.name }}"
+                                        accept=".pdf,.doc,.docx"
+                                        required
+                                        aria-describedby="{% if form.resume.errors %}resume-error{% endif %} resume-help"
+                                    >
+                                    <label for="{{ form.resume.id_for_label }}" class="file-input-label">
+                                        <i class="fas fa-cloud-upload-alt mb-2" style="font-size: 2rem; color: #64748b;"></i>
+                                        <div class="fw-semibold mb-1">Upload Resume</div>
+                                        <div class="text-muted small">Click to browse or drag and drop</div>
+                                        <div class="text-muted small">PDF, DOC, DOCX up to 5MB</div>
+                                        <div class="selected-file mt-2" style="display: none;">
+                                            <i class="fas fa-file-alt me-2"></i>
+                                            <span class="filename"></span>
+                                        </div>
+                                    </label>
+                                </div>
+                                {% if form.resume.errors %}
+                                    <div class="form-help-text text-danger" id="resume-error" role="alert">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {% for error in form.resume.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="form-help-text" id="resume-help">
+                                        <i class="fas fa-info-circle"></i>
+                                        Upload your resume to get personalized interview questions
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Password Fields -->
+                            <div class="form-row">
+                                <div class="form-floating-modern">
+                                    <input 
+                                        type="password" 
+                                        class="form-control-modern {% if form.password1.errors %}is-invalid{% endif %}" 
+                                        id="{{ form.password1.id_for_label }}" 
+                                        name="{{ form.password1.name }}"
+                                        placeholder=" "
+                                        required
+                                        autocomplete="new-password"
+                                        aria-describedby="{% if form.password1.errors %}password1-error{% endif %} password1-help password-strength"
+                                    >
+                                    <label for="{{ form.password1.id_for_label }}" class="form-label-modern">
+                                        <i class="fas fa-lock me-2"></i>Password
+                                    </label>
+                                    <button type="button" class="password-toggle" aria-label="Toggle password visibility" tabindex="-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <div id="password-strength" class="password-strength" style="display: none;">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        <span class="strength-text">Password strength</span>
+                                    </div>
+                                    {% if form.password1.errors %}
+                                        <div class="form-help-text text-danger" id="password1-error" role="alert">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                            {% for error in form.password1.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <div class="form-help-text" id="password1-help">
+                                            <i class="fas fa-info-circle"></i>
+                                            Must be at least 8 characters long
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-floating-modern">
+                                    <input 
+                                        type="password" 
+                                        class="form-control-modern {% if form.password2.errors %}is-invalid{% endif %}" 
+                                        id="{{ form.password2.id_for_label }}" 
+                                        name="{{ form.password2.name }}"
+                                        placeholder=" "
+                                        required
+                                        autocomplete="new-password"
+                                        aria-describedby="{% if form.password2.errors %}password2-error{% endif %} password2-help"
+                                    >
+                                    <label for="{{ form.password2.id_for_label }}" class="form-label-modern">
+                                        <i class="fas fa-lock me-2"></i>Confirm Password
+                                    </label>
+                                    <button type="button" class="password-toggle" aria-label="Toggle password visibility" tabindex="-1">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    {% if form.password2.errors %}
+                                        <div class="form-help-text text-danger" id="password2-error" role="alert">
+                                            <i class="fas fa-exclamation-circle"></i>
+                                            {% for error in form.password2.errors %}{{ error }}{% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <div class="form-help-text" id="password2-help">
+                                            <i class="fas fa-info-circle"></i>
+                                            Re-enter your password to confirm
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn-signup" id="signupBtn">
+                                <span class="btn-text">
+                                    <i class="fas fa-user-plus me-2"></i>Create Account
+                                </span>
+                                <div class="loading-overlay">
+                                    <div class="loading-spinner me-2"></div>
+                                    Creating account...
+                                </div>
+                            </button>
+                        </form>
+                        
+                        <!-- Sign In Link -->
+                        <div class="signin-link">
+                            <p class="mb-0 text-muted">
+                                Already have an account? 
+                                <a href="{% url 'login' %}">Sign in here</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const signupForm = document.getElementById('signupForm');
+    const signupBtn = document.getElementById('signupBtn');
+    const passwordInputs = document.querySelectorAll('input[type="password"]');
+    const passwordToggles = document.querySelectorAll('.password-toggle');
+    const fileInput = document.getElementById('{{ form.resume.id_for_label }}');
+    const fileLabel = document.querySelector('.file-input-label');
+    const password1Input = document.getElementById('{{ form.password1.id_for_label }}');
+    const password2Input = document.getElementById('{{ form.password2.id_for_label }}');
+    const passwordStrength = document.getElementById('password-strength');
+    
+    // Password visibility toggles
+    passwordToggles.forEach((toggle, index) => {
+        toggle.addEventListener('click', function() {
+            const passwordInput = passwordInputs[index];
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+                this.setAttribute('aria-label', 'Hide password');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+                this.setAttribute('aria-label', 'Show password');
+            }
+        });
+    });
+    
+    // File upload handling
+    if (fileInput && fileLabel) {
+        fileInput.addEventListener('change', function() {
+            const selectedFile = fileLabel.querySelector('.selected-file');
+            const filename = selectedFile.querySelector('.filename');
+            
+            if (this.files && this.files[0]) {
+                fileLabel.classList.add('has-file');
+                selectedFile.style.display = 'block';
+                filename.textContent = this.files[0].name;
+            } else {
+                fileLabel.classList.remove('has-file');
+                selectedFile.style.display = 'none';
+            }
+        });
+        
+        // Drag and drop functionality
+        fileLabel.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.style.borderColor = 'var(--primary-color)';
+            this.style.background = 'white';
+        });
+        
+        fileLabel.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#e2e8f0';
+            this.style.background = '#f8fafc';
+        });
+        
+        fileLabel.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.style.borderColor = '#e2e8f0';
+            this.style.background = '#f8fafc';
+            
+            if (e.dataTransfer.files.length > 0) {
+                fileInput.files = e.dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        });
+    }
+    
+    // Password strength indicator
+    function checkPasswordStrength(password) {
+        let strength = 0;
+        let feedback = [];
+        
+        if (password.length >= 8) strength++;
+        else feedback.push('at least 8 characters');
+        
+        if (/[a-z]/.test(password)) strength++;
+        else feedback.push('lowercase letters');
+        
+        if (/[A-Z]/.test(password)) strength++;
+        else feedback.push('uppercase letters');
+        
+        if (/[0-9]/.test(password)) strength++;
+        else feedback.push('numbers');
+        
+        if (/[^A-Za-z0-9]/.test(password)) strength++;
+        else feedback.push('special characters');
+        
+        return { strength, feedback };
+    }
+    
+    function updatePasswordStrength(password) {
+        if (!password) {
+            passwordStrength.style.display = 'none';
+            return;
+        }
+        
+        const { strength, feedback } = checkPasswordStrength(password);
+        passwordStrength.style.display = 'block';
+        
+        const strengthText = passwordStrength.querySelector('.strength-text');
+        
+        if (strength < 2) {
+            passwordStrength.className = 'password-strength weak';
+            strengthText.textContent = 'Weak - Add ' + feedback.join(', ');
+        } else if (strength < 4) {
+            passwordStrength.className = 'password-strength medium';
+            strengthText.textContent = 'Medium - Add ' + feedback.join(', ');
+        } else {
+            passwordStrength.className = 'password-strength strong';
+            strengthText.textContent = 'Strong password!';
+        }
+    }
+    
+    if (password1Input) {
+        password1Input.addEventListener('input', function() {
+            updatePasswordStrength(this.value);
+        });
+    }
+    
+    // Form validation
+    function validateField(field, errorId) {
+        if (field.value.trim() === '') {
+            field.classList.add('is-invalid');
+            field.classList.remove('is-valid');
+            return false;
+        } else {
+            field.classList.remove('is-invalid');
+            field.classList.add('is-valid');
+            return true;
+        }
+    }
+    
+    // File validation
+    function validateFile(fileInput) {
+        if (!fileInput.files || fileInput.files.length === 0) {
+            fileInput.classList.add('is-invalid');
+            return false;
+        } else {
+            fileInput.classList.remove('is-invalid');
+            fileInput.classList.add('is-valid');
+            return true;
+        }
+    }
+    
+    function validateEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+    
+    function validatePasswords() {
+        const password1 = password1Input.value;
+        const password2 = password2Input.value;
+        
+        let isValid = true;
+        
+        if (password1.length < 8) {
+            password1Input.classList.add('is-invalid');
+            password1Input.classList.remove('is-valid');
+            isValid = false;
+        } else {
+            password1Input.classList.remove('is-invalid');
+            password1Input.classList.add('is-valid');
+        }
+        
+        if (password2 && password1 !== password2) {
+            password2Input.classList.add('is-invalid');
+            password2Input.classList.remove('is-valid');
+            isValid = false;
+        } else if (password2) {
+            password2Input.classList.remove('is-invalid');
+            password2Input.classList.add('is-valid');
+        }
+        
+        return isValid;
+    }
+    
+    // Real-time validation
+    const requiredFields = signupForm.querySelectorAll('input[required], select[required]');
+    requiredFields.forEach(field => {
+        field.addEventListener('blur', () => {
+            if (field.type === 'email') {
+                if (field.value && !validateEmail(field.value)) {
+                    field.classList.add('is-invalid');
+                    field.classList.remove('is-valid');
+                } else if (field.value) {
+                    field.classList.remove('is-invalid');
+                    field.classList.add('is-valid');
+                }
+            } else if (field.type === 'password') {
+                validatePasswords();
+            } else if (field.type === 'file') {
+                validateFile(field);
+            } else {
+                validateField(field);
+            }
+        });
+    });
+    
+    // Form submission with loading state
+    signupForm.addEventListener('submit', function(e) {
+        let isFormValid = true;
+        
+        // Validate all required fields
+        requiredFields.forEach(field => {
+            if (field.type === 'email') {
+                if (!field.value || !validateEmail(field.value)) {
+                    field.classList.add('is-invalid');
+                    isFormValid = false;
+                }
+            } else if (field.type === 'file') {
+                if (!validateFile(field)) {
+                    isFormValid = false;
+                }
+            } else if (!validateField(field)) {
+                isFormValid = false;
+            }
+        });
+        
+        // Validate passwords
+        if (!validatePasswords()) {
+            isFormValid = false;
+        }
+        
+        if (!isFormValid) {
+            e.preventDefault();
+            return;
+        }
+        
+        // Add loading state
+        signupBtn.classList.add('loading');
+        signupBtn.setAttribute('disabled', 'disabled');
+        
+        // Focus management for accessibility
+        signupBtn.focus();
+    });
+    
+    // Keyboard navigation improvements
+    document.addEventListener('keydown', function(e) {
+        // Enter key on password toggles
+        passwordToggles.forEach(toggle => {
+            if (e.target === toggle && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                toggle.click();
+            }
+        });
+    });
+    
+    // Auto-focus first empty field
+    const firstEmptyField = Array.from(requiredFields).find(field => !field.value);
+    if (firstEmptyField) {
+        firstEmptyField.focus();
+    }
+    
+    // Remove loading state if back button is pressed
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            signupBtn.classList.remove('loading');
+            signupBtn.removeAttribute('disabled');
+        }
+    });
+    
+    // Animate form elements on load
+    const formElements = document.querySelectorAll('.form-floating-modern, .btn-signup');
+    formElements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            element.style.transition = 'all 0.4s ease';
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }, 100 * (index + 1));
+    });
+});
+</script>
+{% endblock %}
