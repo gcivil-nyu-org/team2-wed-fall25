@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Profile - AcePrep{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">User Profile</h2>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Username:</strong> {{ user.username }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>First Name:</strong> {{ user.first_name }}</p>
+                            <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>User Type:</strong> {{ user.get_user_type_display }}</p>
+                            <p><strong>Member Since:</strong> {{ user.created_at|date:"F d, Y" }}</p>
+                            <p><strong>Last Updated:</strong> {{ user.updated_at|date:"F d, Y" }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="{% url 'dashboard' %}" class="btn btn-primary">Back to Dashboard</a>
+                        <button class="btn btn-outline-primary" disabled>Edit Profile (Coming Soon)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
