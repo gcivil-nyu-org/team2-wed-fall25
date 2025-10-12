@@ -152,6 +152,7 @@ CELERY_TIMEZONE = TIME_ZONE
 
 # AI/ML Configuration
 OPENAI_API_KEY = config('OPENAI_API_KEY', default='')
+GEMINI_API_KEY = config('GEMINI_API_KEY', default='')
 
 # File Upload Settings
 FILE_UPLOAD_MAX_MEMORY_SIZE = 5242880  # 5MB

@@ -434,18 +434,16 @@
         });
 
         // Add loading states to buttons
-        document.querySelectorAll('.btn').forEach(button => {
-            button.addEventListener('click', function() {
-                if (this.type === 'submit') {
-                    const originalText = this.innerHTML;
-                    this.innerHTML = '<span class="loading-spinner me-2"></span>Processing...';
-                    this.disabled = true;
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const submitButton = this.querySelector('button[type="submit"]');
+                if (submitButton && !submitButton.disabled) {
+                    const originalText = submitButton.innerHTML;
+                    submitButton.innerHTML = '<span class="loading-spinner me-2"></span>Processing...';
+                    submitButton.disabled = true;
                     
-                    // Re-enable after 3 seconds (adjust as needed)
-                    setTimeout(() => {
-                        this.innerHTML = originalText;
-                        this.disabled = false;
-                    }, 3000);
+                    // Note: Form will submit naturally after this, so no need to re-enable
+                    // unless submission fails (which would require server response)
                 }
             });
         });

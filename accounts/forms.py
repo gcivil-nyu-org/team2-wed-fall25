@@ -12,8 +12,8 @@ class CustomUserCreationForm(UserCreationForm):
     user_type = forms.ChoiceField(choices=User.USER_TYPES, required=True)
     resume = forms.FileField(
         required=False,
-        help_text='Upload your resume (PDF format preferred, max 5MB)',
-        widget=forms.FileInput(attrs={'accept': '.pdf,.doc,.docx'})
+        help_text='Upload your resume (PDF only, max 5MB)',
+        widget=forms.FileInput(attrs={'accept': '.pdf'})
     )
 
     class Meta:
@@ -48,8 +48,13 @@ class CustomUserCreationForm(UserCreationForm):
             
             # Check file extension
             ext = os.path.splitext(resume.name)[1].lower()
-            if ext not in ['.pdf', '.doc', '.docx']:
-                raise ValidationError('Only PDF, DOC, and DOCX files are allowed.')
+            if ext != '.pdf':
+                raise ValidationError('Only PDF files are allowed.')
+            
+            # Check MIME type
+            content_type = getattr(resume, 'content_type', '')
+            if content_type and content_type != 'application/pdf':
+                raise ValidationError('Invalid file type; PDF required.')
         
         return resume
 
@@ -78,4 +83,33 @@ class CustomAuthenticationForm(AuthenticationForm):
             'placeholder': 'Password'
         })
 
+class ResumeUpdateForm(forms.ModelForm):
+    """Form for updating user's resume"""
+    resume = forms.FileField(
+        required=True,
+        help_text='Upload your resume (PDF only, max 5MB)',
+        widget=forms.FileInput(attrs={'accept': '.pdf', 'class': 'form-control'})
+    )
 
+    class Meta:
+        model = User
+        fields = ['resume']
+    
+    def clean_resume(self):
+        resume = self.cleaned_data.get('resume')
+        if resume:
+            # Check file size (5MB limit)
+            if resume.size > 5 * 1024 * 1024:
+                raise ValidationError('File size must be under 5MB.')
+            
+            # Check file extension
+            ext = os.path.splitext(resume.name)[1].lower()
+            if ext != '.pdf':
+                raise ValidationError('Only PDF files are allowed.')
+            
+            # Check MIME type
+            content_type = getattr(resume, 'content_type', '')
+            if content_type and content_type != 'application/pdf':
+                raise ValidationError('Invalid file type; PDF required.')
+        
+        return resume

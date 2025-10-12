@@ -1,0 +1,425 @@
+{% extends 'base.html' %}
+
+{% block title %}Coding Round - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    .step-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+    
+    .step-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 24px;
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    /* Stepper Styles */
+    .stepper-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 30px 40px;
+        margin-bottom: 30px;
+    }
+    
+    .stepper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        margin: 20px 0;
+    }
+    
+    .stepper-step {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .stepper-step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 25px;
+        left: calc(50% + 30px);
+        right: calc(-50% + 30px);
+        height: 3px;
+        background: rgba(100, 116, 139, 0.2);
+        z-index: -1;
+    }
+    
+    .stepper-step.completed::after {
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .stepper-step.active::after {
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .stepper-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(100, 116, 139, 0.1);
+        border: 3px solid rgba(100, 116, 139, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--medium-gray);
+        transition: all 0.3s ease;
+        margin-bottom: 10px;
+    }
+    
+    .stepper-step.completed .stepper-circle {
+        background: linear-gradient(135deg, var(--success-color), #059669);
+        border-color: var(--success-color);
+        color: white;
+    }
+    
+    .stepper-step.active .stepper-circle {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.1);
+        animation: pulse-ring 2s infinite;
+    }
+    
+    .stepper-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--medium-gray);
+        text-align: center;
+        max-width: 120px;
+    }
+    
+    .stepper-step.completed .stepper-label,
+    .stepper-step.active .stepper-label {
+        color: var(--dark-color);
+    }
+    
+    @keyframes pulse-ring {
+        0%, 100% {
+            box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.1);
+        }
+        50% {
+            box-shadow: 0 0 0 10px rgba(102, 126, 234, 0.2);
+        }
+    }
+    
+    .placeholder-content {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    
+    .placeholder-icon {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        font-size: 3rem;
+        box-shadow: 0 20px 40px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-action {
+        border-radius: 12px;
+        padding: 16px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+    }
+    
+    .btn-primary-action {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+    }
+    
+    .btn-primary-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .btn-outline-action {
+        background: rgba(100, 116, 139, 0.1);
+        color: var(--dark-color);
+        border: 2px solid rgba(100, 116, 139, 0.2);
+    }
+    
+    .btn-outline-action:hover {
+        background: rgba(100, 116, 139, 0.2);
+        color: var(--dark-color);
+        text-decoration: none;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .step-container {
+            padding: 90px 16px 20px;
+        }
+        
+        .step-card, .stepper-container {
+            padding: 20px;
+        }
+        
+        .stepper {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .stepper-step {
+            width: 100%;
+        }
+        
+        .stepper-step:not(:last-child)::after {
+            display: none;
+        }
+        
+        .stepper-circle {
+            width: 45px;
+            height: 45px;
+            font-size: 1rem;
+        }
+        
+        .stepper-label {
+            font-size: 0.85rem;
+            max-width: 100%;
+        }
+        
+        .placeholder-icon {
+            width: 100px;
+            height: 100px;
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="step-container">
+    <div class="container">
+        <!-- Progress Stepper -->
+        <div class="stepper-container">
+            <h5 class="fw-bold mb-3 text-center">
+                <i class="fas fa-route me-2 text-primary"></i>Interview Journey
+            </h5>
+            <div class="stepper">
+                <div class="stepper-step completed">
+                    <div class="stepper-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="stepper-label">Resume Review</div>
+                </div>
+                <div class="stepper-step active">
+                    <div class="stepper-circle">2</div>
+                    <div class="stepper-label">Coding Q1</div>
+                </div>
+                <div class="stepper-step">
+                    <div class="stepper-circle">3</div>
+                    <div class="stepper-label">Coding Q2</div>
+                </div>
+                <div class="stepper-step">
+                    <div class="stepper-circle">4</div>
+                    <div class="stepper-label">System Design</div>
+                </div>
+                <div class="stepper-step">
+                    <div class="stepper-circle">5</div>
+                    <div class="stepper-label">Behavioral + Resume</div>
+                </div>
+                <div class="stepper-step">
+                    <div class="stepper-circle">6</div>
+                    <div class="stepper-label">Final Analysis</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Coding Round Content -->
+        <div class="step-card">
+            {% if selected_question %}
+            <h2 class="fw-bold mb-4">
+                <i class="fas fa-code me-2" style="color: var(--primary-color);"></i>
+                Coding Challenge Q1 - {{ session.get_company_display }}
+            </h2>
+            
+            <!-- Question Display -->
+            <div class="question-section mb-4">
+                <h5 class="fw-bold text-primary mb-3">Problem Statement:</h5>
+                <div class="question-text p-4" style="background: #f8f9fa; border-left: 4px solid var(--primary-color); border-radius: 8px;">
+                    {{ selected_question.question|linebreaks }}
+                </div>
+            </div>
+            
+            <!-- Code Editor Form -->
+            <form method="post" id="codingForm">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label for="language" class="form-label fw-bold">
+                        <i class="fas fa-laptop-code me-2"></i>Programming Language:
+                    </label>
+                    <select name="language" id="language" class="form-select" style="max-width: 200px;">
+                        <option value="python" {% if coding_round.language == 'python' %}selected{% endif %}>Python</option>
+                        <option value="java" {% if coding_round.language == 'java' %}selected{% endif %}>Java</option>
+                        <option value="javascript" {% if coding_round.language == 'javascript' %}selected{% endif %}>JavaScript</option>
+                        <option value="cpp" {% if coding_round.language == 'cpp' %}selected{% endif %}>C++</option>
+                    </select>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="user_code" class="form-label fw-bold">
+                        <i class="fas fa-edit me-2"></i>Your Solution:
+                    </label>
+                    <textarea 
+                        name="user_code" 
+                        id="user_code" 
+                        class="form-control" 
+                        rows="15" 
+                        style="font-family: 'Courier New', monospace; font-size: 14px; background: #f8f9fa;"
+                        placeholder="Write your code here..."
+                    >{{ coding_round.user_code }}</textarea>
+                </div>
+                
+                <div class="d-flex gap-2 mb-4">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Solution
+                    </button>
+                    <a href="{% url 'interview_analysis' %}" class="btn btn-outline-secondary btn-lg">
+                        <i class="fas fa-arrow-left me-2"></i>Back to Analysis
+                    </a>
+                </div>
+            </form>
+            
+            <!-- Evaluation Results -->
+            {% if coding_round.evaluation_result %}
+            <div class="evaluation-section mt-5">
+                <h4 class="fw-bold mb-3">
+                    <i class="fas fa-chart-line me-2" style="color: var(--success-color);"></i>
+                    Evaluation Results
+                </h4>
+                
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        <div class="card" style="border-left: 4px solid {% if coding_round.evaluation_result.is_correct %}var(--success-color){% else %}#f59e0b{% endif %};">
+                            <div class="card-body">
+                                <h6 class="text-muted mb-2">Correctness</h6>
+                                <h3 class="fw-bold mb-0">
+                                    {% if coding_round.evaluation_result.is_correct %}
+                                        <i class="fas fa-check-circle text-success me-2"></i>Correct
+                                    {% else %}
+                                        <i class="fas fa-exclamation-circle text-warning me-2"></i>Needs Work
+                                    {% endif %}
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card" style="border-left: 4px solid var(--primary-color);">
+                            <div class="card-body">
+                                <h6 class="text-muted mb-2">Score</h6>
+                                <h3 class="fw-bold mb-0">
+                                    {{ coding_round.evaluation_result.score }}/100
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% if coding_round.evaluation_result.strengths %}
+                <div class="mb-4">
+                    <h5 class="fw-bold text-success mb-3">
+                        <i class="fas fa-thumbs-up me-2"></i>Strengths
+                    </h5>
+                    <ul class="list-unstyled">
+                        {% for strength in coding_round.evaluation_result.strengths %}
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>{{ strength }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                {% if coding_round.evaluation_result.improvements %}
+                <div class="mb-4">
+                    <h5 class="fw-bold text-warning mb-3">
+                        <i class="fas fa-lightbulb me-2"></i>Areas for Improvement
+                    </h5>
+                    <ul class="list-unstyled">
+                        {% for improvement in coding_round.evaluation_result.improvements %}
+                        <li class="mb-2">
+                            <i class="fas fa-arrow-right text-warning me-2"></i>{{ improvement }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                {% if coding_round.evaluation_result.feedback %}
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-comment-dots me-2"></i>Detailed Feedback
+                    </h5>
+                    <div class="p-4" style="background: #f8f9fa; border-radius: 8px;">
+                        {{ coding_round.evaluation_result.feedback|linebreaks }}
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Next Step Button -->
+                <div class="mt-4">
+                    <a href="{% url 'coding_round_q2' %}" class="btn-action btn-primary-action">
+                        <i class="fas fa-arrow-right me-2"></i>
+                        Next: Coding Question 2
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+            
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Unable to generate coding questions. Please contact the administrator.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
