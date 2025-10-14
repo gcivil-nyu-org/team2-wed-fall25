@@ -343,6 +343,11 @@
         50% { transform: translateY(-20px) rotate(5deg); }
     }
     
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
     .coming-soon-badge {
         position: absolute;
         top: 15px;
@@ -415,6 +420,39 @@
                 <p class="mb-0 opacity-75">Member since {{ user.created_at|date:"F d, Y" }}</p>
             </div>
         </div>
+        
+        <!-- Active Session Banner -->
+        {% if active_session %}
+        <div class="dashboard-card" style="border-left: 5px solid var(--success-color);">
+            <div class="card-body-modern">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div class="d-flex align-items-center mb-3 mb-md-0">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--success-color), #059669); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-right: 20px;">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1 text-success">
+                                <i class="fas fa-circle" style="font-size: 0.5rem; animation: pulse 2s infinite;"></i>
+                                Active Interview Session
+                            </h5>
+                            <p class="mb-0 text-muted">
+                                <strong>{{ active_session.get_company_display }}</strong> • 
+                                Started {{ active_session.created_at|timesince }} ago
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'interview_analysis' %}" class="btn btn-success" style="border-radius: 10px; padding: 10px 20px; font-weight: 600;">
+                            <i class="fas fa-eye me-2"></i>View Analysis
+                        </a>
+                        <a href="{% url 'end_session' %}" class="btn btn-outline-danger" style="border-radius: 10px; padding: 10px 20px; font-weight: 600;">
+                            <i class="fas fa-stop me-2"></i>End Session
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         
         <div class="row">
             <!-- Main Content -->
@@ -551,7 +589,25 @@
                         <i class="fas fa-bolt me-2 text-primary"></i>Quick Actions
                     </h5>
                     
-                    <a href="{% url 'profile' %}" class="btn-action-modern btn-primary-modern">
+                    {% if not active_session %}
+                        <a href="{% url 'start_session' %}" class="btn-action-modern btn-primary-modern">
+                            <i class="fas fa-rocket me-3"></i>
+                            <div>
+                                <div class="fw-bold">Start Interview Session</div>
+                                <small class="opacity-75">Begin AI-powered preparation</small>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'interview_analysis' %}" class="btn-action-modern btn-success-modern">
+                            <i class="fas fa-rocket me-3"></i>
+                            <div>
+                                <div class="fw-bold">Continue Session</div>
+                                <small class="opacity-75">Resume your interview prep</small>
+                            </div>
+                        </a>
+                    {% endif %}
+                    
+                    <a href="{% url 'profile' %}" class="btn-action-modern btn-outline-modern">
                         <i class="fas fa-user me-3"></i>
                         <div>
                             <div class="fw-bold">View Profile</div>
@@ -560,21 +616,21 @@
                     </a>
                     
                     {% if not user.has_resume %}
-                        <button class="btn-action-modern btn-success-modern" disabled style="opacity: 0.6; cursor: not-allowed;">
+                        <button type="button" class="btn-action-modern btn-success-modern" data-bs-toggle="modal" data-bs-target="#uploadResumeModal">
                             <i class="fas fa-upload me-3"></i>
                             <div>
                                 <div class="fw-bold">Upload Resume</div>
-                                <small class="opacity-75">Coming soon</small>
+                                <small class="opacity-75">Add your resume now</small>
                             </div>
                         </button>
                     {% else %}
-                        <button class="btn-action-modern btn-outline-modern" disabled style="opacity: 0.6; cursor: not-allowed;">
+                        <a href="{% url 'resume_view' %}" class="btn-action-modern btn-outline-modern">
                             <i class="fas fa-eye me-3"></i>
                             <div>
                                 <div class="fw-bold">View Resume</div>
-                                <small class="opacity-75">Coming soon</small>
+                                <small class="opacity-75">Open in viewer</small>
                             </div>
-                        </button>
+                        </a>
                     {% endif %}
                     
                     <button class="btn-action-modern btn-outline-modern" disabled style="opacity: 0.6; cursor: not-allowed;">
@@ -611,6 +667,51 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Resume Modal -->
+<div class="modal fade" id="uploadResumeModal" tabindex="-1" aria-labelledby="uploadResumeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: none;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(102, 126, 234, 0.1);">
+                <h5 class="modal-title" id="uploadResumeModalLabel" style="color: var(--primary-color); font-weight: 700;">
+                    <i class="fas fa-upload me-2"></i>Upload Resume
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadResumeForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="resumeFile" class="form-label fw-semibold">Select Your Resume (PDF only, max 5MB)</label>
+                        <input type="file" class="form-control" id="resumeFile" name="resume" accept=".pdf" required>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Upload your resume to unlock personalized features.
+                        </div>
+                    </div>
+                    <div id="uploadError" class="alert alert-danger d-none" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span id="errorMessage"></span>
+                    </div>
+                    <div id="uploadProgress" class="d-none">
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border spinner-border-sm me-2" role="status">
+                                <span class="visually-hidden">Uploading...</span>
+                            </div>
+                            <span>Uploading resume...</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 2px solid rgba(102, 126, 234, 0.1);">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 10px;">Cancel</button>
+                <button type="button" class="btn btn-primary" id="uploadResumeBtn" style="border-radius: 10px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); border: none;">
+                    <i class="fas fa-check me-2"></i>Upload Resume
+                </button>
             </div>
         </div>
     </div>
@@ -718,6 +819,89 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     `;
     document.head.appendChild(style);
+    
+    // Handle resume upload (only if upload modal exists)
+    const uploadModal = document.getElementById('uploadResumeModal');
+    if (uploadModal) {
+        const uploadBtn = document.getElementById('uploadResumeBtn');
+        const form = document.getElementById('uploadResumeForm');
+        const fileInput = document.getElementById('resumeFile');
+        const errorDiv = document.getElementById('uploadError');
+        const errorMessage = document.getElementById('errorMessage');
+        const progressDiv = document.getElementById('uploadProgress');
+        
+        uploadBtn.addEventListener('click', function() {
+            // Hide any previous errors
+            errorDiv.classList.add('d-none');
+            
+            // Validate file is selected
+            if (!fileInput.files || fileInput.files.length === 0) {
+                errorMessage.textContent = 'Please select a file to upload.';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            
+            // Client-side validation
+            if (file.size > 5 * 1024 * 1024) {
+                errorMessage.textContent = 'File size must be under 5MB.';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+            
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                errorMessage.textContent = 'Only PDF files are allowed.';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+            
+            // Show progress, disable button
+            progressDiv.classList.remove('d-none');
+            uploadBtn.disabled = true;
+            
+            // Create FormData and submit
+            const formData = new FormData(form);
+            const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            fetch('{% url "resume_update" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Success! Reload the page to show the updated state
+                    window.location.reload();
+                } else {
+                    // Show errors
+                    progressDiv.classList.add('d-none');
+                    uploadBtn.disabled = false;
+                    errorMessage.textContent = data.errors ? data.errors.join(', ') : 'An error occurred while uploading the resume.';
+                    errorDiv.classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                // Handle network errors
+                progressDiv.classList.add('d-none');
+                uploadBtn.disabled = false;
+                errorMessage.textContent = 'Network error. Please try again.';
+                errorDiv.classList.remove('d-none');
+                console.error('Upload error:', error);
+            });
+        });
+        
+        // Reset form when modal is closed
+        uploadModal.addEventListener('hidden.bs.modal', function() {
+            form.reset();
+            errorDiv.classList.add('d-none');
+            progressDiv.classList.add('d-none');
+            uploadBtn.disabled = false;
+        });
+    }
 });
 </script>
 {% endblock %}

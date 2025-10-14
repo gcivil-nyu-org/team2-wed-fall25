@@ -67,7 +67,17 @@ def logout_view(request):
 
 @login_required
 def dashboard_view(request):
-    return render(request, 'accounts/dashboard.html', {'user': request.user})
+    # Check for active interview session
+    from interviews.models import InterviewSession
+    active_session = InterviewSession.objects.filter(
+        user=request.user,
+        status='active'
+    ).first()
+    
+    return render(request, 'accounts/dashboard.html', {
+        'user': request.user,
+        'active_session': active_session
+    })
 
 @login_required
 def profile_view(request):
