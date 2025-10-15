@@ -1,0 +1,22 @@
+language: python
+python:
+  - "3.10"
+
+services:
+  - postgresql
+
+install:
+  - pip install -r requirements.txt
+  - pip install black flake8 coverage coveralls
+
+before_script:
+  - psql -c 'CREATE DATABASE testdb;' -U postgres
+
+script:
+  - black --check .
+  - flake8 .
+  - coverage run manage.py test
+  - coverage report
+
+after_success:
+  - coveralls
