@@ -1,0 +1,27 @@
+language: python
+python:
+  - "3.10"
+
+services:
+  - postgresql
+
+env:
+  - DJANGO_SETTINGS_MODULE=swe1_app.settings
+  - DATABASE_URL=postgres://postgres@localhost/testdb
+
+install:
+  - pip install -r requirements.txt
+  - pip install black flake8 coverage coveralls psycopg2-binary
+
+before_script:
+  - psql -c 'CREATE DATABASE testdb;' -U postgres
+  - python manage.py migrate --noinput
+
+script:
+  - black --check .
+  - flake8 .
+  - coverage run manage.py test
+  - coverage report
+
+after_success:
+  - coveralls
