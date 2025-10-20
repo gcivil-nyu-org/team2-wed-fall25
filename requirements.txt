@@ -12,4 +12,7 @@ PyPDF2==3.0.1
 requests==2.31.0
 django-extensions==3.2.3
 whitenoise==6.6.0
-google-generativeai==0.3.2
+google-generativeai==0.8.3
+channels==4.0.0
+daphne==4.0.0
+websockets==12.0

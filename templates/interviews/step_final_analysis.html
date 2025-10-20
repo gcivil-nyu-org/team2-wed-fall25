@@ -356,6 +356,8 @@
                 <i class="fas fa-route me-2 text-primary"></i>Interview Journey
             </h5>
             <div class="stepper">
+                {% if request.user.user_type == 'swe_ng' %}
+                <!-- SWE Track Stepper -->
                 <div class="stepper-step completed">
                     <div class="stepper-circle">
                         <i class="fas fa-check"></i>
@@ -380,8 +382,10 @@
                     </div>
                     <div class="stepper-label">System Design</div>
                 </div>
-                <div class="stepper-step">
-                    <div class="stepper-circle">5</div>
+                <div class="stepper-step {% if session.behavioral_resume_completed %}completed{% endif %}">
+                    <div class="stepper-circle">
+                        {% if session.behavioral_resume_completed %}<i class="fas fa-check"></i>{% else %}5{% endif %}
+                    </div>
                     <div class="stepper-label">Behavioral + Resume</div>
                 </div>
                 <div class="stepper-step completed">
@@ -390,6 +394,39 @@
                     </div>
                     <div class="stepper-label">Final Analysis</div>
                 </div>
+                {% elif request.user.user_type == 'pm_ng' %}
+                <!-- PM Track Stepper -->
+                <div class="stepper-step completed">
+                    <div class="stepper-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="stepper-label">Resume Review</div>
+                </div>
+                <div class="stepper-step completed">
+                    <div class="stepper-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="stepper-label">Product Sense</div>
+                </div>
+                <div class="stepper-step completed">
+                    <div class="stepper-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="stepper-label">Analytical + Strategy</div>
+                </div>
+                <div class="stepper-step {% if session.behavioral_resume_completed %}completed{% endif %}">
+                    <div class="stepper-circle">
+                        {% if session.behavioral_resume_completed %}<i class="fas fa-check"></i>{% else %}4{% endif %}
+                    </div>
+                    <div class="stepper-label">Technical + Resume</div>
+                </div>
+                <div class="stepper-step completed">
+                    <div class="stepper-circle">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="stepper-label">Final Analysis</div>
+                </div>
+                {% endif %}
             </div>
         </div>
         
@@ -433,6 +470,9 @@
                         </div>
                     </div>
                 </div>
+                
+                {% if request.user.user_type == 'swe_ng' %}
+                <!-- SWE Track Sections -->
                 
                 <!-- Coding Q1 -->
                 <div class="col-md-6">
@@ -508,8 +548,137 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- Behavioral + Resume (SWE) -->
+                <div class="col-md-6">
+                    <div class="section-summary-card">
+                        <div class="section-summary-header">
+                            <div>
+                                <div class="section-summary-title">
+                                    <i class="fas fa-comments me-2 text-primary"></i>Behavioral + Resume
+                                </div>
+                                {% if session.behavioral_resume_completed %}
+                                <span class="section-summary-status status-good">
+                                    Completed
+                                </span>
+                                {% else %}
+                                <span class="section-summary-status status-needs-work">
+                                    Not Completed
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="section-summary-score">
+                                {% if session.behavioral_resume_completed %}
+                                <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning" style="font-size: 2rem;"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                {% elif request.user.user_type == 'pm_ng' %}
+                <!-- PM Track Sections -->
+                
+                <!-- Product Sense -->
+                <div class="col-md-6">
+                    <div class="section-summary-card">
+                        <div class="section-summary-header">
+                            <div>
+                                <div class="section-summary-title">
+                                    <i class="fas fa-lightbulb me-2 text-primary"></i>Product Sense
+                                </div>
+                                {% if product_sense and product_sense.evaluation_result %}
+                                <span class="section-summary-status {% if product_sense.evaluation_result.is_good %}status-good{% else %}status-needs-work{% endif %}">
+                                    {% if product_sense.evaluation_result.is_good %}Good{% else %}Needs Work{% endif %}
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="section-summary-score">
+                                {% if product_sense and product_sense.evaluation_result %}
+                                {{ product_sense.evaluation_result.score }}/100
+                                {% else %}
+                                N/A
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Analytical + Strategy -->
+                <div class="col-md-6">
+                    <div class="section-summary-card">
+                        <div class="section-summary-header">
+                            <div>
+                                <div class="section-summary-title">
+                                    <i class="fas fa-chart-line me-2 text-primary"></i>Analytical + Strategy
+                                </div>
+                                {% if analytical_strategy and analytical_strategy.evaluation_result %}
+                                <span class="section-summary-status {% if analytical_strategy.evaluation_result.is_good %}status-good{% else %}status-needs-work{% endif %}">
+                                    {% if analytical_strategy.evaluation_result.is_good %}Good{% else %}Needs Work{% endif %}
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="section-summary-score">
+                                {% if analytical_strategy and analytical_strategy.evaluation_result %}
+                                {{ analytical_strategy.evaluation_result.score }}/100
+                                {% else %}
+                                N/A
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Technical + Resume (PM) -->
+                <div class="col-md-6">
+                    <div class="section-summary-card">
+                        <div class="section-summary-header">
+                            <div>
+                                <div class="section-summary-title">
+                                    <i class="fas fa-comments me-2 text-primary"></i>Technical + Resume
+                                </div>
+                                {% if session.behavioral_resume_completed %}
+                                <span class="section-summary-status status-good">
+                                    Completed
+                                </span>
+                                {% else %}
+                                <span class="section-summary-status status-needs-work">
+                                    Not Completed
+                                </span>
+                                {% endif %}
+                            </div>
+                            <div class="section-summary-score">
+                                {% if session.behavioral_resume_completed %}
+                                <i class="fas fa-check-circle text-success" style="font-size: 2rem;"></i>
+                                {% else %}
+                                <i class="fas fa-exclamation-circle text-warning" style="font-size: 2rem;"></i>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
             </div>
         </div>
+        
+        <!-- Behavioral/Technical Interview Summary (if completed) -->
+        {% if session.behavioral_resume_completed and session.behavioral_resume_summary %}
+        <div class="analysis-card">
+            <h3 class="fw-bold mb-4">
+                <i class="fas fa-comments me-2 text-primary"></i>
+                {% if request.user.user_type == 'pm_ng' %}
+                Technical + Resume Interview Summary
+                {% else %}
+                Behavioral + Resume Interview Summary
+                {% endif %}
+            </h3>
+            <div class="p-4" style="background: #f8f9fa; border-left: 4px solid var(--primary-color); border-radius: 8px;">
+                <div class="analysis-text">{{ session.behavioral_resume_summary }}</div>
+            </div>
+        </div>
+        {% endif %}
         
         <!-- Comprehensive Analysis -->
         <div class="comprehensive-analysis">
