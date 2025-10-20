@@ -189,24 +189,24 @@ def coding_round_view(request):
     if created or not coding_round.generated_questions:
         rag_service = RAGService()
         
-        # Retrieve all coding chunks for this company
-        chunks = rag_service.retrieve_coding_question(session.company)
+        # Retrieve one random coding document for this company
+        document_text = rag_service.retrieve_coding_question(session.company)
         
-        if not chunks:
+        if not document_text:
             # Fallback question if no content available
-            chunks = ["Write a function to find the longest substring without repeating characters in a given string."]
+            document_text = "Write a function to find the longest substring without repeating characters in a given string."
             messages.warning(request, 'Using fallback question. Please ensure company documents are uploaded.')
         
         # Let Gemini select best question and generate similar ones
         analyzer = GeminiAnalyzer()
         generated_questions = analyzer.select_and_generate_questions(
-            chunks=chunks,
+            document_text=document_text,
             company_name=session.get_company_display(),
             num_questions=2
         )
         
         # Save to coding round
-        coding_round.base_question = f"Generated from {len(chunks)} company-specific questions"
+        coding_round.base_question = f"Generated from company-specific document"
         coding_round.generated_questions = generated_questions
         coding_round.selected_question_index = 0  # Show first question
         coding_round.save()
@@ -271,8 +271,13 @@ def coding_round_view(request):
 @login_required
 def product_sense_view(request):
     """
-    Placeholder view for Product Manager product sense step.
+    Product Sense view with RAG-powered case generation and evaluation.
+    GET: Display case or generate if not exists
+    POST: Evaluate submitted answer
     """
+    from .models import ProductSenseRound
+    from .rag_service import RAGService
+    
     # Get active session
     session = get_object_or_404(
         InterviewSession,
@@ -285,8 +290,175 @@ def product_sense_view(request):
         messages.error(request, 'This step is only available for Product Manager role.')
         return redirect('interview_analysis')
     
+    # Get or create product sense round
+    product_sense_round, created = ProductSenseRound.objects.get_or_create(session=session)
+    
+    # If newly created or no case generated yet, generate it
+    if created or not product_sense_round.generated_case:
+        rag_service = RAGService()
+        
+        # Retrieve one random product sense document for this company
+        document_text = rag_service.retrieve_product_sense_case(session.company)
+        
+        if not document_text:
+            # Fallback case if no content available
+            document_text = "You are the PM for a social media app. You notice that user engagement has dropped by 15% over the last quarter. Design a feature or strategy to improve user engagement. Consider user needs, metrics, prioritization, and potential trade-offs."
+            messages.warning(request, 'Using fallback case. Please ensure company documents are uploaded.')
+        
+        # Let Gemini select best case and generate a similar one
+        analyzer = GeminiAnalyzer()
+        generated_case = analyzer.select_and_generate_product_sense_case(
+            document_text=document_text,
+            company_name=session.get_company_display()
+        )
+        
+        # Save to product sense round
+        product_sense_round.base_case = f"Generated from company-specific document"
+        product_sense_round.generated_case = generated_case
+        product_sense_round.save()
+        
+        messages.success(request, 'Product sense case generated successfully!')
+    
+    # Handle POST: answer submission and evaluation
+    if request.method == 'POST':
+        user_answer = request.POST.get('user_answer', '').strip()
+        
+        if not user_answer:
+            messages.error(request, 'Please write your answer before submitting.')
+        else:
+            # Save user submission
+            product_sense_round.user_answer = user_answer
+            product_sense_round.save()
+            
+            # Evaluate the answer
+            case = product_sense_round.get_case()
+            evaluation_criteria = product_sense_round.generated_case.get('evaluation_criteria') if product_sense_round.generated_case else None
+            
+            if case:
+                analyzer = GeminiAnalyzer()
+                evaluation = analyzer.evaluate_product_sense(
+                    case=case,
+                    user_answer=user_answer,
+                    evaluation_criteria=evaluation_criteria
+                )
+                
+                # Save evaluation
+                product_sense_round.evaluation_result = evaluation
+                product_sense_round.save()
+                
+                # Mark product sense as completed
+                session.product_sense_completed = True
+                session.save()
+                
+                # Show feedback message
+                if evaluation.get('is_good'):
+                    messages.success(request, f'Excellent answer! Score: {evaluation.get("score")}/100')
+                else:
+                    messages.info(request, f'Your answer needs improvement. Score: {evaluation.get("score")}/100')
+            else:
+                messages.error(request, 'Could not evaluate: case not found.')
+    
     return render(request, 'interviews/step_product_sense.html', {
-        'session': session
+        'session': session,
+        'product_sense_round': product_sense_round,
+        'case': product_sense_round.get_case(),
+    })
+
+
+@login_required
+def analytical_strategy_view(request):
+    """
+    Analytical + Strategy view with RAG-powered question generation and evaluation.
+    GET: Display question or generate if not exists
+    POST: Evaluate submitted answer
+    """
+    from .models import AnalyticalStrategyRound
+    from .rag_service import RAGService
+    
+    # Get active session
+    session = get_object_or_404(
+        InterviewSession,
+        user=request.user,
+        status='active'
+    )
+    
+    # Ensure user is PM type
+    if request.user.user_type != 'pm_ng':
+        messages.error(request, 'This step is only available for Product Manager role.')
+        return redirect('interview_analysis')
+    
+    # Get or create analytical strategy round
+    analytical_strategy_round, created = AnalyticalStrategyRound.objects.get_or_create(session=session)
+    
+    # If newly created or no question generated yet, generate it
+    if created or not analytical_strategy_round.generated_question:
+        rag_service = RAGService()
+        
+        # Retrieve one random analytical/strategy document for this company
+        document_text = rag_service.retrieve_analytical_strategy_prompt(session.company)
+        
+        if not document_text:
+            # Fallback question if no content available
+            document_text = "Your product's DAU/MAU ratio has been declining over the past 3 months. Design an experiment to identify the root cause and propose a data-driven solution. Include your hypothesis, success metrics, experiment design, and decision framework."
+            messages.warning(request, 'Using fallback question. Please ensure company documents are uploaded.')
+        
+        # Let Gemini select best question and generate a similar one
+        analyzer = GeminiAnalyzer()
+        generated_question = analyzer.select_and_generate_analytical_strategy_question(
+            document_text=document_text,
+            company_name=session.get_company_display()
+        )
+        
+        # Save to analytical strategy round
+        analytical_strategy_round.base_question = f"Generated from company-specific document"
+        analytical_strategy_round.generated_question = generated_question
+        analytical_strategy_round.save()
+        
+        messages.success(request, 'Analytical/strategy question generated successfully!')
+    
+    # Handle POST: answer submission and evaluation
+    if request.method == 'POST':
+        user_answer = request.POST.get('user_answer', '').strip()
+        
+        if not user_answer:
+            messages.error(request, 'Please write your answer before submitting.')
+        else:
+            # Save user submission
+            analytical_strategy_round.user_answer = user_answer
+            analytical_strategy_round.save()
+            
+            # Evaluate the answer
+            question = analytical_strategy_round.get_question()
+            evaluation_criteria = analytical_strategy_round.generated_question.get('evaluation_criteria') if analytical_strategy_round.generated_question else None
+            
+            if question:
+                analyzer = GeminiAnalyzer()
+                evaluation = analyzer.evaluate_analytical_strategy(
+                    question=question,
+                    user_answer=user_answer,
+                    evaluation_criteria=evaluation_criteria
+                )
+                
+                # Save evaluation
+                analytical_strategy_round.evaluation_result = evaluation
+                analytical_strategy_round.save()
+                
+                # Mark analytical strategy as completed
+                session.analytical_strategy_completed = True
+                session.save()
+                
+                # Show feedback message
+                if evaluation.get('is_good'):
+                    messages.success(request, f'Excellent answer! Score: {evaluation.get("score")}/100')
+                else:
+                    messages.info(request, f'Your answer needs improvement. Score: {evaluation.get("score")}/100')
+            else:
+                messages.error(request, 'Could not evaluate: question not found.')
+    
+    return render(request, 'interviews/step_analytical_strategy.html', {
+        'session': session,
+        'analytical_strategy_round': analytical_strategy_round,
+        'question': analytical_strategy_round.get_question(),
     })
 
 
@@ -322,24 +494,24 @@ def coding_round_q2_view(request):
     if created or not coding_round.generated_questions:
         rag_service = RAGService()
         
-        # Retrieve all coding chunks for this company
-        chunks = rag_service.retrieve_coding_question(session.company)
+        # Retrieve one random coding document for this company
+        document_text = rag_service.retrieve_coding_question(session.company)
         
-        if not chunks:
+        if not document_text:
             # Fallback question if no content available
-            chunks = ["Write a function to implement a least recently used (LRU) cache with get and put operations."]
+            document_text = "Write a function to implement a least recently used (LRU) cache with get and put operations."
             messages.warning(request, 'Using fallback question. Please ensure company documents are uploaded.')
         
         # Let Gemini select best question and generate similar ones
         analyzer = GeminiAnalyzer()
         generated_questions = analyzer.select_and_generate_questions(
-            chunks=chunks,
+            document_text=document_text,
             company_name=session.get_company_display(),
             num_questions=2
         )
         
         # Save to coding round
-        coding_round.base_question = f"Generated from {len(chunks)} company-specific questions"
+        coding_round.base_question = f"Generated from company-specific document"
         coding_round.generated_questions = generated_questions
         coding_round.selected_question_index = 0  # Show first question
         coding_round.save()
@@ -422,23 +594,23 @@ def system_design_view(request):
     if created or not system_design_round.generated_question:
         rag_service = RAGService()
         
-        # Retrieve all system design chunks for this company
-        chunks = rag_service.retrieve_system_design_question(session.company)
+        # Retrieve one random system design document for this company
+        document_text = rag_service.retrieve_system_design_question(session.company)
         
-        if not chunks:
+        if not document_text:
             # Fallback question if no content available
-            chunks = ["Design a URL shortening service like bit.ly. The system should support creating short URLs, redirecting to original URLs, and tracking click analytics."]
+            document_text = "Design a URL shortening service like bit.ly. The system should support creating short URLs, redirecting to original URLs, and tracking click analytics."
             messages.warning(request, 'Using fallback question. Please ensure company documents are uploaded.')
         
         # Let Gemini select best question and generate a similar one
         analyzer = GeminiAnalyzer()
         generated_question = analyzer.select_and_generate_system_design_question(
-            chunks=chunks,
+            document_text=document_text,
             company_name=session.get_company_display()
         )
         
         # Save to system design round
-        system_design_round.base_question = f"Generated from {len(chunks)} company-specific questions"
+        system_design_round.base_question = f"Generated from company-specific document"
         system_design_round.generated_question = generated_question
         system_design_round.save()
         
@@ -491,6 +663,30 @@ def system_design_view(request):
 
 
 @login_required
+def behavioral_resume_live_view(request):
+    """
+    View for behavioral + resume live interview.
+    Audio-to-audio interview using Gemini Live API.
+    """
+    # Get active session
+    session = get_object_or_404(
+        InterviewSession,
+        user=request.user,
+        status='active'
+    )
+    
+    # Check if already completed
+    if session.behavioral_resume_completed:
+        messages.info(request, 'Behavioral interview already completed. View your summary below.')
+    
+    return render(request, 'interviews/step_behavioral_resume_live.html', {
+        'session': session,
+        'ws_scheme': 'wss' if request.is_secure() else 'ws',
+        'ws_host': request.get_host()
+    })
+
+
+@login_required
 def final_analysis_view(request):
     """
     Final analysis view showing overall readiness and comprehensive feedback.
@@ -505,60 +701,124 @@ def final_analysis_view(request):
         status='active'
     )
     
-    # Ensure user is SWE type (for now)
-    if request.user.user_type != 'swe_ng':
-        messages.error(request, 'This step is only available for Software Engineer role.')
-        return redirect('interview_analysis')
-    
-    # Check if all sections are completed
-    if not (session.coding_q1_completed and session.coding_q2_completed and session.system_design_completed):
-        messages.warning(request, 'Please complete all sections before viewing final analysis.')
+    # Role-specific completion checks
+    if request.user.user_type == 'swe_ng':
+        # Check if all SWE sections are completed
+        if not (session.coding_q1_completed and session.coding_q2_completed and session.system_design_completed):
+            messages.warning(request, 'Please complete all sections before viewing final analysis.')
+            
+            # Redirect to the next incomplete section
+            if not session.coding_q1_completed:
+                return redirect('coding_round')
+            elif not session.coding_q2_completed:
+                return redirect('coding_round_q2')
+            elif not session.system_design_completed:
+                return redirect('system_design')
         
-        # Redirect to the next incomplete section
-        if not session.coding_q1_completed:
-            return redirect('coding_round')
-        elif not session.coding_q2_completed:
-            return redirect('coding_round_q2')
-        elif not session.system_design_completed:
-            return redirect('system_design')
-    
-    # Get all rounds
-    coding_q1 = CodingRound.objects.filter(session=session, question_number=1).first()
-    coding_q2 = CodingRound.objects.filter(session=session, question_number=2).first()
-    system_design = SystemDesignRound.objects.filter(session=session).first()
-    
-    # If final analysis doesn't exist yet, generate it
-    if not session.final_analysis or not session.overall_readiness_score:
-        # Prepare session data for analysis
-        session_data = {
-            'company': session.get_company_display(),
-            'resume_score': session.resume_fit_score or 0,
-            'resume_analysis': session.resume_analysis or 'N/A',
-            'coding_q1_score': coding_q1.evaluation_result.get('score', 0) if coding_q1 and coding_q1.evaluation_result else 0,
-            'coding_q1_correct': 'Yes' if coding_q1 and coding_q1.evaluation_result and coding_q1.evaluation_result.get('is_correct') else 'No',
-            'coding_q2_score': coding_q2.evaluation_result.get('score', 0) if coding_q2 and coding_q2.evaluation_result else 0,
-            'coding_q2_correct': 'Yes' if coding_q2 and coding_q2.evaluation_result and coding_q2.evaluation_result.get('is_correct') else 'No',
-            'system_design_score': system_design.evaluation_result.get('score', 0) if system_design and system_design.evaluation_result else 0,
-            'system_design_quality': 'Good' if system_design and system_design.evaluation_result and system_design.evaluation_result.get('is_correct') else 'Needs Work',
+        # Get all rounds for SWE
+        coding_q1 = CodingRound.objects.filter(session=session, question_number=1).first()
+        coding_q2 = CodingRound.objects.filter(session=session, question_number=2).first()
+        system_design = SystemDesignRound.objects.filter(session=session).first()
+        
+        # If final analysis doesn't exist yet, generate it
+        if not session.final_analysis or not session.overall_readiness_score:
+            # Prepare session data for analysis
+            session_data = {
+                'company': session.get_company_display(),
+                'resume_score': session.resume_fit_score or 0,
+                'resume_analysis': session.resume_analysis or 'N/A',
+                'coding_q1_score': coding_q1.evaluation_result.get('score', 0) if coding_q1 and coding_q1.evaluation_result else 0,
+                'coding_q1_correct': 'Yes' if coding_q1 and coding_q1.evaluation_result and coding_q1.evaluation_result.get('is_correct') else 'No',
+                'coding_q2_score': coding_q2.evaluation_result.get('score', 0) if coding_q2 and coding_q2.evaluation_result else 0,
+                'coding_q2_correct': 'Yes' if coding_q2 and coding_q2.evaluation_result and coding_q2.evaluation_result.get('is_correct') else 'No',
+                'system_design_score': system_design.evaluation_result.get('score', 0) if system_design and system_design.evaluation_result else 0,
+                'system_design_quality': 'Good' if system_design and system_design.evaluation_result and system_design.evaluation_result.get('is_correct') else 'Needs Work',
+                'behavioral_resume_summary': session.behavioral_resume_summary or 'Not completed',
+                'behavioral_resume_completed': session.behavioral_resume_completed,
+            }
+            
+            # Generate comprehensive analysis
+            analyzer = GeminiAnalyzer()
+            final_result = analyzer.generate_final_analysis(session_data)
+            
+            # Save to session
+            session.overall_readiness_score = final_result['overall_score']
+            session.final_analysis = final_result['analysis']
+            session.save()
+            
+            messages.success(request, 'Final analysis generated successfully!')
+        
+        # Prepare context data
+        context = {
+            'session': session,
+            'coding_q1': coding_q1,
+            'coding_q2': coding_q2,
+            'system_design': system_design,
         }
-        
-        # Generate comprehensive analysis
-        analyzer = GeminiAnalyzer()
-        final_result = analyzer.generate_final_analysis(session_data)
-        
-        # Save to session
-        session.overall_readiness_score = final_result['overall_score']
-        session.final_analysis = final_result['analysis']
-        session.save()
-        
-        messages.success(request, 'Final analysis generated successfully!')
     
-    # Prepare context data
-    context = {
-        'session': session,
-        'coding_q1': coding_q1,
-        'coding_q2': coding_q2,
-        'system_design': system_design,
-    }
+    elif request.user.user_type == 'pm_ng':
+        # Check if required PM sections are completed (behavioral is optional)
+        from .models import ProductSenseRound, AnalyticalStrategyRound
+        
+        if not (session.product_sense_completed and session.analytical_strategy_completed):
+            messages.warning(request, 'Please complete Product Sense and Analytical + Strategy sections before viewing final analysis.')
+            
+            # Redirect to the next incomplete section
+            if not session.product_sense_completed:
+                return redirect('product_sense')
+            elif not session.analytical_strategy_completed:
+                return redirect('analytical_strategy')
+        
+        # Get all rounds for PM
+        product_sense = ProductSenseRound.objects.filter(session=session).first()
+        analytical_strategy = AnalyticalStrategyRound.objects.filter(session=session).first()
+        
+        # If final analysis doesn't exist yet, generate it
+        if not session.final_analysis or not session.overall_readiness_score:
+            # Prepare session data for PM analysis
+            session_data = {
+                'company': session.get_company_display(),
+                'role': 'Product Manager',
+                'resume_score': session.resume_fit_score or 0,
+                'resume_analysis': session.resume_analysis or 'N/A',
+                'product_sense_score': product_sense.evaluation_result.get('score', 0) if product_sense and product_sense.evaluation_result else 0,
+                'product_sense_quality': 'Good' if product_sense and product_sense.evaluation_result and product_sense.evaluation_result.get('is_good') else 'Needs Work',
+                'analytical_strategy_score': analytical_strategy.evaluation_result.get('score', 0) if analytical_strategy and analytical_strategy.evaluation_result else 0,
+                'analytical_strategy_quality': 'Good' if analytical_strategy and analytical_strategy.evaluation_result and analytical_strategy.evaluation_result.get('is_good') else 'Needs Work',
+                'behavioral_resume_summary': session.behavioral_resume_summary or 'Not completed',
+            }
+            
+            # Calculate overall score as simple average of numeric scores
+            scores = [
+                session_data['resume_score'],
+                session_data['product_sense_score'],
+                session_data['analytical_strategy_score']
+            ]
+            overall_score = sum(scores) // len(scores) if scores else 0
+            
+            # Generate comprehensive PM analysis
+            analyzer = GeminiAnalyzer()
+            final_result = analyzer.generate_final_analysis_pm(session_data)
+            
+            # Save to session
+            session.overall_readiness_score = final_result.get('overall_score', overall_score)
+            session.final_analysis = final_result['analysis']
+            session.save()
+            
+            messages.success(request, 'Final analysis generated successfully!')
+        
+        # Prepare context data
+        context = {
+            'session': session,
+            'product_sense': product_sense,
+            'analytical_strategy': analytical_strategy,
+            'coding_q1': None,
+            'coding_q2': None,
+            'system_design': None,
+        }
+    
+    else:
+        messages.error(request, 'Invalid user type.')
+        return redirect('dashboard')
     
     return render(request, 'interviews/step_final_analysis.html', context)

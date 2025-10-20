@@ -1,0 +1,897 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Behavioral + Resume Live Interview - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    .interview-container {
+        max-width: 900px;
+        margin: 100px auto 50px;
+        padding: 20px;
+    }
+    
+    .interview-card {
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+    }
+    
+    .status-indicator {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+    }
+    
+    .status-disconnected {
+        background: #ef4444;
+    }
+    
+    .status-connecting {
+        background: #f59e0b;
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    .status-ready {
+        background: #10b981;
+    }
+    
+    .status-active {
+        background: #3b82f6;
+        animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.5;
+        }
+    }
+    
+    .mic-button {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: none;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: white;
+        font-size: 2.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 30px auto;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    
+    .mic-button:hover:not(:disabled) {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    }
+    
+    .mic-button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    
+    .mic-button.active {
+        background: linear-gradient(135deg, #ef4444, #dc2626);
+        animation: pulse-mic 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse-mic {
+        0%, 100% {
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+        }
+        50% {
+            box-shadow: 0 8px 24px rgba(239, 68, 68, 0.8);
+        }
+    }
+    
+    .question-counter {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin: 20px 0;
+        color: #667eea;
+    }
+    
+    .audio-visualizer {
+        width: 100%;
+        height: 120px;
+        background: #f8fafc;
+        border-radius: 8px;
+        margin: 20px 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+        border: 2px solid #e2e8f0;
+    }
+    
+    .audio-level-meter {
+        width: 80%;
+        height: 30px;
+        background: #e2e8f0;
+        border-radius: 15px;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 10px;
+    }
+    
+    .audio-level-bar {
+        height: 100%;
+        background: linear-gradient(90deg, #10b981, #3b82f6, #667eea);
+        width: 0%;
+        transition: width 0.1s ease-out;
+        border-radius: 15px;
+    }
+    
+    .audio-level-text {
+        text-align: center;
+        font-size: 0.9rem;
+        color: #64748b;
+        font-weight: 500;
+    }
+    
+    .waveform {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+        height: 50px;
+    }
+    
+    .wave-bar {
+        width: 4px;
+        background: linear-gradient(180deg, #667eea, #764ba2);
+        border-radius: 2px;
+        animation: wave 1s ease-in-out infinite;
+    }
+    
+    .wave-bar:nth-child(1) { animation-delay: 0s; height: 20%; }
+    .wave-bar:nth-child(2) { animation-delay: 0.1s; height: 40%; }
+    .wave-bar:nth-child(3) { animation-delay: 0.2s; height: 60%; }
+    .wave-bar:nth-child(4) { animation-delay: 0.3s; height: 80%; }
+    .wave-bar:nth-child(5) { animation-delay: 0.4s; height: 60%; }
+    .wave-bar:nth-child(6) { animation-delay: 0.5s; height: 40%; }
+    .wave-bar:nth-child(7) { animation-delay: 0.6s; height: 20%; }
+    
+    @keyframes wave {
+        0%, 100% { height: 20%; }
+        50% { height: 80%; }
+    }
+    
+    .summary-section {
+        margin-top: 30px;
+        padding: 20px;
+        background: #f8fafc;
+        border-radius: 8px;
+        white-space: pre-wrap;
+    }
+    
+    .qa-item {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 8px;
+        border-left: 4px solid #667eea;
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    .qa-question {
+        font-weight: 600;
+        color: #667eea;
+        margin-bottom: 8px;
+    }
+    
+    .qa-answer {
+        color: #1f2937;
+        font-size: 0.95rem;
+        line-height: 1.6;
+        padding-left: 10px;
+        border-left: 2px solid #e2e8f0;
+    }
+    
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .control-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    
+    .alert-info {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: 8px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="interview-container">
+    <div class="interview-card">
+        <h1 class="text-center mb-4">
+            <i class="fas fa-microphone-alt me-2" style="color: var(--primary-color);"></i>
+            Behavioral + Resume Live Interview
+        </h1>
+        
+        <!-- Company Badge -->
+        <div class="text-center mb-4">
+            <span class="badge bg-primary" style="font-size: 1rem; padding: 8px 16px;">
+                {{ session.get_company_display }}
+            </span>
+        </div>
+        
+        <!-- Messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        
+        <!-- Already Completed -->
+        {% if session.behavioral_resume_completed %}
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle me-2"></i>
+                You have already completed the behavioral interview!
+            </div>
+            
+            {% if session.behavioral_resume_summary %}
+                <div class="summary-section">
+                    <h4 class="mb-3">Your Interview Summary</h4>
+                    <p>{{ session.behavioral_resume_summary }}</p>
+                </div>
+            {% endif %}
+            
+            <div class="text-center mt-4">
+                <a href="{% url 'final_analysis' %}" class="btn btn-modern btn-primary-modern" style="padding: 16px 24px; font-size: 16px; font-weight: 600; border-radius: 12px;">
+                    <i class="fas fa-arrow-right me-2"></i>
+                    Next: Final Analysis
+                </a>
+                {% if user.user_type == 'pm_ng' %}
+                    <a href="{% url 'analytical_strategy' %}" class="btn btn-modern btn-outline-secondary ms-2" style="padding: 16px 24px; font-size: 16px; font-weight: 600; border-radius: 12px;">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back to Analytical + Strategy
+                    </a>
+                {% else %}
+                    <a href="{% url 'system_design' %}" class="btn btn-modern btn-outline-secondary ms-2" style="padding: 16px 24px; font-size: 16px; font-weight: 600; border-radius: 12px;">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back to System Design
+                    </a>
+                {% endif %}
+            </div>
+        {% else %}
+            <!-- Instructions -->
+            <div class="alert alert-info mb-4">
+                <h5><i class="fas fa-info-circle me-2"></i>How This Works</h5>
+                <ul class="mb-0">
+                    <li><strong>Start:</strong> Click "Start Interview" button</li>
+                    <li><strong>Listen:</strong> Each question will be read aloud to you</li>
+                    <li><strong>Answer:</strong> You can either type your answer OR speak it (live transcription will appear)</li>
+                    <li><strong>Speaking:</strong> Click "Start Speaking" to begin voice input, click "Stop Speaking" when done</li>
+                    <li><strong>Editing:</strong> You can edit the transcribed text before submitting</li>
+                    <li><strong>Submit:</strong> Click "Submit Answer" to send your response and move to the next question</li>
+                    <li><strong>Complete:</strong> Answer all 2 questions to receive your comprehensive summary</li>
+                </ul>
+                <div class="mt-3 p-2" style="background: rgba(59, 130, 246, 0.1); border-left: 3px solid #3b82f6; border-radius: 4px;">
+                    <strong><i class="fas fa-lightbulb me-2"></i>Tips:</strong>
+                    <ul class="mb-0 mt-2" style="font-size: 0.95rem;">
+                        <li>Use Chrome for best speech recognition support (other browsers may require typing)</li>
+                        <li>Speak clearly and naturally when using voice input</li>
+                        <li>You can combine typing and speaking - edit the text as needed</li>
+                        <li>Press Ctrl+Enter to quickly submit your answer</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Status Display -->
+            <div class="text-center mb-3">
+                <span class="status-indicator status-disconnected" id="statusIndicator"></span>
+                <span id="statusText">Disconnected</span>
+            </div>
+            
+            <!-- Question Counter -->
+            <div class="question-counter">
+                Question <span id="questionCount">0</span> / <span id="maxQuestions">2</span>
+            </div>
+            
+            <!-- Current Question Display -->
+            <div class="alert alert-primary" id="currentQuestionDisplay" style="display: none; margin: 20px 0;">
+                <h6 class="mb-2"><i class="fas fa-question-circle me-2"></i>Current Question:</h6>
+                <p id="currentQuestionText" style="margin: 0; font-size: 1.1rem;"></p>
+            </div>
+            
+            <!-- Conversation History -->
+            <div id="conversationHistory" style="margin: 20px 0;"></div>
+            
+            <!-- Answer Input Section -->
+            <div id="answerInputSection" style="display: none; margin: 20px 0;">
+                <div style="margin-bottom: 10px;">
+                    <label for="answerTextarea" style="font-weight: 600; color: #1f2937; display: block; margin-bottom: 8px;">
+                        <i class="fas fa-comment-dots me-2"></i>Your Answer:
+                    </label>
+                    <textarea 
+                        id="answerTextarea" 
+                        class="form-control" 
+                        rows="6" 
+                        placeholder="Type your answer here, or use 'Start Speaking' to dictate..."
+                        style="font-size: 1rem; border: 2px solid #e2e8f0; border-radius: 8px; resize: vertical;"
+                    ></textarea>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.9rem; color: #64748b;">
+                        <span id="charCount">0 characters</span>
+                        <span id="speechStatus" style="display: none; color: #ef4444;">
+                            <i class="fas fa-circle" style="font-size: 0.5rem; animation: pulse 1s infinite;"></i>
+                            Listening...
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Speech Control Buttons -->
+                <div style="display: flex; gap: 10px; justify-content: center; margin: 15px 0;">
+                    <button class="btn btn-outline-primary" id="startSpeechBtn" title="Start voice input">
+                        <i class="fas fa-microphone me-2"></i>Start Speaking
+                    </button>
+                    <button class="btn btn-outline-danger" id="stopSpeechBtn" style="display: none;" title="Stop voice input">
+                        <i class="fas fa-stop me-2"></i>Stop Speaking
+                    </button>
+                    <button class="btn btn-modern btn-primary-modern" id="submitAnswerBtn" title="Submit your answer (Ctrl+Enter)">
+                        <i class="fas fa-paper-plane me-2"></i>Submit Answer
+                    </button>
+                </div>
+                
+                <!-- Speech Recognition Status -->
+                <div id="speechNotSupported" style="display: none; text-align: center; padding: 10px; background: #fef3c7; border: 1px solid #fbbf24; border-radius: 6px; margin-top: 10px;">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <small>Speech recognition is not supported in this browser. Please type your answer.</small>
+                </div>
+            </div>
+            
+            <!-- Control Buttons -->
+            <div class="control-buttons">
+                <button class="btn btn-modern btn-primary-modern" id="startButton">
+                    <i class="fas fa-play me-2"></i>Start Interview
+                </button>
+                <button class="btn btn-modern btn-outline-secondary" id="endButton" style="display: none;">
+                    <i class="fas fa-stop me-2"></i>End Interview
+                </button>
+            </div>
+            
+            <!-- Summary Section (hidden initially) -->
+            <div class="summary-section" id="summarySection" style="display: none;">
+                <h4 class="mb-3">Interview Summary</h4>
+                <p id="summaryText"></p>
+                <div class="text-center mt-3">
+                    <a href="{% url 'final_analysis' %}" class="btn btn-modern btn-primary-modern">
+                        <i class="fas fa-arrow-right me-2"></i>
+                        Continue to Final Analysis
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Navigation Buttons (shown at bottom) -->
+            <div class="text-center mt-4" style="padding-top: 20px; border-top: 2px solid #e2e8f0;">
+                {% if user.user_type == 'pm_ng' %}
+                    <a href="{% url 'analytical_strategy' %}" class="btn btn-modern btn-outline-secondary" style="padding: 16px 24px; font-size: 16px; font-weight: 600; border-radius: 12px;">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back to Analytical + Strategy
+                    </a>
+                {% else %}
+                    <a href="{% url 'system_design' %}" class="btn btn-modern btn-outline-secondary" style="padding: 16px 24px; font-size: 16px; font-weight: 600; border-radius: 12px;">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back to System Design
+                    </a>
+                {% endif %}
+                <a href="{% url 'final_analysis' %}" class="btn btn-modern btn-primary-modern ms-2" style="padding: 16px 24px; font-size: 16px; font-weight: 600; border-radius: 12px;">
+                    <i class="fas fa-arrow-right me-2"></i>
+                    Skip to Final Analysis
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{% if not session.behavioral_resume_completed %}
+<script>
+    // WebSocket connection
+    let ws = null;
+    let questionCount = 0;
+    const maxQuestions = 2;  // Reduced for testing
+    let currentQuestionText = '';
+    
+    // Speech Recognition (Web Speech API)
+    let recognition = null;
+    let isListening = false;
+    let finalTranscript = '';
+    let interimTranscript = '';
+    
+    // Elements
+    const statusIndicator = document.getElementById('statusIndicator');
+    const statusText = document.getElementById('statusText');
+    const startButton = document.getElementById('startButton');
+    const endButton = document.getElementById('endButton');
+    const questionCountEl = document.getElementById('questionCount');
+    const summarySection = document.getElementById('summarySection');
+    const summaryText = document.getElementById('summaryText');
+    const answerInputSection = document.getElementById('answerInputSection');
+    const answerTextarea = document.getElementById('answerTextarea');
+    const charCount = document.getElementById('charCount');
+    const startSpeechBtn = document.getElementById('startSpeechBtn');
+    const stopSpeechBtn = document.getElementById('stopSpeechBtn');
+    const submitAnswerBtn = document.getElementById('submitAnswerBtn');
+    const speechStatus = document.getElementById('speechStatus');
+    const speechNotSupported = document.getElementById('speechNotSupported');
+    
+    // Initialize Web Speech API
+    function initializeSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            console.warn('Speech recognition not supported');
+            speechNotSupported.style.display = 'block';
+            startSpeechBtn.disabled = true;
+            return false;
+        }
+        
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            console.log('Speech recognition started');
+            isListening = true;
+            startSpeechBtn.style.display = 'none';
+            stopSpeechBtn.style.display = 'inline-block';
+            speechStatus.style.display = 'inline';
+        };
+        
+        recognition.onresult = function(event) {
+            interimTranscript = '';
+            
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript + ' ';
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            
+            // Update textarea with live transcription
+            answerTextarea.value = finalTranscript + interimTranscript;
+            updateCharCount();
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            if (event.error === 'no-speech') {
+                // Ignore no-speech errors, just continue
+                return;
+            }
+            stopSpeechRecognition();
+        };
+        
+        recognition.onend = function() {
+            console.log('Speech recognition ended');
+            if (isListening) {
+                // Auto-restart if still in listening mode (handles timeout)
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.log('Could not restart recognition:', e);
+                    stopSpeechRecognition();
+                }
+            }
+        };
+        
+        return true;
+    }
+    
+    // Start speech recognition
+    function startSpeechRecognition() {
+        if (!recognition) {
+            alert('Speech recognition is not available. Please type your answer.');
+            return;
+        }
+        
+        finalTranscript = answerTextarea.value; // Preserve any existing text
+        interimTranscript = '';
+        
+        try {
+            recognition.start();
+        } catch (e) {
+            console.error('Error starting recognition:', e);
+        }
+    }
+    
+    // Stop speech recognition
+    function stopSpeechRecognition() {
+        if (recognition && isListening) {
+            isListening = false;
+            recognition.stop();
+            startSpeechBtn.style.display = 'inline-block';
+            stopSpeechBtn.style.display = 'none';
+            speechStatus.style.display = 'none';
+            
+            // Clean up final transcript
+            answerTextarea.value = finalTranscript.trim();
+            updateCharCount();
+        }
+    }
+    
+    // Update character count
+    function updateCharCount() {
+        const count = answerTextarea.value.length;
+        charCount.textContent = count + ' character' + (count !== 1 ? 's' : '');
+    }
+    
+    // Update status display
+    function updateStatus(status, text) {
+        statusIndicator.className = 'status-indicator status-' + status;
+        statusText.textContent = text;
+    }
+    
+    // Update question count
+    function updateQuestionCount(count) {
+        questionCount = count;
+        questionCountEl.textContent = count;
+    }
+    
+    // Display current question and show answer input
+    function displayQuestion(questionText) {
+        currentQuestionText = questionText;
+        const questionDisplay = document.getElementById('currentQuestionDisplay');
+        const questionTextEl = document.getElementById('currentQuestionText');
+        questionTextEl.textContent = questionText;
+        questionDisplay.style.display = 'block';
+        
+        // Clear and show answer input section
+        answerTextarea.value = '';
+        finalTranscript = '';
+        interimTranscript = '';
+        updateCharCount();
+        answerInputSection.style.display = 'block';
+        submitAnswerBtn.disabled = false;
+        
+        // Auto-focus textarea after a short delay
+        setTimeout(() => answerTextarea.focus(), 100);
+    }
+    
+    // Add Q&A to conversation history
+    function addToConversationHistory(questionNumber, answerText) {
+        const historyContainer = document.getElementById('conversationHistory');
+        
+        const qaItem = document.createElement('div');
+        qaItem.className = 'qa-item';
+        
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'qa-question';
+        questionDiv.innerHTML = `<i class="fas fa-question-circle me-2"></i>Q${questionNumber}: ${currentQuestionText}`;
+        
+        const answerDiv = document.createElement('div');
+        answerDiv.className = 'qa-answer';
+        answerDiv.innerHTML = `<i class="fas fa-user me-2"></i><strong>Your Answer:</strong> ${answerText}`;
+        
+        qaItem.appendChild(questionDiv);
+        qaItem.appendChild(answerDiv);
+        historyContainer.appendChild(qaItem);
+        
+        // Scroll to the newly added item
+        qaItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    
+    // Connect to WebSocket
+    function connectWebSocket() {
+        const wsScheme = '{{ ws_scheme }}';
+        const wsHost = '{{ ws_host }}';
+        const wsUrl = `${wsScheme}://${wsHost}/ws/interview/behavioral-resume/`;
+        
+        updateStatus('connecting', 'Connecting...');
+        
+        ws = new WebSocket(wsUrl);
+        
+        ws.onopen = function() {
+            console.log('WebSocket connected');
+            updateStatus('ready', 'Ready');
+        };
+        
+        ws.onmessage = function(event) {
+            try {
+                const data = JSON.parse(event.data);
+                handleWebSocketMessage(data);
+            } catch (e) {
+                console.error('Error parsing WebSocket message:', e);
+            }
+        };
+        
+        ws.onerror = function(error) {
+            console.error('WebSocket error:', error);
+            updateStatus('disconnected', 'Connection Error');
+            alert('WebSocket connection error. Please refresh and try again.');
+        };
+        
+        ws.onclose = function() {
+            console.log('WebSocket closed');
+            updateStatus('disconnected', 'Disconnected');
+            micButton.disabled = true;
+            startButton.disabled = false;
+        };
+    }
+    
+    // Handle WebSocket messages
+    function handleWebSocketMessage(data) {
+        console.log('Received:', data);
+        
+        switch(data.type) {
+            case 'ready':
+                updateStatus('ready', 'Ready to Start');
+                startButton.disabled = false;
+                break;
+                
+            case 'started':
+                updateStatus('active', 'Interview Active');
+                startButton.style.display = 'none';
+                endButton.style.display = 'inline-block';
+                break;
+                
+            case 'question':
+                // New question received
+                updateQuestionCount(data.question_number);
+                displayQuestion(data.question);
+                speakQuestion(data.question);
+                break;
+                
+            case 'answer_received':
+                // Answer was received successfully
+                updateQuestionCount(data.question_count);
+                // Add to conversation history
+                addToConversationHistory(data.question_count, data.answer);
+                // Hide answer input and current question
+                answerInputSection.style.display = 'none';
+                document.getElementById('currentQuestionDisplay').style.display = 'none';
+                // Stop speech recognition if active
+                if (isListening) {
+                    stopSpeechRecognition();
+                }
+                break;
+                
+            case 'summary':
+                showSummary(data.summary);
+                break;
+                
+            case 'ended':
+                updateStatus('ready', 'Interview Ended');
+                if (isListening) {
+                    stopSpeechRecognition();
+                }
+                break;
+                
+            case 'error':
+                alert('Error: ' + data.message);
+                break;
+                
+            case 'pong':
+                // Keep-alive response
+                break;
+        }
+    }
+    
+    // Speak question using Web Speech API with natural female voice
+    function speakQuestion(questionText) {
+        if ('speechSynthesis' in window) {
+            // Stop any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(questionText);
+            
+            // Get available voices and select a natural female voice
+            const voices = window.speechSynthesis.getVoices();
+            
+            if (voices.length === 0) {
+                // Voices not loaded yet, wait for them
+                window.speechSynthesis.onvoiceschanged = function() {
+                    selectVoiceAndSpeak(utterance, questionText);
+                };
+            } else {
+                selectVoiceAndSpeak(utterance, questionText);
+            }
+        } else {
+            console.log('Speech synthesis not supported');
+        }
+    }
+    
+    // Helper function to select natural female voice and speak
+    function selectVoiceAndSpeak(utterance, questionText) {
+        const voices = window.speechSynthesis.getVoices();
+        
+        // Prioritize natural-sounding female voices (in order of preference)
+        const preferredFemaleVoices = [
+            'Google US English Female',           // Chrome - very natural
+            'Microsoft Aria Online (Natural) - English (United States)',  // Edge - natural
+            'Samantha',                            // macOS - natural female
+            'Microsoft Zira Desktop - English (United States)',  // Windows
+            'Google UK English Female',            // Chrome UK
+            'Karen',                               // macOS alternative
+            'Victoria',                            // macOS alternative
+        ];
+        
+        let selectedVoice = null;
+        
+        // Try to find a preferred female voice
+        for (let voiceName of preferredFemaleVoices) {
+            selectedVoice = voices.find(voice => voice.name.includes(voiceName));
+            if (selectedVoice) {
+                console.log('Selected voice:', selectedVoice.name);
+                break;
+            }
+        }
+        
+        // Fallback: find any English female voice
+        if (!selectedVoice) {
+            selectedVoice = voices.find(voice => 
+                voice.lang.startsWith('en-') && 
+                (voice.name.toLowerCase().includes('female') || 
+                 voice.name.toLowerCase().includes('woman') ||
+                 voice.name.toLowerCase().includes('zira') ||
+                 voice.name.toLowerCase().includes('aria'))
+            );
+        }
+        
+        // Use the selected voice
+        if (selectedVoice) {
+            utterance.voice = selectedVoice;
+        }
+        
+        // Voice settings for natural, clear speech
+        utterance.rate = 0.92;     // Slightly slower for warmth and clarity
+        utterance.pitch = 1.05;    // Slightly higher for feminine tone
+        utterance.volume = 1.0;    // Full volume
+        
+        // When speech ends, the answer input section is already visible
+        utterance.onend = function() {
+            console.log('Question finished speaking');
+        };
+        
+        window.speechSynthesis.speak(utterance);
+    }
+    
+    // Start interview
+    startButton.addEventListener('click', function() {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            // Initialize speech recognition
+            initializeSpeechRecognition();
+            
+            // Send start message
+            ws.send(JSON.stringify({ type: 'start' }));
+        }
+    });
+    
+    // End interview
+    endButton.addEventListener('click', function() {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'end' }));
+        }
+    });
+    
+    // Start speech recognition button
+    startSpeechBtn.addEventListener('click', function() {
+        startSpeechRecognition();
+    });
+    
+    // Stop speech recognition button
+    stopSpeechBtn.addEventListener('click', function() {
+        stopSpeechRecognition();
+    });
+    
+    // Submit answer button
+    submitAnswerBtn.addEventListener('click', function() {
+        submitAnswer();
+    });
+    
+    // Submit answer function
+    function submitAnswer() {
+        const answerText = answerTextarea.value.trim();
+        
+        if (!answerText) {
+            alert('Please provide an answer before submitting.');
+            return;
+        }
+        
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            // Stop speech recognition if active
+            if (isListening) {
+                stopSpeechRecognition();
+            }
+            
+            // Disable submit button to prevent double submission
+            submitAnswerBtn.disabled = true;
+            
+            // Send answer as text
+            ws.send(JSON.stringify({ 
+                type: 'answer', 
+                text: answerText 
+            }));
+            
+            console.log('Answer submitted:', answerText.substring(0, 50) + '...');
+        } else {
+            alert('Connection lost. Please refresh the page.');
+        }
+    }
+    
+    // Character count update on input
+    answerTextarea.addEventListener('input', function() {
+        updateCharCount();
+    });
+    
+    // Ctrl+Enter to submit
+    answerTextarea.addEventListener('keydown', function(event) {
+        if (event.ctrlKey && event.key === 'Enter') {
+            event.preventDefault();
+            submitAnswer();
+        }
+    });
+    
+    // Show summary
+    function showSummary(summary) {
+        summaryText.textContent = summary;
+        summarySection.style.display = 'block';
+        answerInputSection.style.display = 'none';
+        endButton.style.display = 'none';
+        
+        // Scroll to summary
+        summarySection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        // Stop speech recognition
+        if (recognition && isListening) {
+            recognition.stop();
+        }
+        
+        // Close WebSocket
+        if (ws) {
+            ws.close();
+        }
+    });
+    
+    // Initialize connection on page load
+    connectWebSocket();
+    
+    // Keep-alive ping every 30 seconds
+    setInterval(function() {
+        if (ws && ws.readyState === WebSocket.OPEN) {
+            ws.send(JSON.stringify({ type: 'ping' }));
+        }
+    }, 30000);
+</script>
+{% endif %}
+{% endblock %}
+
+

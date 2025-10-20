@@ -32,10 +32,18 @@ class InterviewSession(models.Model):
     resume_analysis = models.TextField(null=True, blank=True, help_text='AI-generated analysis')
     resume_suggestions = models.TextField(null=True, blank=True, help_text='AI-generated suggestions')
     
-    # Section Completion Tracking
+    # Section Completion Tracking (SWE)
     coding_q1_completed = models.BooleanField(default=False, help_text='Coding Question 1 completed')
     coding_q2_completed = models.BooleanField(default=False, help_text='Coding Question 2 completed')
     system_design_completed = models.BooleanField(default=False, help_text='System Design completed')
+    behavioral_resume_completed = models.BooleanField(default=False, help_text='Behavioral + Resume live interview completed')
+    
+    # Section Completion Tracking (PM)
+    product_sense_completed = models.BooleanField(default=False, help_text='Product Sense completed')
+    analytical_strategy_completed = models.BooleanField(default=False, help_text='Analytical + Strategy completed')
+    
+    # Behavioral + Resume Live Interview
+    behavioral_resume_summary = models.TextField(null=True, blank=True, help_text='Final summary from live behavioral interview')
     
     # Final Analysis
     overall_readiness_score = models.IntegerField(null=True, blank=True, help_text='Overall readiness score 0-100')
@@ -168,6 +176,98 @@ class SystemDesignRound(models.Model):
     
     def __str__(self):
         return f"System Design Round - {self.session.user.username} - {self.session.get_company_display()}"
+    
+    def get_question(self):
+        """Get the generated question"""
+        if self.generated_question:
+            return self.generated_question.get('question', '')
+        return None
+    
+    def is_submitted(self):
+        """Check if user has submitted answer"""
+        return bool(self.user_answer and self.user_answer.strip())
+    
+    def is_evaluated(self):
+        """Check if submission has been evaluated"""
+        return bool(self.evaluation_result)
+
+
+class ProductSenseRound(models.Model):
+    """
+    Stores product sense round data for PM interview sessions.
+    Text-based product case and user's answer.
+    """
+    session = models.OneToOneField(
+        InterviewSession,
+        on_delete=models.CASCADE,
+        related_name='product_sense_round'
+    )
+    base_case = models.TextField(help_text='Base case retrieved from RAG')
+    generated_case = models.JSONField(
+        null=True,
+        blank=True,
+        help_text='Generated product sense case with evaluation criteria'
+    )
+    user_answer = models.TextField(blank=True, help_text='User submitted answer')
+    evaluation_result = models.JSONField(
+        null=True,
+        blank=True,
+        help_text='AI evaluation results'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Product Sense Round - {self.session.user.username} - {self.session.get_company_display()}"
+    
+    def get_case(self):
+        """Get the generated case"""
+        if self.generated_case:
+            return self.generated_case.get('case', '')
+        return None
+    
+    def is_submitted(self):
+        """Check if user has submitted answer"""
+        return bool(self.user_answer and self.user_answer.strip())
+    
+    def is_evaluated(self):
+        """Check if submission has been evaluated"""
+        return bool(self.evaluation_result)
+
+
+class AnalyticalStrategyRound(models.Model):
+    """
+    Stores analytical + strategy round data for PM interview sessions.
+    Text-based analytical/strategy question and user's answer.
+    """
+    session = models.OneToOneField(
+        InterviewSession,
+        on_delete=models.CASCADE,
+        related_name='analytical_strategy_round'
+    )
+    base_question = models.TextField(help_text='Base question retrieved from RAG')
+    generated_question = models.JSONField(
+        null=True,
+        blank=True,
+        help_text='Generated analytical/strategy question with evaluation criteria'
+    )
+    user_answer = models.TextField(blank=True, help_text='User submitted answer')
+    evaluation_result = models.JSONField(
+        null=True,
+        blank=True,
+        help_text='AI evaluation results'
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"Analytical Strategy Round - {self.session.user.username} - {self.session.get_company_display()}"
     
     def get_question(self):
         """Get the generated question"""

@@ -50,6 +50,23 @@
         z-index: 2;
     }
     
+    .stepper-step-link {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .stepper-step-link:hover .stepper-circle {
+        transform: scale(1.1);
+    }
+    
+    .stepper-step-link:hover .stepper-label {
+        color: var(--primary-color);
+    }
+    
     .stepper-step:not(:last-child)::after {
         content: '';
         position: absolute;
@@ -391,54 +408,76 @@
                 {% if user.user_type == 'swe_ng' %}
                     <!-- Software Engineer New Grad Steps -->
                     <div class="stepper-step active">
-                        <div class="stepper-circle">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div class="stepper-label">Resume Review</div>
+                        <a href="{% url 'interview_analysis' %}" class="stepper-step-link">
+                            <div class="stepper-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="stepper-label">Resume Review</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">2</div>
-                        <div class="stepper-label">Coding Q1</div>
+                        <a href="{% url 'coding_round' %}" class="stepper-step-link">
+                            <div class="stepper-circle">2</div>
+                            <div class="stepper-label">Coding Q1</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">3</div>
-                        <div class="stepper-label">Coding Q2</div>
+                        <a href="{% url 'coding_round_q2' %}" class="stepper-step-link">
+                            <div class="stepper-circle">3</div>
+                            <div class="stepper-label">Coding Q2</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">4</div>
-                        <div class="stepper-label">System Design</div>
+                        <a href="{% url 'system_design' %}" class="stepper-step-link">
+                            <div class="stepper-circle">4</div>
+                            <div class="stepper-label">System Design</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">5</div>
-                        <div class="stepper-label">Behavioral + Resume</div>
+                        <a href="{% url 'behavioral_resume_live' %}" class="stepper-step-link">
+                            <div class="stepper-circle">5</div>
+                            <div class="stepper-label">Behavioral + Resume</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">6</div>
-                        <div class="stepper-label">Final Analysis</div>
+                        <a href="{% url 'final_analysis' %}" class="stepper-step-link">
+                            <div class="stepper-circle">6</div>
+                            <div class="stepper-label">Final Analysis</div>
+                        </a>
                     </div>
                 {% else %}
                     <!-- Product Manager New Grad Steps -->
                     <div class="stepper-step active">
-                        <div class="stepper-circle">
-                            <i class="fas fa-check"></i>
-                        </div>
-                        <div class="stepper-label">Resume Review</div>
+                        <a href="{% url 'interview_analysis' %}" class="stepper-step-link">
+                            <div class="stepper-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                            <div class="stepper-label">Resume Review</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">2</div>
-                        <div class="stepper-label">Product Sense</div>
+                        <a href="{% url 'product_sense' %}" class="stepper-step-link">
+                            <div class="stepper-circle">2</div>
+                            <div class="stepper-label">Product Sense</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">3</div>
-                        <div class="stepper-label">Analytical + Strategy</div>
+                        <a href="{% url 'analytical_strategy' %}" class="stepper-step-link">
+                            <div class="stepper-circle">3</div>
+                            <div class="stepper-label">Analytical + Strategy</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">4</div>
-                        <div class="stepper-label">Technical + Resume</div>
+                        <a href="{% url 'behavioral_resume_live' %}" class="stepper-step-link">
+                            <div class="stepper-circle">4</div>
+                            <div class="stepper-label">Behavioral + Resume</div>
+                        </a>
                     </div>
                     <div class="stepper-step">
-                        <div class="stepper-circle">5</div>
-                        <div class="stepper-label">Final Analysis</div>
+                        <a href="{% url 'final_analysis' %}" class="stepper-step-link">
+                            <div class="stepper-circle">5</div>
+                            <div class="stepper-label">Final Analysis</div>
+                        </a>
                     </div>
                 {% endif %}
             </div>

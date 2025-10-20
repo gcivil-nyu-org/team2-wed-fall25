@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import InterviewSession, CodingRound, SystemDesignRound
+from .models import (
+    InterviewSession, CodingRound, SystemDesignRound,
+    ProductSenseRound, AnalyticalStrategyRound
+)
 
 
 @admin.register(InterviewSession)
@@ -17,8 +20,14 @@ class InterviewSessionAdmin(admin.ModelAdmin):
         ('AI Analysis Results', {
             'fields': ('resume_fit_score', 'resume_analysis', 'resume_suggestions')
         }),
-        ('Section Completion', {
+        ('SWE Section Completion', {
             'fields': ('coding_q1_completed', 'coding_q2_completed', 'system_design_completed')
+        }),
+        ('PM Section Completion', {
+            'fields': ('product_sense_completed', 'analytical_strategy_completed')
+        }),
+        ('Behavioral + Resume', {
+            'fields': ('behavioral_resume_completed', 'behavioral_resume_summary')
         }),
         ('Final Analysis', {
             'fields': ('overall_readiness_score', 'final_analysis')
@@ -54,6 +63,52 @@ class CodingRoundAdmin(admin.ModelAdmin):
 
 @admin.register(SystemDesignRound)
 class SystemDesignRoundAdmin(admin.ModelAdmin):
+    list_display = ['session', 'is_submitted', 'is_evaluated', 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['session__user__username', 'base_question']
+    readonly_fields = ['created_at', 'updated_at']
+    
+    fieldsets = (
+        ('Session', {
+            'fields': ('session',)
+        }),
+        ('Question Data', {
+            'fields': ('base_question', 'generated_question')
+        }),
+        ('User Submission', {
+            'fields': ('user_answer', 'evaluation_result')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at')
+        }),
+    )
+
+
+@admin.register(ProductSenseRound)
+class ProductSenseRoundAdmin(admin.ModelAdmin):
+    list_display = ['session', 'is_submitted', 'is_evaluated', 'created_at']
+    list_filter = ['created_at']
+    search_fields = ['session__user__username', 'base_case']
+    readonly_fields = ['created_at', 'updated_at']
+    
+    fieldsets = (
+        ('Session', {
+            'fields': ('session',)
+        }),
+        ('Case Data', {
+            'fields': ('base_case', 'generated_case')
+        }),
+        ('User Submission', {
+            'fields': ('user_answer', 'evaluation_result')
+        }),
+        ('Timestamps', {
+            'fields': ('created_at', 'updated_at')
+        }),
+    )
+
+
+@admin.register(AnalyticalStrategyRound)
+class AnalyticalStrategyRoundAdmin(admin.ModelAdmin):
     list_display = ['session', 'is_submitted', 'is_evaluated', 'created_at']
     list_filter = ['created_at']
     search_fields = ['session__user__username', 'base_question']
