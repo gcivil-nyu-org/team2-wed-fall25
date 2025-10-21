@@ -1,0 +1,1592 @@
+Watching for file changes with StatReloader
+System check identified some issues:
+
+WARNINGS:
+?: (staticfiles.W004) The directory '/home/ubuntu/team2-wed-fall25/static' in the STATICFILES_DIRS setting does not exist.
+
+System check identified 1 issue (0 silenced).
+[06/Oct/2025 17:55:34] "GET / HTTP/1.1" 200 49247
+[06/Oct/2025 17:55:36] "GET /admin/ HTTP/1.1" 200 6644
+[06/Oct/2025 17:55:39] "GET /admin/auth/group/add/ HTTP/1.1" 200 12923
+[06/Oct/2025 17:55:40] "GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+[06/Oct/2025 17:55:40] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[06/Oct/2025 17:55:40] "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[06/Oct/2025 17:55:40] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+[06/Oct/2025 17:55:40] "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+[06/Oct/2025 17:55:40] "GET /static/admin/js/SelectBox.js HTTP/1.1" 200 4530
+[06/Oct/2025 17:55:40] "GET /static/admin/css/widgets.css HTTP/1.1" 200 11973
+[06/Oct/2025 17:55:40] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+[06/Oct/2025 17:55:40] "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+[06/Oct/2025 17:55:40] "GET /static/admin/js/SelectFilter2.js HTTP/1.1" 200 15845
+[06/Oct/2025 17:55:40] "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+[06/Oct/2025 17:55:40] "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[06/Oct/2025 17:55:40] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+[06/Oct/2025 17:55:40] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+[06/Oct/2025 17:55:40] "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[06/Oct/2025 17:55:40] "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[06/Oct/2025 17:55:40] "GET /static/admin/img/selector-icons.svg HTTP/1.1" 200 3291
+[06/Oct/2025 17:55:43] "GET /admin/ HTTP/1.1" 200 6644
+[06/Oct/2025 17:55:45] "GET /api/auth/dashboard/ HTTP/1.1" 200 40519
+[06/Oct/2025 17:55:50] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+[06/Oct/2025 18:39:21] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[06/Oct/2025 18:39:22] "GET /favicon.ico HTTP/1.1" 404 3008
+[06/Oct/2025 18:39:25] "GET /api/auth/login/ HTTP/1.1" 200 30702
+[06/Oct/2025 18:41:24] "GET /api/auth/signup/ HTTP/1.1" 200 50057
+[06/Oct/2025 18:41:33] "GET /admin/ HTTP/1.1" 302 0
+[06/Oct/2025 18:41:33] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+[06/Oct/2025 18:41:33] "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[06/Oct/2025 18:41:33] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[06/Oct/2025 18:41:33] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[06/Oct/2025 18:41:33] "GET /static/admin/css/login.css HTTP/1.1" 200 951
+[06/Oct/2025 18:41:33] "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[06/Oct/2025 18:41:33] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[06/Oct/2025 18:41:33] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[06/Oct/2025 19:35:06] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[06/Oct/2025 19:35:06] "GET /favicon.ico HTTP/1.1" 404 3008
+[06/Oct/2025 19:35:20] "GET /api/auth/signup/ HTTP/1.1" 200 50057
+[06/Oct/2025 19:35:30] "GET /api/auth/signup/ HTTP/1.1" 200 50057
+[06/Oct/2025 19:35:33] "GET /admin/ HTTP/1.1" 302 0
+[06/Oct/2025 19:35:33] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+[06/Oct/2025 19:35:33] "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[06/Oct/2025 19:35:33] "GET /static/admin/css/login.css HTTP/1.1" 200 951
+[06/Oct/2025 19:35:33] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[06/Oct/2025 19:35:33] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[06/Oct/2025 19:35:33] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[06/Oct/2025 19:35:33] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[06/Oct/2025 19:35:33] "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[06/Oct/2025 19:35:38] "GET /admin/ HTTP/1.1" 302 0
+[06/Oct/2025 19:35:38] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+[06/Oct/2025 19:35:38] "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[06/Oct/2025 19:35:38] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[06/Oct/2025 19:35:39] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[06/Oct/2025 19:35:39] "GET /static/admin/css/login.css HTTP/1.1" 200 951
+[06/Oct/2025 19:35:39] "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[06/Oct/2025 19:35:39] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[06/Oct/2025 19:35:39] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[06/Oct/2025 19:38:54] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[06/Oct/2025 19:38:55] "GET /favicon.ico HTTP/1.1" 404 3008
+[06/Oct/2025 19:38:57] "GET / HTTP/1.1" 200 53597
+[06/Oct/2025 21:03:46] "GET / HTTP/1.1" 200 49247
+Not Found: /favicon.ico
+[06/Oct/2025 21:03:46] "GET /favicon.ico HTTP/1.1" 404 3008
+[06/Oct/2025 21:03:50] "GET /admin HTTP/1.1" 301 0
+[06/Oct/2025 21:03:50] "GET /admin/ HTTP/1.1" 200 6644
+[06/Oct/2025 21:03:50] "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[06/Oct/2025 21:03:50] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[06/Oct/2025 21:03:50] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[06/Oct/2025 21:03:50] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[06/Oct/2025 21:03:50] "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[06/Oct/2025 21:03:50] "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[06/Oct/2025 21:03:50] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[06/Oct/2025 21:03:50] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[06/Oct/2025 21:03:50] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[06/Oct/2025 22:45:38] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[06/Oct/2025 22:45:39] "GET /favicon.ico HTTP/1.1" 404 3008
+[06/Oct/2025 22:45:44] "GET / HTTP/1.1" 200 53597
+[06/Oct/2025 22:45:50] "GET /api/auth/login/ HTTP/1.1" 200 30702
+[06/Oct/2025 22:46:06] "POST /api/auth/login/ HTTP/1.1" 302 0
+[06/Oct/2025 22:46:06] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[06/Oct/2025 23:17:21] "GET / HTTP/1.1" 200 49247
+[06/Oct/2025 23:17:26] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+[06/Oct/2025 23:17:34] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[06/Oct/2025 23:17:40] "GET /api/auth/dashboard/ HTTP/1.1" 302 0
+[06/Oct/2025 23:17:40] "GET /accounts/login/?next=/api/auth/dashboard/ HTTP/1.1" 200 30702
+[06/Oct/2025 23:20:45] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[06/Oct/2025 23:20:51] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+[06/Oct/2025 23:20:55] "GET / HTTP/1.1" 200 49247
+[06/Oct/2025 23:20:55] "GET /api/auth/profile/ HTTP/1.1" 302 0
+[06/Oct/2025 23:20:55] "GET /accounts/login/?next=/api/auth/profile/ HTTP/1.1" 200 30702
+[06/Oct/2025 23:34:12] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[06/Oct/2025 23:34:12] "GET /favicon.ico HTTP/1.1" 404 3008
+[06/Oct/2025 23:34:23] "GET /api/auth/signup/ HTTP/1.1" 200 50057
+[06/Oct/2025 23:34:26] "GET /api/auth/signup/ HTTP/1.1" 200 50057
+[06/Oct/2025 23:34:30] "GET /api/auth/login/ HTTP/1.1" 200 30702
+[06/Oct/2025 23:34:35] "GET /api/auth/login/ HTTP/1.1" 200 30702
+[06/Oct/2025 23:34:49] "POST /api/auth/login/ HTTP/1.1" 200 31377
+[06/Oct/2025 23:34:53] "GET /api/auth/signup/ HTTP/1.1" 200 50057
+[06/Oct/2025 23:36:14] "POST /api/auth/signup/ HTTP/1.1" 302 0
+[06/Oct/2025 23:36:15] "GET /api/auth/dashboard/ HTTP/1.1" 200 40489
+[06/Oct/2025 23:36:35] "GET /api/auth/profile/ HTTP/1.1" 200 17302
+[06/Oct/2025 23:36:41] "GET /api/auth/dashboard/ HTTP/1.1" 200 40489
+[06/Oct/2025 23:36:42] "GET / HTTP/1.1" 200 49251
+[06/Oct/2025 23:36:47] "GET /api/auth/profile/ HTTP/1.1" 200 17302
+[06/Oct/2025 23:36:48] "GET /api/auth/dashboard/ HTTP/1.1" 200 40489
+[06/Oct/2025 23:36:53] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[06/Oct/2025 23:36:53] "GET / HTTP/1.1" 200 53597
+[06/Oct/2025 23:36:58] "GET /api/auth/login/ HTTP/1.1" 200 31338
+[06/Oct/2025 23:37:08] "GET / HTTP/1.1" 200 53597
+[06/Oct/2025 23:53:57] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[06/Oct/2025 23:54:32] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[06/Oct/2025 23:54:32] "GET /favicon.ico HTTP/1.1" 404 3008
+[07/Oct/2025 00:28:16] "GET / HTTP/1.1" 200 53597
+[07/Oct/2025 00:29:34] "GET / HTTP/1.1" 200 53597
+[07/Oct/2025 00:30:19] code 400, message Bad request version ('À\x14À')
+[07/Oct/2025 00:30:19] You're accessing the development server over HTTPS, but it only supports HTTP.
+[07/Oct/2025 00:31:37] code 400, message Bad request syntax ('SSH-2.0-Go')
+[07/Oct/2025 00:31:37] "SSH-2.0-Go" 400 -
+[07/Oct/2025 00:32:32] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03e95NÅ×y\x8c#êSLº½á\x1a·Q\x8a\xad;\x9a*\x8fëùÍà\x7f\xadq-\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[07/Oct/2025 00:32:32] You're accessing the development server over HTTPS, but it only supports HTTP.
+[07/Oct/2025 00:38:51] "GET / HTTP/1.1" 200 53597
+[07/Oct/2025 00:38:51,864] - Broken pipe from ('64.62.197.32', 8982)
+Not Found: /favicon.ico
+[07/Oct/2025 00:39:13] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /http:/api.ipify.org/
+[07/Oct/2025 00:39:16] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[07/Oct/2025 00:39:23] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[07/Oct/2025 01:45:40] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[07/Oct/2025 01:45:40] "MGLNDD_3.134.77.211_8000" 400 -
+[07/Oct/2025 03:29:34] "GET / HTTP/1.1" 200 53597
+[07/Oct/2025 08:10:26] code 400, message Bad request syntax ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x7fºá¸]/>ô[TÜ%êZ§5Ä\x9a-øgÓ\x88n\x86\x11Ì´å9\x9b')
+[07/Oct/2025 08:10:26] You're accessing the development server over HTTPS, but it only supports HTTP.
+[07/Oct/2025 10:06:59,042] - Broken pipe from ('31.148.146.154', 60784)
+[07/Oct/2025 11:12:18] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[07/Oct/2025 11:12:18] "MGLNDD_3.134.77.211_8000" 400 -
+[07/Oct/2025 14:00:27] "GET / HTTP/1.1" 200 53597
+[07/Oct/2025 14:19:23,884] - Broken pipe from ('31.148.146.154', 55127)
+[07/Oct/2025 16:50:35] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03áé¨ýåÑ\x8d¶Wx¸\x15ý\x92Í©\x1b2Ä\x9b8ÖQ/[\x8a°à\x9d©LW\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[07/Oct/2025 16:50:35] You're accessing the development server over HTTPS, but it only supports HTTP.
+[07/Oct/2025 16:50:35] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[07/Oct/2025 16:50:35] "MGLNDD_3.134.77.211_8000" 400 -
+[07/Oct/2025 18:51:36] code 400, message Bad request version ('À\x14À')
+[07/Oct/2025 18:51:36] You're accessing the development server over HTTPS, but it only supports HTTP.
+[07/Oct/2025 18:51:36] code 400, message Bad request version ('À\x14À')
+[07/Oct/2025 18:51:36] You're accessing the development server over HTTPS, but it only supports HTTP.
+[07/Oct/2025 18:51:36] "GET / HTTP/1.1" 200 53597
+Not Found: /login
+[07/Oct/2025 18:51:37] "GET /login HTTP/1.1" 404 2990
+[07/Oct/2025 21:10:23] "GET / HTTP/1.1" 200 53597
+[07/Oct/2025 21:24:58] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[07/Oct/2025 21:24:59] "GET /favicon.ico HTTP/1.1" 404 3003
+[07/Oct/2025 22:12:33] code 400, message Bad request version ('À\x14À')
+[07/Oct/2025 22:12:33] You're accessing the development server over HTTPS, but it only supports HTTP.
+[07/Oct/2025 22:12:33] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[07/Oct/2025 22:12:33] "MGLNDD_3.134.77.211_8000" 400 -
+[08/Oct/2025 01:55:03] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 01:56:50] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 01:58:06] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x01\x00{\x01\x00\x00w\x03\x03ö]\x9a\x05\x02<\x91E\\a«öD\x0e¦+=\x91xÃï'Ü\x95Û×A\x82\x92\x1a\x98>\x00\x00\x1aÀ/À+À\x11À\x07À\x13À")
+[08/Oct/2025 01:58:06] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 02:00:37] code 400, message Bad request syntax ('SSH-2.0-Go')
+[08/Oct/2025 02:00:37] "SSH-2.0-Go" 400 -
+[08/Oct/2025 02:01:48] code 400, message Bad request version ('À\x14À')
+[08/Oct/2025 02:01:48] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 02:21:14] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 02:21:14,643] - Broken pipe from ('147.185.132.144', 58730)
+[08/Oct/2025 06:21:40] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 06:21:40,592] - Broken pipe from ('64.62.197.17', 18946)
+Not Found: /http:/api.ipify.org/
+[08/Oct/2025 06:22:03] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[08/Oct/2025 06:22:09] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[08/Oct/2025 08:48:18] code 400, message Bad request version ('À\x14À')
+[08/Oct/2025 08:48:18] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 16:19:30] "GET ///admin/config.php HTTP/1.1" 302 0
+[08/Oct/2025 16:19:30] "GET /admin/login/?next=/admin/config.php HTTP/1.1" 200 4193
+[08/Oct/2025 16:19:30] "GET ///admin/config.php HTTP/1.1" 302 0
+[08/Oct/2025 16:19:31] "GET /admin/login/?next=/admin/config.php HTTP/1.1" 200 4193
+[08/Oct/2025 16:19:31] "GET ///admin/config.php HTTP/1.1" 302 0
+[08/Oct/2025 16:19:31] "GET /admin/login/?next=/admin/config.php HTTP/1.1" 200 4193
+[08/Oct/2025 16:19:31] "GET ///admin/config.php HTTP/1.1" 302 0
+[08/Oct/2025 16:19:32] "GET /admin/login/?next=/admin/config.php HTTP/1.1" 200 4193
+[08/Oct/2025 16:19:32] "GET ///admin/config.php HTTP/1.1" 302 0
+[08/Oct/2025 16:19:32] "GET /admin/login/?next=/admin/config.php HTTP/1.1" 200 4193
+[08/Oct/2025 18:03:56] "GET /api/auth/dashboard/ HTTP/1.1" 302 0
+[08/Oct/2025 18:03:56] "GET /accounts/login/?next=/api/auth/dashboard/ HTTP/1.1" 200 30702
+Not Found: /favicon.ico
+[08/Oct/2025 18:03:57] "GET /favicon.ico HTTP/1.1" 404 3008
+[08/Oct/2025 18:22:49] code 400, message Bad request version ('À\x14À')
+[08/Oct/2025 18:22:49] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 18:22:49] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03ïy\x11cÚ÷\x9c¶\x98LLrdo¸SzIÏ&°×µÖ{¯³2á$Í\x90\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[08/Oct/2025 18:22:49] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 18:22:49] "GET / HTTP/1.1" 200 53597
+Not Found: /login
+[08/Oct/2025 18:22:50] "GET /login HTTP/1.1" 404 2990
+[08/Oct/2025 20:22:37] "POST /accounts/login/?next=/api/auth/dashboard/ HTTP/1.1" 302 0
+[08/Oct/2025 20:22:37] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[08/Oct/2025 20:22:45] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+[08/Oct/2025 20:22:53] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[08/Oct/2025 20:22:59] "GET /admin/ HTTP/1.1" 200 6765
+[08/Oct/2025 20:22:59] "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[08/Oct/2025 20:22:59] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[08/Oct/2025 20:22:59] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[08/Oct/2025 20:22:59] "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[08/Oct/2025 20:22:59] "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[08/Oct/2025 20:22:59] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[08/Oct/2025 20:22:59] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[08/Oct/2025 20:22:59] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[08/Oct/2025 20:22:59] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[08/Oct/2025 20:22:59] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[08/Oct/2025 20:23:06] "GET /admin/ HTTP/1.1" 302 0
+[08/Oct/2025 20:23:06] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+[08/Oct/2025 20:23:06] "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[08/Oct/2025 20:23:06] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[08/Oct/2025 20:23:07] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[08/Oct/2025 20:23:07] "GET /static/admin/css/login.css HTTP/1.1" 200 951
+[08/Oct/2025 20:23:07] "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[08/Oct/2025 20:23:07] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[08/Oct/2025 20:23:07] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[08/Oct/2025 20:23:11] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[08/Oct/2025 20:23:11] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 20:23:13] "GET /api/auth/login/ HTTP/1.1" 200 31046
+[08/Oct/2025 20:23:21] "POST /api/auth/login/ HTTP/1.1" 302 0
+[08/Oct/2025 20:23:22] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[08/Oct/2025 20:23:28] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+[08/Oct/2025 20:44:14,373] - Broken pipe from ('199.45.155.101', 34904)
+[08/Oct/2025 20:44:18] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 20:44:18,258] - Broken pipe from ('199.45.155.101', 53798)
+[08/Oct/2025 20:44:22] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[08/Oct/2025 20:44:24] "GET /favicon.ico HTTP/1.1" 404 3008
+[08/Oct/2025 20:44:25] code 505, message Invalid HTTP version (2.0)
+[08/Oct/2025 20:44:25] "PRI * HTTP/2.0" 505 -
+[08/Oct/2025 20:44:29] code 505, message Invalid HTTP version (2.0)
+[08/Oct/2025 20:44:29] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[08/Oct/2025 20:44:30] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /.well-known/security.txt
+[08/Oct/2025 20:44:34] "GET /.well-known/security.txt HTTP/1.1" 404 3047
+[08/Oct/2025 21:23:02] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[08/Oct/2025 21:23:02] "GET /favicon.ico HTTP/1.1" 404 3008
+[08/Oct/2025 21:23:04] "GET /api/auth/login/ HTTP/1.1" 200 30702
+[08/Oct/2025 21:23:06] "GET /api/auth/signup/ HTTP/1.1" 200 50057
+[08/Oct/2025 21:24:54] "POST /api/auth/login/ HTTP/1.1" 302 0
+[08/Oct/2025 21:24:54] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[08/Oct/2025 21:24:59] "GET /api/auth/dashboard/ HTTP/1.1" 302 0
+[08/Oct/2025 21:25:00] "GET /accounts/login/?next=/api/auth/dashboard/ HTTP/1.1" 200 30702
+[08/Oct/2025 21:31:03] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[08/Oct/2025 21:31:03] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 21:31:06] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[08/Oct/2025 21:31:06] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 21:31:06] "GET /api/auth/login/ HTTP/1.1" 200 31313
+[08/Oct/2025 21:31:09] "GET /api/auth/signup/ HTTP/1.1" 200 50057
+[08/Oct/2025 21:32:00] "POST /api/auth/signup/ HTTP/1.1" 302 0
+[08/Oct/2025 21:32:00] "GET /api/auth/dashboard/ HTTP/1.1" 200 40489
+[08/Oct/2025 21:34:05] "GET /api/auth/profile/ HTTP/1.1" 200 17309
+[08/Oct/2025 21:34:15] "GET /api/auth/profile/ HTTP/1.1" 302 0
+[08/Oct/2025 21:34:15] "GET /accounts/login/?next=/api/auth/profile/ HTTP/1.1" 200 30702
+[08/Oct/2025 21:35:01] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[08/Oct/2025 21:35:01] "MGLNDD_3.134.77.211_8000" 400 -
+[08/Oct/2025 22:06:21] "GET /api/auth/dashboard/ HTTP/1.1" 200 40488
+Not Found: /favicon.ico
+[08/Oct/2025 22:06:21] "GET /favicon.ico HTTP/1.1" 404 3008
+[08/Oct/2025 22:06:28] "GET / HTTP/1.1" 200 49251
+[08/Oct/2025 22:06:38] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[08/Oct/2025 22:06:38] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 22:07:05] "GET /api/auth/login/ HTTP/1.1" 200 31046
+[08/Oct/2025 22:07:12] "POST /api/auth/login/ HTTP/1.1" 302 0
+[08/Oct/2025 22:07:13] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[08/Oct/2025 22:07:50] "GET / HTTP/1.1" 200 49247
+[08/Oct/2025 22:07:53] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[08/Oct/2025 22:07:53] "GET / HTTP/1.1" 200 53597
+[08/Oct/2025 22:12:47] code 400, message Bad request version ('\x86!\x00*\x9a\x9a\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+[08/Oct/2025 22:12:47] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 22:12:47] code 400, message Bad request version ('\x15\x08L({á{\x98t«¯ë\x15\x00,êê\x13\x01\x13\x02\x13\x03À,À+Ì©À0À/Ì¨À')
+[08/Oct/2025 22:12:47] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 22:12:47] code 400, message Bad request syntax ('\x16\x03\x01\x00}\x01\x00\x00y\x03\x01I[\x7fý\x16S\x993äPÚ\x97\x9fÍ\x9fN\x9c¯®j×8\x13êBl¯È&]k\x90\x00\x00\x14À')
+[08/Oct/2025 22:12:47] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 22:13:18] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[08/Oct/2025 22:13:19] "GET /favicon.ico HTTP/1.1" 404 3008
+[08/Oct/2025 22:14:02] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[08/Oct/2025 22:14:03] "GET /favicon.ico HTTP/1.1" 404 3008
+[08/Oct/2025 22:15:42] "GET /api/auth/login/ HTTP/1.1" 200 30702
+[08/Oct/2025 22:15:50] "POST /api/auth/login/ HTTP/1.1" 302 0
+[08/Oct/2025 22:15:50] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[08/Oct/2025 22:16:15] "GET / HTTP/1.1" 200 49247
+[08/Oct/2025 22:16:35] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[08/Oct/2025 22:16:37] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+[08/Oct/2025 22:19:18] "GET / HTTP/1.1" 200 49247
+[08/Oct/2025 22:21:36] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+[08/Oct/2025 23:54:15] code 400, message Bad request version ('À\x14À')
+[08/Oct/2025 23:54:15] You're accessing the development server over HTTPS, but it only supports HTTP.
+[08/Oct/2025 23:54:15] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[08/Oct/2025 23:54:15] "MGLNDD_3.134.77.211_8000" 400 -
+Not Found: /helpdesk/WebObjects/Helpdesk.woa
+[09/Oct/2025 00:38:21] "GET /helpdesk/WebObjects/Helpdesk.woa HTTP/1.1" 404 3071
+[09/Oct/2025 02:07:34] "GET / HTTP/1.1" 200 53597
+[09/Oct/2025 02:08:26] "GET / HTTP/1.1" 200 53597
+[09/Oct/2025 02:10:10] code 400, message Bad request syntax ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03ú<8;\x1b±')
+[09/Oct/2025 02:10:10] You're accessing the development server over HTTPS, but it only supports HTTP.
+[09/Oct/2025 02:11:52] code 400, message Bad request syntax ('SSH-2.0-Go')
+[09/Oct/2025 02:11:52] "SSH-2.0-Go" 400 -
+[09/Oct/2025 02:13:15] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03RÍ\x80ÙTèz\x1a|ó4|4ô\x9b)¿Õî`Å¨«È\x98\x01c<\x14Õ\x88\x05\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[09/Oct/2025 02:13:15] You're accessing the development server over HTTPS, but it only supports HTTP.
+[09/Oct/2025 05:48:06] "GET / HTTP/1.1" 200 53597
+[09/Oct/2025 09:12:55] "GET / HTTP/1.1" 200 53597
+[09/Oct/2025 09:12:55,807] - Broken pipe from ('64.62.156.212', 43370)
+Not Found: /favicon.ico
+[09/Oct/2025 09:13:09] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /http:/api.ipify.org/
+[09/Oct/2025 09:13:12] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[09/Oct/2025 09:13:15] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[09/Oct/2025 12:43:48] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[09/Oct/2025 12:43:49] "GET /favicon.ico HTTP/1.1" 404 3003
+[09/Oct/2025 14:37:22] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+Not Found: /favicon.ico
+[09/Oct/2025 14:37:22] "GET /favicon.ico HTTP/1.1" 404 3008
+[09/Oct/2025 14:47:56] code 400, message Bad request version ('À\x14À')
+[09/Oct/2025 14:47:56] You're accessing the development server over HTTPS, but it only supports HTTP.
+[09/Oct/2025 14:47:56] code 400, message Bad request version ('À\x14À')
+[09/Oct/2025 14:47:56] You're accessing the development server over HTTPS, but it only supports HTTP.
+[09/Oct/2025 14:47:56] "GET / HTTP/1.1" 200 53597
+Not Found: /login
+[09/Oct/2025 14:47:56] "GET /login HTTP/1.1" 404 2990
+[09/Oct/2025 15:26:48] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[09/Oct/2025 21:01:27] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[09/Oct/2025 21:01:28] "GET /favicon.ico HTTP/1.1" 404 3008
+[09/Oct/2025 21:01:30] code 505, message Invalid HTTP version (2.0)
+[09/Oct/2025 21:01:30] "PRI * HTTP/2.0" 505 -
+[09/Oct/2025 21:01:34] code 505, message Invalid HTTP version (2.0)
+[09/Oct/2025 21:01:34] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[09/Oct/2025 21:01:35] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /sitemap.xml
+[09/Oct/2025 21:01:35] "GET /sitemap.xml HTTP/1.1" 404 3008
+[10/Oct/2025 01:31:54,138] - Broken pipe from ('199.45.155.91', 55854)
+[10/Oct/2025 01:31:57] "GET / HTTP/1.1" 200 53597
+[10/Oct/2025 01:31:57,660] - Broken pipe from ('199.45.155.91', 55894)
+[10/Oct/2025 01:32:01] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[10/Oct/2025 01:32:03] "GET /favicon.ico HTTP/1.1" 404 3008
+[10/Oct/2025 01:32:06] code 505, message Invalid HTTP version (2.0)
+[10/Oct/2025 01:32:06] "PRI * HTTP/2.0" 505 -
+[10/Oct/2025 01:32:12] code 505, message Invalid HTTP version (2.0)
+[10/Oct/2025 01:32:12] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[10/Oct/2025 01:32:14] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /.well-known/security.txt
+[10/Oct/2025 01:32:15] "GET /.well-known/security.txt HTTP/1.1" 404 3047
+[10/Oct/2025 02:13:48] code 400, message Bad request version ('À\x13À')
+[10/Oct/2025 02:13:48] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 02:13:59] code 400, message Bad request version ('À\x13À')
+[10/Oct/2025 02:13:59] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 02:13:59] "GET / HTTP/1.1" 200 53597
+[10/Oct/2025 02:14:00,075] - Broken pipe from ('45.82.78.105', 58962)
+Not Found: /favicon.ico
+[10/Oct/2025 02:14:05] "GET /favicon.ico HTTP/1.1" 404 3008
+[10/Oct/2025 02:40:11] "GET / HTTP/1.1" 200 53597
+[10/Oct/2025 02:40:17,832] - Broken pipe from ('205.210.31.209', 63348)
+[10/Oct/2025 02:44:03] "GET / HTTP/1.1" 200 53597
+[10/Oct/2025 02:44:58] "GET / HTTP/1.1" 200 53597
+[10/Oct/2025 02:45:59] code 400, message Bad request version ('À\x14À')
+[10/Oct/2025 02:45:59] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 02:48:02] code 400, message Bad request syntax ('SSH-2.0-Go')
+[10/Oct/2025 02:48:02] "SSH-2.0-Go" 400 -
+[10/Oct/2025 02:49:21] code 400, message Bad request version ('À\x14À')
+[10/Oct/2025 02:49:21] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 03:12:25] code 400, message Bad HTTP/0.9 request type ("\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03n'ý-m\x0eðè\x03uÓváö$\x98¯ür8r\x8a¦Ò5q9Ð`T55")
+[10/Oct/2025 03:12:25] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 05:02:04] code 400, message Bad request version ('À\x14À')
+[10/Oct/2025 05:02:04] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 05:02:04] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[10/Oct/2025 05:02:04] "MGLNDD_3.134.77.211_8000" 400 -
+[10/Oct/2025 06:23:42] "GET / HTTP/1.1" 200 53597
+[10/Oct/2025 06:23:42,440] - Broken pipe from ('64.62.156.192', 12228)
+Not Found: /favicon.ico
+[10/Oct/2025 06:23:58] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /http:/api.ipify.org/
+[10/Oct/2025 06:24:02] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[10/Oct/2025 06:24:05] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[10/Oct/2025 06:38:32] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[10/Oct/2025 06:38:32] "MGLNDD_3.134.77.211_8000" 400 -
+[10/Oct/2025 11:12:14] code 400, message Bad request version ('À\x14À')
+[10/Oct/2025 11:12:14] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 11:12:14] code 400, message Bad request version ('À\x14À')
+[10/Oct/2025 11:12:14] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 11:12:15] "GET / HTTP/1.1" 200 53597
+Not Found: /login
+[10/Oct/2025 11:12:15] "GET /login HTTP/1.1" 404 2990
+[10/Oct/2025 13:29:13] code 400, message Bad request version ('À#À¬À®À+À')
+[10/Oct/2025 13:29:13] You're accessing the development server over HTTPS, but it only supports HTTP.
+[10/Oct/2025 13:29:17] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[10/Oct/2025 13:44:05] "GET /favicon.ico HTTP/1.1" 404 3008
+[10/Oct/2025 16:06:14] "GET / HTTP/1.1" 200 53597
+[10/Oct/2025 16:24:43] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[10/Oct/2025 16:24:43] "MGLNDD_3.134.77.211_8000" 400 -
+[11/Oct/2025 02:08:38] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[11/Oct/2025 02:08:39] "GET /favicon.ico HTTP/1.1" 404 3008
+[11/Oct/2025 02:08:40] code 505, message Invalid HTTP version (2.0)
+[11/Oct/2025 02:08:40] "PRI * HTTP/2.0" 505 -
+[11/Oct/2025 02:12:52] code 505, message Invalid HTTP version (2.0)
+[11/Oct/2025 02:12:52] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[11/Oct/2025 02:12:54] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /sitemap.xml
+[11/Oct/2025 02:13:01] "GET /sitemap.xml HTTP/1.1" 404 3008
+[11/Oct/2025 03:22:29] "GET / HTTP/1.1" 200 53597
+[11/Oct/2025 03:22:29,926] - Broken pipe from ('64.62.197.137', 62134)
+Not Found: /favicon.ico
+[11/Oct/2025 03:22:50] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /www.shadowserver.org:443
+[11/Oct/2025 03:22:56] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[11/Oct/2025 03:52:31] "GET / HTTP/1.1" 200 53597
+[11/Oct/2025 03:53:36] "GET / HTTP/1.1" 200 53597
+[11/Oct/2025 03:57:15] code 400, message Bad request syntax ('SSH-2.0-Go')
+[11/Oct/2025 03:57:15] "SSH-2.0-Go" 400 -
+[11/Oct/2025 03:58:35] code 400, message Bad request version ('À\x14À')
+[11/Oct/2025 03:58:35] You're accessing the development server over HTTPS, but it only supports HTTP.
+[11/Oct/2025 09:19:48] code 400, message Bad request version ('À\x14À')
+[11/Oct/2025 09:19:48] You're accessing the development server over HTTPS, but it only supports HTTP.
+[11/Oct/2025 09:19:48] code 400, message Bad request version ('À\x14À')
+[11/Oct/2025 09:19:48] You're accessing the development server over HTTPS, but it only supports HTTP.
+[11/Oct/2025 09:19:48] "GET / HTTP/1.1" 200 53597
+Not Found: /login
+[11/Oct/2025 09:19:48] "GET /login HTTP/1.1" 404 2990
+[11/Oct/2025 09:25:46] code 400, message Bad request version ('²WÈÅbÔ\x7f¹üF§\x9cÞ\x07¼{')
+[11/Oct/2025 09:25:46] You're accessing the development server over HTTPS, but it only supports HTTP.
+[11/Oct/2025 09:26:14] "GET / HTTP/1.1" 200 53597
+[11/Oct/2025 09:29:24] code 400, message Bad request version ('À\x14À')
+[11/Oct/2025 09:29:24] You're accessing the development server over HTTPS, but it only supports HTTP.
+Not Found: /favicon.ico
+[11/Oct/2025 09:29:34] "GET /favicon.ico HTTP/1.1" 404 3008
+[11/Oct/2025 13:09:16] code 400, message Bad request version ('À\x14À')
+[11/Oct/2025 13:09:16] You're accessing the development server over HTTPS, but it only supports HTTP.
+[11/Oct/2025 13:09:16] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[11/Oct/2025 13:09:16] "MGLNDD_3.134.77.211_8000" 400 -
+[12/Oct/2025 00:04:14] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[12/Oct/2025 00:04:14] "MGLNDD_3.134.77.211_8000" 400 -
+[12/Oct/2025 02:21:18] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 02:21:19,060] - Broken pipe from ('8.209.97.27', 58214)
+[12/Oct/2025 02:21:46] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 02:21:47] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[12/Oct/2025 02:21:53] "GET /favicon.ico HTTP/1.1" 404 3008
+[12/Oct/2025 02:54:02] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[12/Oct/2025 02:54:02] "GET /favicon.ico HTTP/1.1" 404 3008
+[12/Oct/2025 02:54:02] code 505, message Invalid HTTP version (2.0)
+[12/Oct/2025 02:54:02] "PRI * HTTP/2.0" 505 -
+[12/Oct/2025 02:54:16] code 505, message Invalid HTTP version (2.0)
+[12/Oct/2025 02:54:16] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[12/Oct/2025 02:54:17] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /security.txt
+[12/Oct/2025 02:54:21] "GET /security.txt HTTP/1.1" 404 3011
+[12/Oct/2025 03:12:03] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 03:13:03] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[12/Oct/2025 03:13:04] "GET /favicon.ico HTTP/1.1" 404 3008
+[12/Oct/2025 03:50:04] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 03:51:47] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 03:53:03] code 400, message Bad request version ('À\x14À')
+[12/Oct/2025 03:53:03] You're accessing the development server over HTTPS, but it only supports HTTP.
+[12/Oct/2025 03:55:15] code 400, message Bad request syntax ('SSH-2.0-Go')
+[12/Oct/2025 03:55:15] "SSH-2.0-Go" 400 -
+[12/Oct/2025 03:56:37] code 400, message Bad request syntax ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03=zè+äëÒÓ\x06µG\x7f\x80(')
+[12/Oct/2025 03:56:37] You're accessing the development server over HTTPS, but it only supports HTTP.
+[12/Oct/2025 05:27:37] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 07:43:00] code 400, message Bad request version ('À#À¬À®À+À')
+[12/Oct/2025 07:43:00] You're accessing the development server over HTTPS, but it only supports HTTP.
+[12/Oct/2025 07:43:04] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 07:51:10] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 07:51:10] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[12/Oct/2025 07:51:10] "MGLNDD_3.134.77.211_8000" 400 -
+[12/Oct/2025 12:07:46] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 12:07:46,872] - Broken pipe from ('64.62.197.47', 25826)
+Not Found: /aaa9
+[12/Oct/2025 13:11:10] "GET /aaa9 HTTP/1.1" 404 2987
+Not Found: /aab8
+[12/Oct/2025 13:11:10] "GET /aab8 HTTP/1.1" 404 2987
+[12/Oct/2025 13:11:11] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 15:37:46] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 15:37:46,307] - Broken pipe from ('152.32.207.179', 56586)
+[12/Oct/2025 15:37:46] code 400, message Bad request version ('À\x13À')
+[12/Oct/2025 15:37:46] You're accessing the development server over HTTPS, but it only supports HTTP.
+[12/Oct/2025 15:37:46] code 400, message Bad HTTP/0.9 request type ('t3')
+[12/Oct/2025 15:37:46] "t3 12.1.2" 400 -
+[12/Oct/2025 20:13:29] "GET / HTTP/1.1" 200 53597
+[12/Oct/2025 20:51:12] code 400, message Bad request version ('À\x14À')
+[12/Oct/2025 20:51:12] You're accessing the development server over HTTPS, but it only supports HTTP.
+[12/Oct/2025 20:51:12] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[12/Oct/2025 20:51:12] "MGLNDD_3.134.77.211_8000" 400 -
+[13/Oct/2025 00:02:23] "GET / HTTP/1.1" 200 53597
+[13/Oct/2025 03:54:33] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[13/Oct/2025 03:54:33] "GET /favicon.ico HTTP/1.1" 404 3008
+[13/Oct/2025 03:54:33] code 505, message Invalid HTTP version (2.0)
+[13/Oct/2025 03:54:33] "PRI * HTTP/2.0" 505 -
+[13/Oct/2025 03:55:02] code 505, message Invalid HTTP version (2.0)
+[13/Oct/2025 03:55:02] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[13/Oct/2025 03:55:02] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /sitemap.xml
+[13/Oct/2025 03:55:03] "GET /sitemap.xml HTTP/1.1" 404 3008
+[13/Oct/2025 05:03:15] "GET / HTTP/1.1" 200 53597
+[13/Oct/2025 06:25:12] "GET / HTTP/1.1" 200 53597
+[13/Oct/2025 06:25:12,632] - Broken pipe from ('184.105.139.68', 54448)
+Not Found: /favicon.ico
+[13/Oct/2025 06:25:30] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /www.shadowserver.org:443
+[13/Oct/2025 06:25:37] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[13/Oct/2025 06:28:49] code 400, message Bad request version ('À\x14À')
+[13/Oct/2025 06:28:49] You're accessing the development server over HTTPS, but it only supports HTTP.
+[13/Oct/2025 10:39:39] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[13/Oct/2025 10:39:39] "MGLNDD_3.134.77.211_8000" 400 -
+[13/Oct/2025 15:22:44,255] - Broken pipe from ('199.45.154.139', 45404)
+[13/Oct/2025 15:22:50] "GET / HTTP/1.1" 200 53597
+[13/Oct/2025 15:22:50,918] - Broken pipe from ('199.45.154.139', 45316)
+[13/Oct/2025 15:22:56] code 400, message Bad request version ('À\x14À')
+[13/Oct/2025 15:22:56] You're accessing the development server over HTTPS, but it only supports HTTP.
+[13/Oct/2025 15:23:12] "GET / HTTP/1.1" 200 53597
+[13/Oct/2025 15:23:14] code 505, message Invalid HTTP version (2.0)
+[13/Oct/2025 15:23:14] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[13/Oct/2025 15:23:15] "GET /favicon.ico HTTP/1.1" 404 3008
+[13/Oct/2025 15:23:46] code 400, message Bad request version ('À\x14À')
+[13/Oct/2025 15:23:46] You're accessing the development server over HTTPS, but it only supports HTTP.
+Not Found: /wiki
+[13/Oct/2025 15:23:46] "GET /wiki HTTP/1.1" 404 2987
+[13/Oct/2025 16:45:18] code 400, message Bad HTTP/0.9 request type ('\x00\x00\x00')
+[13/Oct/2025 16:45:18] "    c                           " 400 -
+[13/Oct/2025 17:44:21] code 400, message Bad request syntax ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x91Xü×7F')
+[13/Oct/2025 17:44:21] You're accessing the development server over HTTPS, but it only supports HTTP.
+[13/Oct/2025 17:44:21] code 400, message Bad request version ('À(À$À\x14À')
+[13/Oct/2025 17:44:21] You're accessing the development server over HTTPS, but it only supports HTTP.
+[14/Oct/2025 00:36:36] "GET / HTTP/1.1" 200 53597
+[14/Oct/2025 00:36:36,941] - Broken pipe from ('65.49.1.24', 9490)
+Not Found: /favicon.ico
+[14/Oct/2025 00:36:51] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /http:/api.ipify.org/
+[14/Oct/2025 00:36:54] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[14/Oct/2025 00:36:58] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+Not Found: /ipv4-internet.yandex.net:443
+[14/Oct/2025 02:19:02] "CONNECT ipv4-internet.yandex.net:443 HTTP/1.1" 404 1902
+[14/Oct/2025 02:26:51] code 400, message Bad request version ('À\x14À')
+[14/Oct/2025 02:26:51] You're accessing the development server over HTTPS, but it only supports HTTP.
+[14/Oct/2025 02:26:51] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[14/Oct/2025 02:26:51] "MGLNDD_3.134.77.211_8000" 400 -
+[14/Oct/2025 03:30:18] "GET / HTTP/1.1" 200 53597
+[14/Oct/2025 04:10:51] "GET / HTTP/1.1" 200 53597
+[14/Oct/2025 04:23:08] "GET / HTTP/1.1" 200 53597
+[14/Oct/2025 04:25:14] "GET / HTTP/1.1" 200 53597
+[14/Oct/2025 04:26:41] code 400, message Bad request version ('À\x14À')
+[14/Oct/2025 04:26:41] You're accessing the development server over HTTPS, but it only supports HTTP.
+[14/Oct/2025 04:27:47] code 400, message Bad request syntax ('SSH-2.0-Go')
+[14/Oct/2025 04:27:47] "SSH-2.0-Go" 400 -
+[14/Oct/2025 04:29:07] code 400, message Bad request syntax ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x03ç')
+[14/Oct/2025 04:29:07] You're accessing the development server over HTTPS, but it only supports HTTP.
+Not Found: /bins/
+[14/Oct/2025 04:29:10] "GET /bins/ HTTP/1.1" 404 2990
+Not Found: /bin/
+[14/Oct/2025 04:43:36] "GET /bin/ HTTP/1.1" 404 2987
+Not Found: /backup/
+[14/Oct/2025 04:49:16] "GET /backup/ HTTP/1.1" 404 2996
+[14/Oct/2025 10:10:21] "GET / HTTP/1.1" 200 53597
+[14/Oct/2025 15:57:17] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[14/Oct/2025 15:57:17] "GET /favicon.ico HTTP/1.1" 404 3008
+[14/Oct/2025 15:57:17] code 505, message Invalid HTTP version (2.0)
+[14/Oct/2025 15:57:17] "PRI * HTTP/2.0" 505 -
+[14/Oct/2025 15:57:20] code 505, message Invalid HTTP version (2.0)
+[14/Oct/2025 15:57:20] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[14/Oct/2025 15:57:21] "GET /favicon.ico HTTP/1.1" 404 3008
+Not Found: /.well-known/security.txt
+[14/Oct/2025 15:57:22] "GET /.well-known/security.txt HTTP/1.1" 404 3047
+[14/Oct/2025 17:54:22] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[14/Oct/2025 17:54:22] "GET /favicon.ico HTTP/1.1" 404 3003
+[14/Oct/2025 18:46:25] "GET / HTTP/1.1" 200 53597
+Not Found: /favicon.ico
+[14/Oct/2025 18:46:26] "GET /favicon.ico HTTP/1.1" 404 3003
+[14/Oct/2025 19:09:07] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[14/Oct/2025 19:09:07] "MGLNDD_3.134.77.211_8000" 400 -
+[14/Oct/2025 20:36:01] "GET / HTTP/1.1" 200 49247
+Not Found: /favicon.ico
+[14/Oct/2025 20:36:01] "GET /favicon.ico HTTP/1.1" 404 3008
+[14/Oct/2025 20:39:28] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+[14/Oct/2025 20:39:33] "GET /api/auth/profile/ HTTP/1.1" 200 17292
+[14/Oct/2025 20:39:34] "GET /api/auth/dashboard/ HTTP/1.1" 200 40520
+Not Found: /api/auth/forums
+[14/Oct/2025 20:39:58] "GET /api/auth/forums HTTP/1.1" 404 5286
+Traceback (most recent call last):
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/core/management/base.py", line 416, in run_from_argv
+    self.execute(*args, **cmd_options)
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/core/management/commands/runserver.py", line 69, in execute
+    super().execute(*args, **options)
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/core/management/base.py", line 460, in execute
+    output = self.handle(*args, **options)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/core/management/commands/runserver.py", line 80, in handle
+    if not settings.DEBUG and not settings.ALLOWED_HOSTS:
+           ^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/conf/__init__.py", line 81, in __getattr__
+    self._setup(name)
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/conf/__init__.py", line 68, in _setup
+    self._wrapped = Settings(settings_module)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/conf/__init__.py", line 166, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/team2-wed-fall25/core/__init__.py", line 1, in <module>
+    from .celery import app as celery_app
+  File "/home/ubuntu/team2-wed-fall25/core/celery.py", line 2, in <module>
+    from celery import Celery
+ModuleNotFoundError: No module named 'celery'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/team2-wed-fall25/manage.py", line 22, in <module>
+    main()
+  File "/home/ubuntu/team2-wed-fall25/manage.py", line 18, in main
+    execute_from_command_line(sys.argv)
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/core/management/__init__.py", line 442, in execute_from_command_line
+    utility.execute()
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/core/management/__init__.py", line 436, in execute
+    self.fetch_command(subcommand).run_from_argv(self.argv)
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/core/management/base.py", line 429, in run_from_argv
+    connections.close_all()
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/utils/connection.py", line 84, in close_all
+    for conn in self.all(initialized_only=True):
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/utils/connection.py", line 76, in all
+    return [
+           ^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/utils/connection.py", line 73, in __iter__
+    return iter(self.settings)
+                ^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/utils/functional.py", line 47, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+                                         ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/utils/connection.py", line 45, in settings
+    self._settings = self.configure_settings(self._settings)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/db/utils.py", line 148, in configure_settings
+    databases = super().configure_settings(databases)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/utils/connection.py", line 50, in configure_settings
+    settings = getattr(django_settings, self.settings_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/conf/__init__.py", line 81, in __getattr__
+    self._setup(name)
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/conf/__init__.py", line 68, in _setup
+    self._wrapped = Settings(settings_module)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/.local/lib/python3.12/site-packages/django/conf/__init__.py", line 166, in __init__
+    mod = importlib.import_module(self.SETTINGS_MODULE)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/importlib/__init__.py", line 90, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1310, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "<frozen importlib._bootstrap>", line 1387, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1360, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1331, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 935, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 995, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/home/ubuntu/team2-wed-fall25/core/__init__.py", line 1, in <module>
+    from .celery import app as celery_app
+  File "/home/ubuntu/team2-wed-fall25/core/celery.py", line 2, in <module>
+    from celery import Celery
+ModuleNotFoundError: No module named 'celery'
+Watching for file changes with StatReloader
+[14/Oct/2025 21:07:48] "GET /interviews/start/ HTTP/1.1" 200 25281
+[14/Oct/2025 21:07:52] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 21:07:56] "GET /api/auth/dashboard/ HTTP/1.1" 200 47535
+[14/Oct/2025 21:07:57] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 21:08:11] "GET /api/auth/profile/ HTTP/1.1" 200 17350
+[14/Oct/2025 21:08:14] "GET /api/auth/dashboard/ HTTP/1.1" 200 47535
+[14/Oct/2025 21:08:22] "GET /interviews/start/ HTTP/1.1" 200 25281
+[14/Oct/2025 21:57:36] "GET / HTTP/1.1" 200 53655
+[14/Oct/2025 22:05:43] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 22:15:08] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[14/Oct/2025 22:15:08] "GET /favicon.ico HTTP/1.1" 404 3313
+[14/Oct/2025 22:15:10] "GET /api/auth/login/ HTTP/1.1" 200 30760
+[14/Oct/2025 22:15:13] "GET /api/auth/login/ HTTP/1.1" 200 30760
+[14/Oct/2025 22:15:18] "POST /api/auth/login/ HTTP/1.1" 200 31434
+[14/Oct/2025 22:15:28] "POST /api/auth/login/ HTTP/1.1" 302 0
+[14/Oct/2025 22:15:28] "GET /api/auth/dashboard/ HTTP/1.1" 200 47535
+[14/Oct/2025 22:16:11] "POST /resumes/update/ HTTP/1.1" 200 60
+[14/Oct/2025 22:16:12] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[14/Oct/2025 22:16:16] "GET /resumes/view/ HTTP/1.1" 200 26272
+[14/Oct/2025 22:16:16] "GET /resumes/view/ HTTP/1.1" 200 26272
+[14/Oct/2025 22:16:17] "GET /resumes/file/ HTTP/1.1" 200 3487098
+[14/Oct/2025 22:17:13] "POST /resumes/update/ HTTP/1.1" 200 60
+[14/Oct/2025 22:17:13] "GET /resumes/view/ HTTP/1.1" 200 26203
+[14/Oct/2025 22:17:13] "GET /resumes/file/ HTTP/1.1" 200 98553
+[14/Oct/2025 22:17:17] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[14/Oct/2025 22:17:51] "GET /resumes/view/ HTTP/1.1" 200 26203
+[14/Oct/2025 22:17:51] "GET /resumes/file/ HTTP/1.1" 200 98553
+[14/Oct/2025 22:18:38] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[14/Oct/2025 22:18:38] "GET /favicon.ico HTTP/1.1" 404 3313
+[14/Oct/2025 22:18:49] "GET /api/auth/login/ HTTP/1.1" 200 30760
+[14/Oct/2025 22:19:06] "POST /api/auth/login/ HTTP/1.1" 200 31435
+[14/Oct/2025 22:19:13] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[14/Oct/2025 22:19:16] "GET /api/auth/profile/ HTTP/1.1" 200 17350
+[14/Oct/2025 22:19:20] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[14/Oct/2025 22:19:29] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 22:20:10] "GET /api/auth/profile/ HTTP/1.1" 200 17350
+[14/Oct/2025 22:20:11] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 22:20:13] "GET /api/auth/profile/ HTTP/1.1" 200 17350
+[14/Oct/2025 22:20:14] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 22:20:20] "GET /api/auth/profile/ HTTP/1.1" 200 17350
+[14/Oct/2025 22:20:21] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 22:20:29] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[14/Oct/2025 22:20:32] "GET /resumes/view/ HTTP/1.1" 200 26203
+[14/Oct/2025 22:20:32] "GET /resumes/file/ HTTP/1.1" 200 98553
+[14/Oct/2025 22:20:36] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 22:26:16] "GET /api/auth/profile/ HTTP/1.1" 200 17350
+Not Found: /favicon.ico
+[14/Oct/2025 22:26:17] "GET /favicon.ico HTTP/1.1" 404 3313
+[14/Oct/2025 22:26:18] "GET / HTTP/1.1" 200 49305
+[14/Oct/2025 22:26:20] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[14/Oct/2025 22:26:23] "GET /interviews/start/ HTTP/1.1" 200 25281
+[14/Oct/2025 22:26:57] "POST /interviews/start/ HTTP/1.1" 302 0
+[14/Oct/2025 22:26:58] "GET /interviews/analysis/ HTTP/1.1" 200 31245
+Company google not found
+[14/Oct/2025 22:49:55] "GET /interviews/coding-round/ HTTP/1.1" 200 26215
+[15/Oct/2025 02:53:11] "GET / HTTP/1.1" 200 49305
+Not Found: /favicon.ico
+[15/Oct/2025 02:53:12] "GET /favicon.ico HTTP/1.1" 404 3313
+[15/Oct/2025 02:53:16] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[15/Oct/2025 02:53:16] "GET / HTTP/1.1" 200 53655
+[15/Oct/2025 02:53:20] "GET /api/auth/login/ HTTP/1.1" 200 31104
+[15/Oct/2025 02:57:04] "GET /api/auth/login/ HTTP/1.1" 200 30760
+Not Found: /favicon.ico
+[15/Oct/2025 02:57:05] "GET /favicon.ico HTTP/1.1" 404 3313
+[15/Oct/2025 02:57:07] "GET /api/auth/signup/ HTTP/1.1" 200 50115
+[15/Oct/2025 02:59:32] "POST /api/auth/signup/ HTTP/1.1" 302 0
+[15/Oct/2025 02:59:33] "GET /api/auth/dashboard/ HTTP/1.1" 200 47440
+[15/Oct/2025 02:59:44] "GET / HTTP/1.1" 200 49311
+[15/Oct/2025 03:00:04] "GET /api/auth/dashboard/ HTTP/1.1" 200 47440
+[15/Oct/2025 03:00:10] "GET /interviews/start/ HTTP/1.1" 200 25281
+[15/Oct/2025 03:02:44] "POST /interviews/start/ HTTP/1.1" 302 0
+[15/Oct/2025 03:02:45] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+Company google not found
+[15/Oct/2025 03:03:20] "GET /interviews/coding-round/ HTTP/1.1" 200 26215
+[15/Oct/2025 03:03:23] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+[15/Oct/2025 03:23:34] "GET / HTTP/1.1" 200 53655
+Not Found: /bins/
+[15/Oct/2025 03:45:53] "GET /bins/ HTTP/1.1" 404 3295
+Not Found: /bin/
+[15/Oct/2025 03:52:48] "GET /bin/ HTTP/1.1" 404 3292
+[15/Oct/2025 04:04:29] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+Not Found: /favicon.ico
+[15/Oct/2025 04:04:29] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /backup/
+[15/Oct/2025 04:09:41] "GET /backup/ HTTP/1.1" 404 3301
+Not Found: /favicon.ico
+[15/Oct/2025 04:49:44] "GET /favicon.ico HTTP/1.1" 404 3313
+[15/Oct/2025 05:40:51] "GET / HTTP/1.1" 200 53655
+[15/Oct/2025 05:42:02] "GET / HTTP/1.1" 200 53655
+[15/Oct/2025 05:43:36] code 400, message Bad request version ('À\x14À')
+[15/Oct/2025 05:43:36] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 05:45:22] code 400, message Bad request syntax ('SSH-2.0-Go')
+[15/Oct/2025 05:45:22] "SSH-2.0-Go" 400 -
+[15/Oct/2025 05:46:21] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03§÷á3Í+3\x92¾f\x03DïeRÐ\x86¦ë6±FäÍQw¥R¸¬ÄC\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[15/Oct/2025 05:46:21] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 07:23:51] code 400, message Bad request version ('À\x14À')
+[15/Oct/2025 07:23:51] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 07:23:51] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[15/Oct/2025 07:23:51] "MGLNDD_3.134.77.211_8000" 400 -
+[15/Oct/2025 08:02:38] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[15/Oct/2025 08:02:46] "GET /favicon.ico HTTP/1.1" 404 3313
+[15/Oct/2025 08:02:47] code 505, message Invalid HTTP version (2.0)
+[15/Oct/2025 08:02:47] "PRI * HTTP/2.0" 505 -
+[15/Oct/2025 08:02:54] code 505, message Invalid HTTP version (2.0)
+[15/Oct/2025 08:02:54] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[15/Oct/2025 08:02:58] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /security.txt
+[15/Oct/2025 08:02:59] "GET /security.txt HTTP/1.1" 404 3316
+[15/Oct/2025 09:29:48] code 400, message Bad request version ('À\x14À')
+[15/Oct/2025 09:29:48] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 09:29:48] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03o')
+[15/Oct/2025 09:29:48] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 09:29:48] "GET / HTTP/1.1" 200 53655
+Not Found: /login
+[15/Oct/2025 09:29:48] "GET /login HTTP/1.1" 404 3295
+[15/Oct/2025 12:24:53] "GET / HTTP/1.1" 200 53655
+[15/Oct/2025 12:24:53] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[15/Oct/2025 12:24:53] "MGLNDD_3.134.77.211_8000" 400 -
+[15/Oct/2025 13:23:21] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03½D\x07$\x81\x15£D1»\x06b\x8f\x12á\x15\x8eÎ0H\x05\x97ë^iro¸\x16@ÕB\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[15/Oct/2025 13:23:21] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 13:23:21] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8000')
+[15/Oct/2025 13:23:21] "MGLNDD_3.134.77.211_8000" 400 -
+Not Found: /favicon.ico
+[15/Oct/2025 13:48:22] "GET /favicon.ico HTTP/1.1" 404 3313
+[15/Oct/2025 17:41:02] code 400, message Bad request version ('À\x13À')
+[15/Oct/2025 17:41:02] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 17:41:02] code 400, message Bad request version ('À(À$À\x14À')
+[15/Oct/2025 17:41:02] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 18:00:13] "GET / HTTP/1.1" 200 49305
+[15/Oct/2025 18:00:16] "GET /api/auth/dashboard/ HTTP/1.1" 200 49303
+[15/Oct/2025 18:04:07] "GET /api/auth/dashboard/ HTTP/1.1" 200 49303
+[15/Oct/2025 18:04:11] "GET /interviews/analysis/ HTTP/1.1" 200 31245
+[15/Oct/2025 18:04:26] "GET /interviews/analysis/ HTTP/1.1" 200 31245
+Watching for file changes with StatReloader
+Error: That port is already in use.
+[15/Oct/2025 18:06:22] "GET /interviews/analysis/ HTTP/1.1" 200 31245
+[15/Oct/2025 18:06:25] "GET /interviews/coding-round/ HTTP/1.1" 200 26215
+[15/Oct/2025 18:06:30] "GET /interviews/coding-round/ HTTP/1.1" 302 0
+[15/Oct/2025 18:06:30] "GET /accounts/login/?next=/interviews/coding-round/ HTTP/1.1" 200 30760
+/home/ubuntu/team2-wed-fall25/core/settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 14, 2025 - 21:07:45
+Django version 5.2.7, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+[15/Oct/2025 18:07:55] "GET /interviews/coding-round/ HTTP/1.1" 200 26215
+[15/Oct/2025 18:07:58] "GET /interviews/analysis/ HTTP/1.1" 200 31245
+[15/Oct/2025 18:08:24] "GET /interviews/analysis/ HTTP/1.1" 200 31245
+[15/Oct/2025 18:13:15] "GET /interviews/analysis/ HTTP/1.1" 200 31245
+[15/Oct/2025 18:13:19] "GET /interviews/end/ HTTP/1.1" 200 19517
+[15/Oct/2025 18:13:21] "POST /interviews/end/ HTTP/1.1" 302 0
+[15/Oct/2025 18:13:21] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[15/Oct/2025 18:13:24] "GET /interviews/start/ HTTP/1.1" 200 25281
+[15/Oct/2025 18:14:07] "POST /interviews/start/ HTTP/1.1" 302 0
+[15/Oct/2025 18:14:07] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+Watching for file changes with StatReloader
+[15/Oct/2025 18:17:54] "GET / HTTP/1.1" 200 49305
+[15/Oct/2025 18:17:57] "GET /api/auth/dashboard/ HTTP/1.1" 200 49291
+[15/Oct/2025 18:18:00] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+[15/Oct/2025 18:25:09] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+/home/ubuntu/team2-wed-fall25/core/settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 15, 2025 - 18:17:41
+Django version 5.2.7, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+[15/Oct/2025 18:27:33] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+Watching for file changes with StatReloader
+[15/Oct/2025 18:28:46] "GET / HTTP/1.1" 200 49305
+[15/Oct/2025 18:28:48] "GET /api/auth/dashboard/ HTTP/1.1" 200 49292
+[15/Oct/2025 18:28:51] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+Company google not found
+[15/Oct/2025 18:28:58] "GET /interviews/coding-round/ HTTP/1.1" 200 26215
+[15/Oct/2025 18:33:41] "GET / HTTP/1.1" 200 53655
+[15/Oct/2025 18:33:42,302] - Broken pipe from ('165.154.129.74', 13338)
+[15/Oct/2025 18:33:42] code 400, message Bad request version ('À\x13À')
+[15/Oct/2025 18:33:42] You're accessing the development server over HTTPS, but it only supports HTTP.
+[15/Oct/2025 18:33:42] code 400, message Bad HTTP/0.9 request type ('t3')
+[15/Oct/2025 18:33:42] "t3 12.1.2" 400 -
+Watching for file changes with StatReloader
+Session data corrupted
+[15/Oct/2025 18:36:14] "GET /interviews/coding-round/ HTTP/1.1" 302 0
+Session data corrupted
+[15/Oct/2025 18:36:14] "GET /accounts/login/?next=/interviews/coding-round/ HTTP/1.1" 200 30760
+Session data corrupted
+[15/Oct/2025 18:36:28] "POST /accounts/login/?next=/interviews/coding-round/ HTTP/1.1" 302 0
+Not Found: /interviews/coding-round/
+[15/Oct/2025 18:36:28] "GET /interviews/coding-round/ HTTP/1.1" 404 3848
+[15/Oct/2025 18:36:35] "GET /api/auth/login/ HTTP/1.1" 302 0
+[15/Oct/2025 18:36:35] "GET /api/auth/dashboard/ HTTP/1.1" 200 47438
+[15/Oct/2025 18:36:41] "GET /interviews/start/ HTTP/1.1" 200 25281
+[15/Oct/2025 18:37:07] "POST /interviews/start/ HTTP/1.1" 302 0
+[15/Oct/2025 18:37:07] "GET /interviews/analysis/ HTTP/1.1" 200 31244
+/home/ubuntu/team2-wed-fall25/core/settings.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+October 15, 2025 - 18:36:10
+Django version 5.2.7, using settings 'core.settings'
+Starting development server at http://0.0.0.0:8000/
+Quit the server with CONTROL-C.
+
+WARNING: This is a development server. Do not use it in a production setting. Use a production WSGI or ASGI server instead.
+For more information on production servers see: https://docs.djangoproject.com/en/5.2/howto/deployment/
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1760553529.077280   93533 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[15/Oct/2025 18:38:54] "GET /interviews/analysis/ HTTP/1.1" 200 35614
+Company google not found
+E0000 00:00:1760553549.330713   93533 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[15/Oct/2025 18:39:18] "GET /interviews/coding-round/ HTTP/1.1" 200 26743
+[15/Oct/2025 18:39:53] "GET /interviews/analysis/ HTTP/1.1" 200 35614
+[15/Oct/2025 18:40:32] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[15/Oct/2025 18:40:33] "GET /favicon.ico HTTP/1.1" 404 3313
+[15/Oct/2025 18:40:34] "GET /api/auth/signup/ HTTP/1.1" 200 50115
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+[15/Oct/2025 19:01:02] "GET / HTTP/1.1" 200 49310
+[16/Oct/2025 06:41:29] "GET / HTTP/1.1" 200 53655
+[16/Oct/2025 06:41:29,074] - Broken pipe from ('65.49.1.142', 23554)
+Not Found: /favicon.ico
+[16/Oct/2025 06:41:45] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /http:/api.ipify.org/
+[16/Oct/2025 06:41:47] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[16/Oct/2025 06:41:50] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[16/Oct/2025 06:43:08] "GET / HTTP/1.1" 200 53655
+[16/Oct/2025 06:44:22] "GET / HTTP/1.1" 200 53655
+[16/Oct/2025 06:45:50] code 400, message Bad request version ('À\x14À')
+[16/Oct/2025 06:45:50] You're accessing the development server over HTTPS, but it only supports HTTP.
+[16/Oct/2025 06:47:31] code 400, message Bad request syntax ('SSH-2.0-Go')
+[16/Oct/2025 06:47:31] "SSH-2.0-Go" 400 -
+[16/Oct/2025 06:49:18] code 400, message Bad request version ('À\x14À')
+[16/Oct/2025 06:49:18] You're accessing the development server over HTTPS, but it only supports HTTP.
+[16/Oct/2025 10:09:59] code 400, message Bad request version ('À\x14À')
+[16/Oct/2025 10:09:59] You're accessing the development server over HTTPS, but it only supports HTTP.
+[16/Oct/2025 10:09:59] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8001')
+[16/Oct/2025 10:09:59] "MGLNDD_3.134.77.211_8001" 400 -
+[16/Oct/2025 11:22:49] code 400, message Bad request version ('À#À¬À®À+À')
+[16/Oct/2025 11:22:49] You're accessing the development server over HTTPS, but it only supports HTTP.
+[16/Oct/2025 11:22:58] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[16/Oct/2025 11:37:08] "GET /favicon.ico HTTP/1.1" 404 3313
+[16/Oct/2025 13:35:35] code 400, message Bad request version ('À#À¬À®À+À')
+[16/Oct/2025 13:35:35] You're accessing the development server over HTTPS, but it only supports HTTP.
+[16/Oct/2025 13:35:38] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[16/Oct/2025 13:44:24] "GET /favicon.ico HTTP/1.1" 404 3313
+[16/Oct/2025 15:04:19] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[16/Oct/2025 15:04:19] "GET /favicon.ico HTTP/1.1" 404 3313
+[16/Oct/2025 15:04:21] "GET /api/auth/signup/ HTTP/1.1" 200 50115
+[16/Oct/2025 15:05:00] "POST /api/auth/signup/ HTTP/1.1" 200 50225
+[16/Oct/2025 15:05:06] "GET /api/auth/login/ HTTP/1.1" 200 30760
+[16/Oct/2025 15:05:18] "POST /api/auth/login/ HTTP/1.1" 200 31435
+[16/Oct/2025 15:05:36] "POST /api/auth/login/ HTTP/1.1" 302 0
+[16/Oct/2025 15:05:36] "GET /api/auth/dashboard/ HTTP/1.1" 200 47438
+[16/Oct/2025 15:05:44] "GET /resumes/view/ HTTP/1.1" 200 26257
+[16/Oct/2025 15:05:44] "GET /resumes/file/ HTTP/1.1" 200 63979
+[16/Oct/2025 15:06:03] "POST /resumes/update/ HTTP/1.1" 200 60
+[16/Oct/2025 15:06:03] "GET /resumes/view/ HTTP/1.1" 200 26212
+[16/Oct/2025 15:06:03] "GET /resumes/file/ HTTP/1.1" 200 98278
+[16/Oct/2025 15:06:12] "GET /api/auth/dashboard/ HTTP/1.1" 200 47438
+[16/Oct/2025 15:06:14] "GET /interviews/start/ HTTP/1.1" 200 25281
+[16/Oct/2025 15:06:42] "POST /interviews/start/ HTTP/1.1" 302 0
+WARNING: All log messages before absl::InitializeLog() is called are written to STDERR
+E0000 00:00:1760627202.539899   99471 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[16/Oct/2025 15:06:48] "GET /interviews/analysis/ HTTP/1.1" 200 35646
+Company amazon not found
+E0000 00:00:1760627226.606258   99471 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+Company amazon not found
+E0000 00:00:1760627233.614335   99455 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[16/Oct/2025 15:07:17] "GET /interviews/coding-round/ HTTP/1.1" 200 26559
+[16/Oct/2025 15:07:23] "GET /interviews/coding-round/ HTTP/1.1" 200 26773
+E0000 00:00:1760627260.610153   99455 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[16/Oct/2025 15:07:43] "POST /interviews/coding-round/ HTTP/1.1" 200 31421
+Company amazon not found
+E0000 00:00:1760627277.231521   99455 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+Error generating questions: Invalid control character at: line 12 column 27 (char 6860)
+[16/Oct/2025 15:08:22] "GET /interviews/coding-round-2/ HTTP/1.1" 200 25393
+E0000 00:00:1760627315.623718   99455 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[16/Oct/2025 15:08:45] "POST /interviews/coding-round-2/ HTTP/1.1" 200 30063
+Error retrieving system design questions: Company matching query does not exist.
+E0000 00:00:1760627341.802802   99455 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[16/Oct/2025 15:09:12] "GET /interviews/system-design/ HTTP/1.1" 200 29759
+E0000 00:00:1760627380.289278   99455 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[16/Oct/2025 15:10:18] "POST /interviews/system-design/ HTTP/1.1" 200 31707
+E0000 00:00:1760627423.770266   99455 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[16/Oct/2025 15:10:31] "GET /interviews/final-analysis/ HTTP/1.1" 200 35611
+[16/Oct/2025 15:11:16] "GET /api/auth/dashboard/ HTTP/1.1" 200 49295
+[16/Oct/2025 15:11:21] "GET /interviews/analysis/ HTTP/1.1" 200 35646
+[16/Oct/2025 15:11:28] "GET /interviews/end/ HTTP/1.1" 200 19517
+[16/Oct/2025 15:11:30] "POST /interviews/end/ HTTP/1.1" 302 0
+[16/Oct/2025 15:11:30] "GET /api/auth/dashboard/ HTTP/1.1" 200 47438
+[16/Oct/2025 15:11:34] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[16/Oct/2025 15:11:34] "GET / HTTP/1.1" 200 53655
+[16/Oct/2025 15:11:36] "GET /admin/ HTTP/1.1" 302 0
+[16/Oct/2025 15:11:36] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 5758
+[16/Oct/2025 15:11:36] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[16/Oct/2025 15:11:36] "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[16/Oct/2025 15:11:36] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[16/Oct/2025 15:11:36] "GET /static/admin/css/login.css HTTP/1.1" 200 951
+[16/Oct/2025 15:11:36] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[16/Oct/2025 15:11:36] "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[16/Oct/2025 15:11:36] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[16/Oct/2025 15:11:36] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[16/Oct/2025 15:11:36] "GET /static/admin/img/icon-alert.svg HTTP/1.1" 200 504
+[16/Oct/2025 15:11:44] "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4173
+[16/Oct/2025 15:11:52] "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4341
+[16/Oct/2025 15:11:58] "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4341
+[16/Oct/2025 15:12:02] "POST /admin/login/?next=/admin/ HTTP/1.1" 200 4341
+[16/Oct/2025 15:12:19] "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[16/Oct/2025 15:12:19] "GET /admin/ HTTP/1.1" 200 11595
+[16/Oct/2025 15:12:19] "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[16/Oct/2025 15:12:20] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[16/Oct/2025 15:12:20] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[16/Oct/2025 15:12:23] "GET /admin/companies/company/add/ HTTP/1.1" 200 14876
+[16/Oct/2025 15:12:23] "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[16/Oct/2025 15:12:23] "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+[16/Oct/2025 15:12:23] "GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+[16/Oct/2025 15:12:23] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+[16/Oct/2025 15:12:23] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:12:23] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+[16/Oct/2025 15:12:23] "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+[16/Oct/2025 15:12:23] "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[16/Oct/2025 15:12:23] "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+[16/Oct/2025 15:12:23] "GET /static/admin/css/widgets.css HTTP/1.1" 200 11973
+[16/Oct/2025 15:12:23] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+[16/Oct/2025 15:12:23] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+[16/Oct/2025 15:12:23] "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[16/Oct/2025 15:12:31] "GET /admin/companies/companydocument/ HTTP/1.1" 200 13399
+[16/Oct/2025 15:12:31] "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+[16/Oct/2025 15:12:31] "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[16/Oct/2025 15:12:31] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:12:31] "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+[16/Oct/2025 15:12:31] "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+[16/Oct/2025 15:12:31] "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[16/Oct/2025 15:12:33] "GET /admin/companies/companydocument/add/ HTTP/1.1" 200 18116
+[16/Oct/2025 15:12:33] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:12:39] "GET /admin/companies/company/ HTTP/1.1" 200 12063
+[16/Oct/2025 15:12:39] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:12:40] "GET /admin/companies/company/add/ HTTP/1.1" 200 14876
+[16/Oct/2025 15:12:40] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:12:43] "GET /admin/companies/company/ HTTP/1.1" 200 12063
+[16/Oct/2025 15:12:43] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:12:46] "GET /admin/companies/companychunk/ HTTP/1.1" 200 12935
+[16/Oct/2025 15:12:46] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:12:48] "GET /admin/interviews/codinground/ HTTP/1.1" 200 19283
+[16/Oct/2025 15:12:48] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:12:48] "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+[16/Oct/2025 15:13:04] "GET /admin/interviews/systemdesignround/ HTTP/1.1" 200 15478
+[16/Oct/2025 15:13:04] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:07] "GET /admin/interviews/interviewsession/ HTTP/1.1" 200 19196
+[16/Oct/2025 15:13:07] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:15] "GET /admin/auth/group/ HTTP/1.1" 200 12055
+[16/Oct/2025 15:13:15] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:16] "GET /admin/authtoken/tokenproxy/ HTTP/1.1" 200 11687
+[16/Oct/2025 15:13:18] "GET /admin/companies/company/ HTTP/1.1" 200 12063
+[16/Oct/2025 15:13:18] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:21] "GET /admin/companies/company/add/ HTTP/1.1" 200 14876
+[16/Oct/2025 15:13:21] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:33] "POST /admin/companies/company/add/ HTTP/1.1" 302 0
+[16/Oct/2025 15:13:33] "GET /admin/companies/company/add/ HTTP/1.1" 200 15114
+[16/Oct/2025 15:13:33] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:44] "POST /admin/companies/company/add/ HTTP/1.1" 302 0
+[16/Oct/2025 15:13:44] "GET /admin/companies/company/add/ HTTP/1.1" 200 15114
+[16/Oct/2025 15:13:44] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:53] "POST /admin/companies/company/add/ HTTP/1.1" 302 0
+[16/Oct/2025 15:13:53] "GET /admin/companies/company/ HTTP/1.1" 200 15238
+[16/Oct/2025 15:13:53] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:56] "GET /admin/companies/companydocument/ HTTP/1.1" 200 13767
+[16/Oct/2025 15:13:56] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:13:58] "GET /admin/companies/companydocument/add/ HTTP/1.1" 200 18230
+[16/Oct/2025 15:13:58] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:14:01] "GET /admin/companies/company/1/change/?_to_field=id HTTP/1.1" 200 15212
+[16/Oct/2025 15:14:01] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:14:04] "GET /admin/companies/companydocument/add/ HTTP/1.1" 200 18230
+[16/Oct/2025 15:14:04] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[16/Oct/2025 15:14:25] "GET /admin/ HTTP/1.1" 200 12678
+[16/Oct/2025 15:14:41] "POST /admin/logout/ HTTP/1.1" 302 0
+[16/Oct/2025 15:14:41] "GET / HTTP/1.1" 200 53655
+[16/Oct/2025 15:14:45] "GET / HTTP/1.1" 200 53655
+[16/Oct/2025 18:53:32] "GET / HTTP/1.1" 200 53655
+[16/Oct/2025 22:10:03] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[16/Oct/2025 22:10:04] "GET /favicon.ico HTTP/1.1" 404 3308
+[17/Oct/2025 00:56:39] "GET / HTTP/1.1" 200 53655
+[17/Oct/2025 00:56:39,924] - Broken pipe from ('184.105.247.254', 39900)
+Not Found: /favicon.ico
+[17/Oct/2025 00:56:59] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /http:/api.ipify.org/
+[17/Oct/2025 00:57:01] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[17/Oct/2025 00:57:03] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[17/Oct/2025 07:45:30] "GET / HTTP/1.1" 200 53655
+[17/Oct/2025 07:46:54] "GET / HTTP/1.1" 200 53655
+[17/Oct/2025 07:49:02] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03³a\x9cp¨ðA¨0\x8aÕ¨\x02ex¥égý\x9e¦ªE0Å\x06\x7fa¬\x94ëÊ\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[17/Oct/2025 07:49:02] You're accessing the development server over HTTPS, but it only supports HTTP.
+[17/Oct/2025 07:50:06] code 400, message Bad request syntax ('SSH-2.0-Go')
+[17/Oct/2025 07:50:06] "SSH-2.0-Go" 400 -
+[17/Oct/2025 07:51:06] code 400, message Bad request version ('\x07Þ¾ûr\x05')
+[17/Oct/2025 07:51:06] You're accessing the development server over HTTPS, but it only supports HTTP.
+[17/Oct/2025 09:28:22] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03Ý7·ãB\x9dóßÄUýº/EZNérû8\x8a"+MÜ¡\x7fu²o\x8dv\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[17/Oct/2025 09:28:22] You're accessing the development server over HTTPS, but it only supports HTTP.
+Not Found: /api/v2/
+[17/Oct/2025 10:04:38] "GET /api/v2/ HTTP/1.1" 404 3301
+Not Found: /ms/1.0/
+[17/Oct/2025 10:04:39] "GET /ms/1.0/ HTTP/1.1" 404 3301
+[17/Oct/2025 10:04:50] code 400, message Bad request syntax ('\x1b\x01A80')
+[17/Oct/2025 10:04:50] "A80" 400 -
+[17/Oct/2025 10:04:51] "GET / HTTP/1.1" 200 53655
+[17/Oct/2025 16:17:58] code 400, message Bad request syntax ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03[Ô´3Û3?Ær\x8c§p\x11\x9e..\x957w\\m¼\x0eüf½8«gî\x0b')
+[17/Oct/2025 16:17:58] You're accessing the development server over HTTPS, but it only supports HTTP.
+[17/Oct/2025 16:17:58] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8001')
+[17/Oct/2025 16:17:58] "MGLNDD_3.134.77.211_8001" 400 -
+[17/Oct/2025 17:22:06] code 400, message Bad request version ('À#À¬À®À+À')
+[17/Oct/2025 17:22:06] You're accessing the development server over HTTPS, but it only supports HTTP.
+[17/Oct/2025 17:22:09] "GET / HTTP/1.1" 200 53655
+[17/Oct/2025 17:55:26,303] - Broken pipe from ('206.168.34.53', 51888)
+[17/Oct/2025 17:55:31] "GET / HTTP/1.1" 200 53655
+[17/Oct/2025 17:55:32,086] - Broken pipe from ('206.168.34.53', 51934)
+[17/Oct/2025 17:55:47] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[17/Oct/2025 17:55:51] "GET /favicon.ico HTTP/1.1" 404 3313
+[17/Oct/2025 17:55:53] code 505, message Invalid HTTP version (2.0)
+[17/Oct/2025 17:55:53] "PRI * HTTP/2.0" 505 -
+[17/Oct/2025 17:56:04] code 505, message Invalid HTTP version (2.0)
+[17/Oct/2025 17:56:04] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[17/Oct/2025 17:56:05] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /.well-known/security.txt
+[17/Oct/2025 17:56:07] "GET /.well-known/security.txt HTTP/1.1" 404 3352
+[17/Oct/2025 19:06:38] code 400, message Bad request version ('À#À¬À®À+À')
+[17/Oct/2025 19:06:38] You're accessing the development server over HTTPS, but it only supports HTTP.
+[17/Oct/2025 19:06:42] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[17/Oct/2025 19:15:34] "GET /favicon.ico HTTP/1.1" 404 3313
+[17/Oct/2025 22:29:28] code 400, message Bad request version ('À\x14À')
+[17/Oct/2025 22:29:28] You're accessing the development server over HTTPS, but it only supports HTTP.
+[17/Oct/2025 22:29:28] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8001')
+[17/Oct/2025 22:29:28] "MGLNDD_3.134.77.211_8001" 400 -
+[18/Oct/2025 00:15:43] "GET / HTTP/1.1" 200 53655
+[18/Oct/2025 00:41:49] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[18/Oct/2025 02:21:09] "GET /favicon.ico HTTP/1.1" 404 3313
+[18/Oct/2025 03:56:41] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[18/Oct/2025 03:56:56] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /http:/api.ipify.org/
+[18/Oct/2025 03:57:00] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[18/Oct/2025 03:57:02] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[18/Oct/2025 08:26:50] "GET / HTTP/1.1" 200 53655
+[18/Oct/2025 08:28:37] "GET / HTTP/1.1" 200 53655
+[18/Oct/2025 08:30:07] code 400, message Bad request syntax ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03\x00\x83<\x1bÍÁc.±')
+[18/Oct/2025 08:30:07] You're accessing the development server over HTTPS, but it only supports HTTP.
+[18/Oct/2025 08:32:00] code 400, message Bad request syntax ('SSH-2.0-Go')
+[18/Oct/2025 08:32:00] "SSH-2.0-Go" 400 -
+[18/Oct/2025 08:33:48] code 400, message Bad request version ('À\x14À')
+[18/Oct/2025 08:33:48] You're accessing the development server over HTTPS, but it only supports HTTP.
+[18/Oct/2025 12:49:49] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03£JÒ/»7¼±·]¹Iÿ\x88ÅMÒô\x9e_,¯ýÏçMxaÌø\x88ç\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[18/Oct/2025 12:49:49] You're accessing the development server over HTTPS, but it only supports HTTP.
+[18/Oct/2025 18:06:14,001] - Broken pipe from ('167.94.138.183', 36902)
+[18/Oct/2025 18:06:16] code 400, message Bad request version ('À\x14À')
+[18/Oct/2025 18:06:16] You're accessing the development server over HTTPS, but it only supports HTTP.
+[18/Oct/2025 18:06:35,728] - Broken pipe from ('167.94.138.183', 52504)
+[18/Oct/2025 18:06:54] code 400, message Bad request syntax ('ZG\x00\x00\x00\x05\x00+\x0e\x01\x00')
+[18/Oct/2025 18:06:54] "ZG    + " 400 -
+[18/Oct/2025 21:25:05] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[18/Oct/2025 21:25:09] "GET /favicon.ico HTTP/1.1" 404 3313
+[18/Oct/2025 21:25:11] code 505, message Invalid HTTP version (2.0)
+[18/Oct/2025 21:25:11] "PRI * HTTP/2.0" 505 -
+[18/Oct/2025 21:25:26] code 505, message Invalid HTTP version (2.0)
+[18/Oct/2025 21:25:26] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[18/Oct/2025 21:25:28] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /sitemap.xml
+[18/Oct/2025 21:25:33] "GET /sitemap.xml HTTP/1.1" 404 3313
+[18/Oct/2025 22:04:10] "GET / HTTP/1.1" 200 53655
+[18/Oct/2025 22:04:10] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8001')
+[18/Oct/2025 22:04:10] "MGLNDD_3.134.77.211_8001" 400 -
+Not Found: /aaa9
+[18/Oct/2025 22:07:27] "GET /aaa9 HTTP/1.1" 404 3292
+Not Found: /aab8
+[18/Oct/2025 22:07:28] "GET /aab8 HTTP/1.1" 404 3292
+[18/Oct/2025 22:07:28] "GET / HTTP/1.1" 200 53655
+[19/Oct/2025 00:57:06] "GET / HTTP/1.1" 200 53655
+[19/Oct/2025 00:57:06,720] - Broken pipe from ('64.62.156.192', 61262)
+Not Found: /favicon.ico
+[19/Oct/2025 00:57:21] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /http:/api.ipify.org/
+[19/Oct/2025 00:57:25] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[19/Oct/2025 00:57:28] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[19/Oct/2025 02:20:52] "GET / HTTP/1.1" 200 53655
+[19/Oct/2025 02:38:01,879] - Broken pipe from ('45.79.207.252', 36355)
+[19/Oct/2025 02:38:01] "GET / HTTP/1.1" 200 53655
+[19/Oct/2025 02:38:02,088] - Broken pipe from ('45.79.207.252', 36356)
+[19/Oct/2025 03:38:41] code 400, message Bad request version ('À\x14À')
+[19/Oct/2025 03:38:41] You're accessing the development server over HTTPS, but it only supports HTTP.
+[19/Oct/2025 03:38:41] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8001')
+[19/Oct/2025 03:38:41] "MGLNDD_3.134.77.211_8001" 400 -
+[19/Oct/2025 08:21:46] "GET / HTTP/1.1" 200 53655
+[19/Oct/2025 08:23:56] "GET / HTTP/1.1" 200 53655
+[19/Oct/2025 08:26:05] code 400, message Bad request version ('À\x14À')
+[19/Oct/2025 08:26:05] You're accessing the development server over HTTPS, but it only supports HTTP.
+[19/Oct/2025 08:28:43] code 400, message Bad request syntax ('SSH-2.0-Go')
+[19/Oct/2025 08:28:43] "SSH-2.0-Go" 400 -
+[19/Oct/2025 08:30:37] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03èdüy¦1\x04\x01Â\x04\x86\x9fûÞ7Fé\x95\x98âöÔãôÇ7\xadÙ§NY\x88\x00\x00\x1aÀ/À+À\x11À\x07À\x13À')
+[19/Oct/2025 08:30:37] You're accessing the development server over HTTPS, but it only supports HTTP.
+[19/Oct/2025 11:39:25] code 400, message Bad request version ('À\x14À')
+[19/Oct/2025 11:39:25] You're accessing the development server over HTTPS, but it only supports HTTP.
+[19/Oct/2025 11:39:25] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8001')
+[19/Oct/2025 11:39:25] "MGLNDD_3.134.77.211_8001" 400 -
+[19/Oct/2025 13:05:17] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[19/Oct/2025 13:05:17] "GET /favicon.ico HTTP/1.1" 404 3308
+[19/Oct/2025 22:46:45] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[19/Oct/2025 22:46:46] "GET /favicon.ico HTTP/1.1" 404 3313
+[19/Oct/2025 22:46:49] code 505, message Invalid HTTP version (2.0)
+[19/Oct/2025 22:46:49] "PRI * HTTP/2.0" 505 -
+[19/Oct/2025 22:46:57] code 505, message Invalid HTTP version (2.0)
+[19/Oct/2025 22:46:57] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[19/Oct/2025 22:46:59] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /wiki
+[19/Oct/2025 22:47:06] "GET /wiki HTTP/1.1" 404 3292
+[20/Oct/2025 08:12:41,971] - Broken pipe from ('206.168.34.217', 46944)
+[20/Oct/2025 08:12:42] code 400, message Bad request syntax ('\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03?Ñ3')
+[20/Oct/2025 08:12:42] You're accessing the development server over HTTPS, but it only supports HTTP.
+[20/Oct/2025 08:13:00,391] - Broken pipe from ('206.168.34.217', 48104)
+[20/Oct/2025 08:13:22] code 400, message Bad request syntax ('ZG\x00\x00\x00\x05\x00+\x0e\x01\x00')
+[20/Oct/2025 08:13:22] "ZG    + " 400 -
+[20/Oct/2025 08:38:42] "GET / HTTP/1.1" 200 53655
+[20/Oct/2025 08:40:09] "GET / HTTP/1.1" 200 53655
+[20/Oct/2025 08:42:13] code 400, message Bad request version ('À\x14À')
+[20/Oct/2025 08:42:13] You're accessing the development server over HTTPS, but it only supports HTTP.
+[20/Oct/2025 08:44:16] code 400, message Bad request syntax ('SSH-2.0-Go')
+[20/Oct/2025 08:44:16] "SSH-2.0-Go" 400 -
+[20/Oct/2025 08:46:23] code 400, message Bad request version ('À\x14À')
+[20/Oct/2025 08:46:23] You're accessing the development server over HTTPS, but it only supports HTTP.
+[20/Oct/2025 12:47:42] "GET / HTTP/1.1" 200 53655
+[20/Oct/2025 12:52:40] code 400, message Bad request version ('À\x14À')
+[20/Oct/2025 12:52:40] You're accessing the development server over HTTPS, but it only supports HTTP.
+[20/Oct/2025 16:41:04] code 400, message Bad request version ('À\x14À')
+[20/Oct/2025 16:41:04] You're accessing the development server over HTTPS, but it only supports HTTP.
+[20/Oct/2025 16:41:04] code 400, message Bad request syntax ('MGLNDD_3.134.77.211_8001')
+[20/Oct/2025 16:41:04] "MGLNDD_3.134.77.211_8001" 400 -
+[20/Oct/2025 21:52:29] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[20/Oct/2025 21:52:30] "GET /favicon.ico HTTP/1.1" 404 3313
+[21/Oct/2025 00:21:19] code 400, message Bad request version ('ï+s')
+[21/Oct/2025 00:21:19] You're accessing the development server over HTTPS, but it only supports HTTP.
+[21/Oct/2025 00:21:20] code 400, message Bad request version ('À(À$À\x14À')
+[21/Oct/2025 00:21:20] You're accessing the development server over HTTPS, but it only supports HTTP.
+[21/Oct/2025 00:25:46] "GET / HTTP/1.1" 200 53655
+[21/Oct/2025 00:55:25] "GET / HTTP/1.1" 200 53655
+[21/Oct/2025 00:55:25,810] - Broken pipe from ('65.49.20.67', 20614)
+Not Found: /favicon.ico
+[21/Oct/2025 00:55:38] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /http:/api.ipify.org/
+[21/Oct/2025 00:55:41] "GET http://api.ipify.org/?format=json HTTP/1.1" 404 1873
+Not Found: /www.shadowserver.org:443
+[21/Oct/2025 00:55:43] "CONNECT www.shadowserver.org:443 HTTP/1.1" 404 1882
+[21/Oct/2025 01:03:43] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[21/Oct/2025 01:03:44] "GET /favicon.ico HTTP/1.1" 404 3313
+[21/Oct/2025 01:03:47] code 505, message Invalid HTTP version (2.0)
+[21/Oct/2025 01:03:47] "PRI * HTTP/2.0" 505 -
+[21/Oct/2025 01:03:52] code 505, message Invalid HTTP version (2.0)
+[21/Oct/2025 01:03:52] "PRI * HTTP/2.0" 505 -
+Not Found: /favicon.ico
+[21/Oct/2025 01:03:52] "GET /favicon.ico HTTP/1.1" 404 3313
+Not Found: /security.txt
+[21/Oct/2025 01:03:53] "GET /security.txt HTTP/1.1" 404 3316
+[21/Oct/2025 09:05:40] "GET / HTTP/1.1" 200 53655
+[21/Oct/2025 09:07:26] "GET / HTTP/1.1" 200 53655
+[21/Oct/2025 09:08:23] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03£ZÆ\x8bú©Ë')
+[21/Oct/2025 09:08:23] You're accessing the development server over HTTPS, but it only supports HTTP.
+[21/Oct/2025 09:10:01] code 400, message Bad request syntax ('SSH-2.0-Go')
+[21/Oct/2025 09:10:01] "SSH-2.0-Go" 400 -
+[21/Oct/2025 09:11:15] code 400, message Bad request version ('À\x14À')
+[21/Oct/2025 09:11:15] You're accessing the development server over HTTPS, but it only supports HTTP.
+[21/Oct/2025 09:19:43] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[21/Oct/2025 09:19:44] "GET /favicon.ico HTTP/1.1" 404 3308
+[21/Oct/2025 09:54:26] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x00{\x01\x00\x00w\x03\x03êõ°¼\x17\x10')
+[21/Oct/2025 09:54:26] You're accessing the development server over HTTPS, but it only supports HTTP.
+[21/Oct/2025 17:36:03] code 400, message Bad HTTP/0.9 request type ('\x16\x03\x01\x05¨\x01\x00\x05¤\x03\x03kt;\x06®¡ëQîj\x8dÝ\x0fÑ\x9bQ¿·\x19\x80ð')
+[21/Oct/2025 17:36:03] You're accessing the development server over HTTPS, but it only supports HTTP.
+[21/Oct/2025 17:36:09] code 400, message Bad request version ('À\x13À')
+[21/Oct/2025 17:36:09] You're accessing the development server over HTTPS, but it only supports HTTP.
+[21/Oct/2025 17:36:09] "GET / HTTP/1.1" 200 53655
+[21/Oct/2025 17:36:10,204] - Broken pipe from ('45.82.78.103', 45634)
+Not Found: /favicon.ico
+[21/Oct/2025 17:36:24] "GET /favicon.ico HTTP/1.1" 404 3313
+[21/Oct/2025 17:54:17] "GET / HTTP/1.1" 200 53655
+[21/Oct/2025 17:54:17,799] - Broken pipe from ('34.14.118.150', 44962)
+[21/Oct/2025 20:02:19] "GET / HTTP/1.1" 200 53655
+Not Found: /favicon.ico
+[21/Oct/2025 20:02:20] "GET /favicon.ico HTTP/1.1" 404 3313
+[21/Oct/2025 20:02:24] "GET / HTTP/1.1" 200 53655
+[21/Oct/2025 20:03:01] "GET /api/auth/login/ HTTP/1.1" 200 30760
+[21/Oct/2025 20:03:14] "POST /api/auth/login/ HTTP/1.1" 302 0
+[21/Oct/2025 20:03:14] "GET /api/auth/dashboard/ HTTP/1.1" 200 49297
+[21/Oct/2025 20:03:18] "GET /api/auth/dashboard/ HTTP/1.1" 302 0
+[21/Oct/2025 20:03:18] "GET /accounts/login/?next=/api/auth/dashboard/ HTTP/1.1" 200 30760
+[21/Oct/2025 20:03:31] "GET /admin/ HTTP/1.1" 200 12799
+[21/Oct/2025 20:03:31] "GET /static/admin/css/base.css HTTP/1.1" 200 22120
+[21/Oct/2025 20:03:31] "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+[21/Oct/2025 20:03:31] "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+[21/Oct/2025 20:03:31] "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+[21/Oct/2025 20:03:31] "GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+[21/Oct/2025 20:03:31] "GET /static/admin/css/responsive.css HTTP/1.1" 200 16565
+[21/Oct/2025 20:03:31] "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+[21/Oct/2025 20:03:31] "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[21/Oct/2025 20:03:31] "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[21/Oct/2025 20:03:31] "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[21/Oct/2025 20:03:42] "GET /admin/companies/company/ HTTP/1.1" 200 15032
+[21/Oct/2025 20:03:42] "GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+[21/Oct/2025 20:03:42] "GET /static/admin/js/core.js HTTP/1.1" 200 6208
+[21/Oct/2025 20:03:42] "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[21/Oct/2025 20:03:42] "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+[21/Oct/2025 20:03:42] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[21/Oct/2025 20:03:42] "GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+[21/Oct/2025 20:03:42] "GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+[21/Oct/2025 20:03:42] "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[21/Oct/2025 20:03:42] "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+[21/Oct/2025 20:03:42] "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[21/Oct/2025 20:03:42] "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+[21/Oct/2025 20:03:42] "GET /static/admin/js/filters.js HTTP/1.1" 200 978
+[21/Oct/2025 20:03:42] "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[21/Oct/2025 20:03:42] "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+[21/Oct/2025 20:03:45] "GET /admin/companies/company/1/change/ HTTP/1.1" 200 15163
+[21/Oct/2025 20:03:45] "GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+[21/Oct/2025 20:03:45] "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+[21/Oct/2025 20:03:45] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[21/Oct/2025 20:03:46] "GET /static/admin/css/widgets.css HTTP/1.1" 200 11973
+[21/Oct/2025 20:03:46] "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[21/Oct/2025 20:03:49] "GET /admin/companies/company/ HTTP/1.1" 200 15032
+[21/Oct/2025 20:03:57] "GET /admin/companies/companychunk/ HTTP/1.1" 200 13303
+[21/Oct/2025 20:03:57] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[21/Oct/2025 20:03:57] "GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+[21/Oct/2025 20:03:59] "GET /admin/companies/companydocument/ HTTP/1.1" 200 13767
+[21/Oct/2025 20:03:59] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+[21/Oct/2025 20:04:04] "GET /admin/companies/companydocument/add/ HTTP/1.1" 200 18230
+[21/Oct/2025 20:04:04] "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Internal Server Error: /admin/companies/companydocument/add/
+Traceback (most recent call last):
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 264, in connect
+    sock = self.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/retry.py", line 46, in call_with_retry
+    return do()
+           ^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 265, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            ^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 627, in _connect
+    raise err
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 615, in _connect
+    sock.connect(socket_address)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 127, in reconnect_on_error
+    yield
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 177, in _consume_from
+    self._pubsub.subscribe(key)
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/client.py", line 916, in subscribe
+    ret_val = self.execute_command("SUBSCRIBE", *new_channels.keys())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/client.py", line 749, in execute_command
+    self.connection = self.connection_pool.get_connection(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 1086, in get_connection
+    connection.connect()
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 270, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 264, in connect
+    sock = self.retry.call_with_retry(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/retry.py", line 46, in call_with_retry
+    return do()
+           ^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 265, in <lambda>
+    lambda: self._connect(), lambda error: self.disconnect(error)
+            ^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 627, in _connect
+    raise err
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 615, in _connect
+    sock.connect(socket_address)
+ConnectionRefusedError: [Errno 111] Connection refused
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/kombu/connection.py", line 472, in _reraise_as_library_errors
+    yield
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/app/base.py", line 797, in send_task
+    self.backend.on_task_call(P, task_id)
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 373, in on_task_call
+    self.result_consumer.consume_from(task_id)
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 169, in consume_from
+    return self.start(task_id)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 147, in start
+    self._consume_from(initial_task_id)
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 176, in _consume_from
+    with self.reconnect_on_error():
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 130, in reconnect_on_error
+    self._ensure(self._reconnect_pubsub, ())
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 384, in ensure
+    return retry_over_time(
+           ^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/kombu/utils/functional.py", line 318, in retry_over_time
+    return fun(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/backends/redis.py", line 106, in _reconnect_pubsub
+    metas = self.backend.client.mget(self.subscribed_to)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/commands/core.py", line 2015, in mget
+    return self.execute_command("MGET", *args, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/client.py", line 533, in execute_command
+    conn = self.connection or pool.get_connection(command_name, **options)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 1086, in get_connection
+    connection.connect()
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/redis/connection.py", line 270, in connect
+    raise ConnectionError(self._error_message(e))
+redis.exceptions.ConnectionError: Error 111 connecting to localhost:6379. Connection refused.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/contrib/admin/sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1984, in add_view
+    return self.changeform_view(request, None, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1843, in changeform_view
+    return self._changeform_view(request, object_id, form_url, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1894, in _changeform_view
+    self.save_model(request, new_object, form, not add)
+  File "/home/ubuntu/team2-wed-fall25-deploy/companies/admin.py", line 30, in save_model
+    ingest_company_document.delay(obj.pk)
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/app/task.py", line 444, in delay
+    return self.apply_async(args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/app/task.py", line 594, in apply_async
+    return app.send_task(
+           ^^^^^^^^^^^^^^
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/app/base.py", line 795, in send_task
+    with P.connection._reraise_as_library_errors():
+  File "/usr/lib/python3.12/contextlib.py", line 158, in __exit__
+    self.gen.throw(value)
+  File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/kombu/connection.py", line 476, in _reraise_as_library_errors
+    raise ConnectionError(str(exc)) from exc
+kombu.exceptions.OperationalError: Error 111 connecting to localhost:6379. Connection refused.
+[21/Oct/2025 20:04:50] "POST /admin/companies/companydocument/add/ HTTP/1.1" 500 312789
+[21/Oct/2025 20:04:56] "GET /admin/companies/companydocument/add/ HTTP/1.1" 200 18230
+[21/Oct/2025 20:05:03] "GET /admin/companies/companydocument/ HTTP/1.1" 200 13767
+[21/Oct/2025 20:05:04] "GET /admin/companies/companychunk/ HTTP/1.1" 200 13303
+[21/Oct/2025 20:05:04] "GET /admin/companies/company/ HTTP/1.1" 200 15032
+[21/Oct/2025 20:05:05] "GET /admin/ HTTP/1.1" 200 12678
+[21/Oct/2025 20:05:06] "GET /api/auth/dashboard/ HTTP/1.1" 200 49297
+[21/Oct/2025 20:06:18] "GET /resumes/view/ HTTP/1.1" 200 26203
+[21/Oct/2025 20:06:18] "GET /resumes/file/ HTTP/1.1" 200 98553
+[21/Oct/2025 20:06:35] "POST /resumes/update/ HTTP/1.1" 200 60
+[21/Oct/2025 20:06:35] "GET /resumes/view/ HTTP/1.1" 200 26202
+[21/Oct/2025 20:06:36] "GET /resumes/file/ HTTP/1.1" 200 194587
+[21/Oct/2025 20:06:45] "GET /api/auth/dashboard/ HTTP/1.1" 200 49297
+E0000 00:00:1761077212.682974  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:06:58] "GET /interviews/analysis/ HTTP/1.1" 200 35202
+[21/Oct/2025 20:07:16] "GET /interviews/end/ HTTP/1.1" 200 19517
+[21/Oct/2025 20:07:17] "POST /interviews/end/ HTTP/1.1" 302 0
+[21/Oct/2025 20:07:17] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[21/Oct/2025 20:07:23] "GET /interviews/start/ HTTP/1.1" 200 25281
+[21/Oct/2025 20:08:33] "POST /interviews/start/ HTTP/1.1" 302 0
+E0000 00:00:1761077313.524374  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:08:40] "GET /interviews/analysis/ HTTP/1.1" 200 36525
+No coding chunks found for company microsoft
+E0000 00:00:1761077358.331184  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:09:26] "GET /interviews/coding-round/ HTTP/1.1" 200 26733
+E0000 00:00:1761077400.850885  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:10:03] "POST /interviews/coding-round/ HTTP/1.1" 200 31242
+E0000 00:00:1761077416.837850  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:10:18] "POST /interviews/coding-round/ HTTP/1.1" 200 31452
+No coding chunks found for company microsoft
+E0000 00:00:1761077425.286026  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:10:42] "GET /interviews/coding-round-2/ HTTP/1.1" 200 26247
+E0000 00:00:1761077472.224556  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:11:14] "POST /interviews/coding-round-2/ HTTP/1.1" 200 30407
+No system design chunks found for company microsoft
+E0000 00:00:1761077480.026223  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:11:26] "GET /interviews/system-design/ HTTP/1.1" 200 29752
+E0000 00:00:1761077509.309608  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:11:53] "POST /interviews/system-design/ HTTP/1.1" 200 34341
+E0000 00:00:1761077523.445016  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:12:09] "GET /interviews/final-analysis/ HTTP/1.1" 200 35154
+[21/Oct/2025 20:12:38] "GET /api/auth/dashboard/ HTTP/1.1" 200 49294
+[21/Oct/2025 20:12:54] "GET /interviews/end/ HTTP/1.1" 200 19520
+[21/Oct/2025 20:12:57] "POST /interviews/end/ HTTP/1.1" 302 0
+[21/Oct/2025 20:12:57] "GET /api/auth/dashboard/ HTTP/1.1" 200 47434
+[21/Oct/2025 20:12:59] "GET /api/auth/logout/ HTTP/1.1" 302 0
+[21/Oct/2025 20:12:59] "GET / HTTP/1.1" 200 53655
+[21/Oct/2025 20:13:03] "GET /api/auth/signup/ HTTP/1.1" 200 55490
+[21/Oct/2025 20:14:07] "POST /api/auth/signup/ HTTP/1.1" 200 50253
+[21/Oct/2025 20:14:58] "POST /api/auth/signup/ HTTP/1.1" 200 50253
+[21/Oct/2025 20:15:33] "POST /api/auth/signup/ HTTP/1.1" 302 0
+[21/Oct/2025 20:15:34] "GET /api/auth/dashboard/ HTTP/1.1" 200 47438
+[21/Oct/2025 20:15:47] "GET /interviews/start/ HTTP/1.1" 200 25281
+[21/Oct/2025 20:16:35] "POST /interviews/start/ HTTP/1.1" 302 0
+E0000 00:00:1761077795.455661  143930 alts_credentials.cc:93] ALTS creds ignored. Not running on GCP and untrusted ALTS is not enabled.
+[21/Oct/2025 20:16:44] "GET /interviews/analysis/ HTTP/1.1" 200 37010
+[21/Oct/2025 20:16:54] "GET /interviews/product-sense/ HTTP/1.1" 200 24764
+[21/Oct/2025 20:17:02] "GET /api/auth/dashboard/ HTTP/1.1" 200 49295
