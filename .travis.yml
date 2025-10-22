@@ -12,6 +12,8 @@ script:
 
 after_success:
   - coveralls
+  - coveralls --verbose
+
 
 deploy:
   provider: script
