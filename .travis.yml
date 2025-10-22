@@ -1,12 +1,29 @@
+language: python
+python:
+  - "3.11"  # or whatever version your Django app uses
+
+# Install dependencies if needed
+install:
+  - pip install -r requirements.txt
+
+# Run tests (optional, but Travis likes it)
+script:
+  - python manage.py check
+
+# Deployment
 deploy:
   provider: script
   skip_cleanup: true
   script: |
     echo "Starting deployment..."
-    
+
     # Decode the deploy key and set permissions
     echo "$DEPLOY_KEY" | base64 -d > travis_deploy_key
     chmod 600 travis_deploy_key
+
+    # Debug: check key size
+    echo "Decoded key size:"
+    wc -c travis_deploy_key
 
     # SSH into EC2
     ssh -i travis_deploy_key -o StrictHostKeyChecking=no ubuntu@$EC2_HOST << 'EOF'
@@ -37,5 +54,6 @@ deploy:
       echo "Restarting Gunicorn..."
       sudo systemctl restart gunicorn || echo "Failed to restart gunicorn"
 EOF
+
   on:
     branch: LeBranch
