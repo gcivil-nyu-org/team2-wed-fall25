@@ -1,13 +1,14 @@
 #!/bin/bash
 set -e
+set -x   # <--- enables verbose mode
 
 echo "🚀 Deploying to EC2..."
-
-# Write Travis CI's deploy key to a temporary file
+echo "Testing SSH connection..."
 echo "$DEPLOY_KEY" > travis_temp_key
 chmod 600 travis_temp_key
 
-# SSH into EC2 and pull the latest code
+ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST "echo '✅ SSH connected successfully'" || echo "❌ SSH connection failed"
+
 ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << 'EOF'
   cd ~/team2-wed-fall25-deploy
   git fetch origin LeBranch
@@ -19,5 +20,4 @@ ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << 'EOF'
   sudo systemctl restart gunicorn || echo "gunicorn not restarted"
 EOF
 
-# Clean up key
 rm -f travis_temp_key
