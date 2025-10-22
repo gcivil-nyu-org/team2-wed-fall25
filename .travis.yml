@@ -2,31 +2,57 @@ language: python
 python:
   - "3.10"
 
+# Cache pip to speed up builds
+cache: pip
+
 # Install dependencies
 install:
   - pip install -r requirements.txt
 
-# Run tests (skipped if none exist)
+# Run tests
 script:
+  - echo "Running tests..."
   - python manage.py test || echo "No tests yet"
 
-# Before deploying: decode SSH key and configure agent
-before_deploy:
-  - echo "$DEPLOY_KEY" | base64 --decode > /tmp/deploy_key
-  - chmod 600 /tmp/deploy_key
-  - eval "$(ssh-agent -s)"
-  - ssh-add /tmp/deploy_key
-
-# Deployment configuration
+# Deployment
 deploy:
   provider: script
+  skip_cleanup: true
   script: |
-    ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST "
-      cd ~/team2-wed-fall25-deploy &&
-      git pull origin main &&
-      source venv/bin/activate &&
-      python manage.py migrate &&
-      sudo systemctl restart gunicorn
-    "
+    echo "Starting deployment..."
+    
+    # Decode the deploy key and set permissions
+    echo "$DEPLOY_KEY" | base64 -d > travis_deploy_key
+    chmod 600 travis_deploy_key
+
+    # SSH into EC2
+    ssh -i travis_deploy_key -o StrictHostKeyChecking=no ubuntu@$EC2_HOST << 'EOF'
+      echo "Connected to EC2 as $(whoami)"
+      cd ~/team2-wed-fall25-deploy || exit 1
+      echo "Current directory: $(pwd)"
+      
+      # Pull latest code
+      git fetch origin
+      git reset --hard origin/main
+
+      # Activate virtual environment
+      if [ -f "venv/bin/activate" ]; then
+          source venv/bin/activate
+          echo "Virtualenv activated"
+      else
+          echo "Virtualenv not found! Exiting..."
+          exit 1
+      fi
+
+      # Apply migrations
+      python manage.py migrate
+
+      # Collect static files (optional)
+      python manage.py collectstatic --noinput
+
+      # Restart Gunicorn
+      echo "Restarting Gunicorn..."
+      sudo systemctl restart gunicorn || echo "Failed to restart gunicorn"
+EOF
   on:
     branch: main
