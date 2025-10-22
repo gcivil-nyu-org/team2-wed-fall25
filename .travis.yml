@@ -2,15 +2,31 @@ language: python
 python:
   - "3.10"
 
+# Install dependencies
 install:
   - pip install -r requirements.txt
 
+# Run tests (skipped if none exist)
 script:
-  - echo "Running tests..."
   - python manage.py test || echo "No tests yet"
 
+# Before deploying: decode SSH key and configure agent
+before_deploy:
+  - echo "$DEPLOY_KEY" | base64 --decode > /tmp/deploy_key
+  - chmod 600 /tmp/deploy_key
+  - eval "$(ssh-agent -s)"
+  - ssh-add /tmp/deploy_key
+
+# Deployment configuration
 deploy:
   provider: script
-  script: bash deploy.sh
+  script: |
+    ssh -o StrictHostKeyChecking=no ubuntu@$EC2_HOST "
+      cd ~/team2-wed-fall25-deploy &&
+      git pull origin main &&
+      source venv/bin/activate &&
+      python manage.py migrate &&
+      sudo systemctl restart gunicorn
+    "
   on:
-    branch: LeBranch
+    branch: main
