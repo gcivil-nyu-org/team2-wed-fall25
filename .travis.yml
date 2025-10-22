@@ -5,6 +5,8 @@ python:
 # Install dependencies if needed
 install:
   - pip install -r requirements.txt
+  - pip install coverage coveralls
+
 
 # Run tests (optional, but Travis likes it)
 script:
