@@ -1,23 +1,49 @@
 #!/bin/bash
-set -e
-set -x   # <--- enables verbose mode
+set -e   # Exit immediately if any command fails
+set -x   # Print each command as it runs
 
-echo "🚀 Deploying to EC2..."
-echo "Testing SSH connection..."
-echo "$DEPLOY_KEY" > travis_temp_key
+echo "🚀 Starting deployment to EC2..."
+
+# Decode the base64 deploy key and set permissions
+echo "$DEPLOY_KEY" | base64 -d > travis_temp_key
 chmod 600 travis_temp_key
 
-ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST "echo '✅ SSH connected successfully'" || echo "❌ SSH connection failed"
+# Test SSH connection
+echo "🔑 Testing SSH connection..."
+ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST "echo '✅ SSH connection successful'" 
 
-ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << 'EOF'
-  cd ~/team2-wed-fall25-deploy
+# Run deployment commands on EC2
+ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << EOF
+  echo "📂 Navigating to project directory..."
+  cd ~/team2-wed-fall25-deploy || { echo "❌ Directory not found"; exit 1; }
+
+  echo "🔄 Pulling latest code from LeBranch..."
   git fetch origin LeBranch
   git reset --hard origin/LeBranch
-  source venv/bin/activate || echo "no venv found"
+
+  echo "🐍 Activating virtual environment..."
+  if [ -f "venv/bin/activate" ]; then
+      source venv/bin/activate
+      echo "✅ Virtualenv activated"
+  else
+      echo "❌ Virtualenv not found, exiting"
+      exit 1
+  fi
+
+  echo "📦 Installing dependencies..."
   pip install -r requirements.txt
-  python manage.py migrate --noinput || echo "no migrate step"
-  python manage.py collectstatic --noinput || echo "no static step"
-  sudo systemctl restart gunicorn || echo "gunicorn not restarted"
+
+  echo "🗄️ Applying migrations..."
+  python manage.py migrate --noinput
+
+  echo "🖼️ Collecting static files..."
+  python manage.py collectstatic --noinput
+
+  echo "🔁 Restarting Gunicorn..."
+  sudo systemctl restart gunicorn
+  echo "✅ Deployment finished successfully"
 EOF
 
+# Cleanup: remove the temporary key
 rm -f travis_temp_key
+echo "🧹 Temporary key removed"
