@@ -1,61 +1,31 @@
 language: python
 python:
-  - "3.11"  # or whatever version your Django app uses
+  - "3.11"
 
-# Install dependencies if needed
 install:
   - pip install -r requirements.txt
   - pip install coverage coveralls
 
-
-# Run tests (optional, but Travis likes it)
 script:
-  - python manage.py check
+  - coverage run manage.py test
 
-# Deployment
+after_success:
+  - coveralls
+
 deploy:
   provider: script
   skip_cleanup: true
   script: |
-    echo "Starting deployment..."
-
-    # Decode the deploy key and set permissions
     echo "$DEPLOY_KEY" | base64 -d > travis_deploy_key
     chmod 600 travis_deploy_key
-
-    # Debug: check key size
-    echo "Decoded key size:"
-    wc -c travis_deploy_key
-
-    # SSH into EC2
     ssh -i travis_deploy_key -o StrictHostKeyChecking=no ubuntu@$EC2_HOST << 'EOF'
-      echo "Connected to EC2 as $(whoami)"
-      cd ~/team2-wed-fall25-deploy || exit 1
-      echo "Current directory: $(pwd)"
-      
-      # Pull latest code from LeBranch
+      cd ~/team2-wed-fall25-deploy
       git fetch origin LeBranch
       git reset --hard origin/LeBranch
-
-      # Activate virtual environment
-      if [ -f "venv/bin/activate" ]; then
-          source venv/bin/activate
-          echo "Virtualenv activated"
-      else
-          echo "Virtualenv not found! Exiting..."
-          exit 1
-      fi
-
-      # Apply migrations
+      source venv/bin/activate
       python manage.py migrate
-
-      # Collect static files
       python manage.py collectstatic --noinput
-
-      # Restart Gunicorn
-      echo "Restarting Gunicorn..."
-      sudo systemctl restart gunicorn || echo "Failed to restart gunicorn"
+      sudo systemctl restart gunicorn
 EOF
-
   on:
     branch: LeBranch
