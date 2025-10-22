@@ -1,20 +1,3 @@
-language: python
-python:
-  - "3.10"
-
-# Cache pip to speed up builds
-cache: pip
-
-# Install dependencies
-install:
-  - pip install -r requirements.txt
-
-# Run tests
-script:
-  - echo "Running tests..."
-  - python manage.py test || echo "No tests yet"
-
-# Deployment
 deploy:
   provider: script
   skip_cleanup: true
@@ -31,9 +14,9 @@ deploy:
       cd ~/team2-wed-fall25-deploy || exit 1
       echo "Current directory: $(pwd)"
       
-      # Pull latest code
-      git fetch origin
-      git reset --hard origin/main
+      # Pull latest code from LeBranch
+      git fetch origin LeBranch
+      git reset --hard origin/LeBranch
 
       # Activate virtual environment
       if [ -f "venv/bin/activate" ]; then
@@ -47,7 +30,7 @@ deploy:
       # Apply migrations
       python manage.py migrate
 
-      # Collect static files (optional)
+      # Collect static files
       python manage.py collectstatic --noinput
 
       # Restart Gunicorn
@@ -55,4 +38,4 @@ deploy:
       sudo systemctl restart gunicorn || echo "Failed to restart gunicorn"
 EOF
   on:
-    branch: main
+    branch: LeBranch
