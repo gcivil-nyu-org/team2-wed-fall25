@@ -37,4 +37,5 @@ deploy:
       sudo systemctl restart gunicorn
 EOF
   on:
-    branch: LeBranch
+    all_branches: true
+
