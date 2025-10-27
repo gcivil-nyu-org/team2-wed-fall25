@@ -29,8 +29,8 @@ deploy:
     chmod 600 travis_deploy_key
     ssh -i travis_deploy_key -o StrictHostKeyChecking=no ubuntu@$EC2_HOST << 'EOF'
       cd ~/team2-wed-fall25-deploy
-      git fetch origin LeBranch
-      git reset --hard origin/LeBranch
+      git fetch origin Sahil_feature_branch
+      git reset --hard origin/Sahil_feature_branch
       source venv/bin/activate
       python manage.py migrate
       python manage.py collectstatic --noinput
