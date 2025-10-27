@@ -2,7 +2,7 @@ language: python
 python:
   - "3.11"
 
-# Create virtualenv
+# Install dependencies in a virtualenv
 install:
   - python3 -m venv venv
   - source venv/bin/activate
@@ -10,7 +10,7 @@ install:
   - pip install -r requirements.txt
   - pip install coverage coveralls
 
-# Run coverage tests
+# Run tests with coverage
 script:
   - source venv/bin/activate
   - coverage run --source='.' manage.py test
@@ -24,18 +24,6 @@ after_success:
 deploy:
   provider: script
   skip_cleanup: true
-  script: |
-    echo "$DEPLOY_KEY" | base64 -d > travis_deploy_key
-    chmod 600 travis_deploy_key
-    ssh -i travis_deploy_key -o StrictHostKeyChecking=no ubuntu@$EC2_HOST << 'EOF'
-      cd ~/team2-wed-fall25-deploy
-      git fetch origin LeBranch
-      git reset --hard origin/LeBranch
-      source venv/bin/activate
-      python manage.py migrate
-      python manage.py collectstatic --noinput
-      sudo systemctl restart gunicorn
-EOF
+  script: bash deploy.sh
   on:
     all_branches: true
-
