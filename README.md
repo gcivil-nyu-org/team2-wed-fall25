@@ -204,4 +204,6 @@ Access the deployed instance via:
 ## 🧾 License
 This project is licensed under the [MIT License](LICENSE).
 
+[![Build Status](https://app.travis-ci.com/gcivil-nyu-org/team2-wed-fall25.svg?token=wr3jyRhzLkupEBEF3Hyv&branch=develop)](https://app.travis-ci.com/gcivil-nyu-org/team2-wed-fall25)
+
 
