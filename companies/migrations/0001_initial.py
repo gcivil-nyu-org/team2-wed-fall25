@@ -9,62 +9,169 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Company',
+            name="Company",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('slug', models.SlugField(help_text='Company identifier (e.g., amazon, google)', unique=True)),
-                ('name', models.CharField(help_text='Display name', max_length=100)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "slug",
+                    models.SlugField(
+                        help_text="Company identifier (e.g., amazon, google)",
+                        unique=True,
+                    ),
+                ),
+                ("name", models.CharField(help_text="Display name", max_length=100)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
             options={
-                'verbose_name_plural': 'Companies',
-                'ordering': ['name'],
+                "verbose_name_plural": "Companies",
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='CompanyDocument',
+            name="CompanyDocument",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_type', models.CharField(choices=[('CODING', 'Coding Questions'), ('BEHAVIORAL', 'Behavioral Questions'), ('SYSTEM_DESIGN', 'System Design Questions')], max_length=20)),
-                ('file', models.FileField(upload_to=companies.models.company_document_upload_path)),
-                ('status', models.CharField(choices=[('pending', 'Pending'), ('processing', 'Processing'), ('completed', 'Completed'), ('failed', 'Failed')], default='pending', max_length=20)),
-                ('num_chunks', models.IntegerField(default=0, help_text='Number of chunks created')),
-                ('error_message', models.TextField(blank=True, help_text='Error details if failed')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='documents', to='companies.company')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "content_type",
+                    models.CharField(
+                        choices=[
+                            ("CODING", "Coding Questions"),
+                            ("BEHAVIORAL", "Behavioral Questions"),
+                            ("SYSTEM_DESIGN", "System Design Questions"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "file",
+                    models.FileField(
+                        upload_to=companies.models.company_document_upload_path
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("pending", "Pending"),
+                            ("processing", "Processing"),
+                            ("completed", "Completed"),
+                            ("failed", "Failed"),
+                        ],
+                        default="pending",
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "num_chunks",
+                    models.IntegerField(
+                        default=0, help_text="Number of chunks created"
+                    ),
+                ),
+                (
+                    "error_message",
+                    models.TextField(blank=True, help_text="Error details if failed"),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "company",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="documents",
+                        to="companies.company",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
         migrations.CreateModel(
-            name='CompanyChunk',
+            name="CompanyChunk",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_type', models.CharField(choices=[('CODING', 'Coding Questions'), ('BEHAVIORAL', 'Behavioral Questions'), ('SYSTEM_DESIGN', 'System Design Questions')], max_length=20)),
-                ('text', models.TextField(help_text='The actual text content')),
-                ('metadata', models.JSONField(default=dict, help_text='Additional metadata (page_num, chunk_index, etc.)')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chunks', to='companies.company')),
-                ('document', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chunks', to='companies.companydocument')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "content_type",
+                    models.CharField(
+                        choices=[
+                            ("CODING", "Coding Questions"),
+                            ("BEHAVIORAL", "Behavioral Questions"),
+                            ("SYSTEM_DESIGN", "System Design Questions"),
+                        ],
+                        max_length=20,
+                    ),
+                ),
+                ("text", models.TextField(help_text="The actual text content")),
+                (
+                    "metadata",
+                    models.JSONField(
+                        default=dict,
+                        help_text="Additional metadata (page_num, chunk_index, etc.)",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                (
+                    "company",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="chunks",
+                        to="companies.company",
+                    ),
+                ),
+                (
+                    "document",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="chunks",
+                        to="companies.companydocument",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['document', 'id'],
+                "ordering": ["document", "id"],
             },
         ),
         migrations.AddIndex(
-            model_name='companydocument',
-            index=models.Index(fields=['company', 'content_type'], name='companies_c_company_1326f8_idx'),
+            model_name="companydocument",
+            index=models.Index(
+                fields=["company", "content_type"],
+                name="companies_c_company_1326f8_idx",
+            ),
         ),
         migrations.AddIndex(
-            model_name='companychunk',
-            index=models.Index(fields=['company', 'content_type'], name='companies_c_company_be2ba0_idx'),
+            model_name="companychunk",
+            index=models.Index(
+                fields=["company", "content_type"],
+                name="companies_c_company_be2ba0_idx",
+            ),
         ),
     ]

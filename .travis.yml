@@ -1,0 +1,24 @@
+language: python
+python:
+  - "3.12"
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - black --check .
+  - flake8 .
+  - coverage run --source='.' manage.py test
+  - coverage report -m
+  
+after_success:
+  - echo "TRAVIS_EVENT_TYPE=$TRAVIS_EVENT_TYPE"
+  - echo "TRAVIS_BRANCH=$TRAVIS_BRANCH"
+  - echo "TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG"
+  - echo "TRAVIS_BUILD_NUMBER=$TRAVIS_BUILD_NUMBER"
+  - COVERALLS_NOISY=true coveralls --service=travis-pro -v
+  - coveralls --finish || true
+
+branches:
+  only:
+    - main

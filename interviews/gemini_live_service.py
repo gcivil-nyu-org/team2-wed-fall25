@@ -2,6 +2,7 @@
 Gemini Live API service for audio-to-audio interview.
 Handles initialization and configuration for Live session.
 """
+
 import logging
 from django.conf import settings
 import google.generativeai as genai
@@ -14,35 +15,41 @@ class GeminiLiveService:
     Service for initializing and configuring Gemini Live sessions
     for behavioral + resume interviews.
     """
-    
+
     def __init__(self):
         """Initialize Gemini Live API"""
         if settings.GEMINI_API_KEY:
             genai.configure(api_key=settings.GEMINI_API_KEY)
         else:
             logger.error("GEMINI_API_KEY not configured")
-    
-    def build_system_prompt(self, company_name, resume_text, behavioral_document_text, user_type='swe_ng'):
+
+    def build_system_prompt(
+        self, company_name, resume_text, behavioral_document_text, user_type="swe_ng"
+    ):
         """
         Build the system prompt for the live interview.
-        
+
         Args:
             company_name (str): Company name for context
             resume_text (str): Extracted resume text
             behavioral_document_text (str): Full text from one behavioral document
             user_type (str): User type ('swe_ng' or 'pm_ng')
-            
+
         Returns:
             str: System prompt for Gemini
         """
         # Truncate behavioral document to stay within token budget (max 3000 chars)
-        behavioral_context = behavioral_document_text[:3000] if behavioral_document_text else "No company-specific questions available."
-        
+        behavioral_context = (
+            behavioral_document_text[:3000]
+            if behavioral_document_text
+            else "No company-specific questions available."
+        )
+
         # Truncate resume to key sections (max 2000 chars)
         resume_excerpt = resume_text[:2000] if resume_text else "No resume available."
-        
+
         # Role-specific guidance
-        if user_type == 'pm_ng':
+        if user_type == "pm_ng":
             role_context = """You are an expert PM behavioral interviewer conducting a live interview for a Product Manager position at {company_name}.
 
 FOCUS AREAS FOR PM INTERVIEWS:
@@ -61,7 +68,7 @@ FOCUS AREAS FOR SWE INTERVIEWS:
 - Handling technical challenges
 - Code quality and best practices
 - Learning and adaptation"""
-        
+
         prompt = f"""{role_context}
 
 CANDIDATE RESUME (Key Excerpts):
@@ -96,11 +103,11 @@ AUDIO GUIDELINES:
 IMPORTANT: After the 2nd question-answer exchange, output a final summary in TEXT (not audio) and end the session.
 """
         return prompt
-    
+
     def get_model_config(self):
         """
         Get the configuration for Gemini Live model.
-        
+
         Returns:
             dict: Model configuration
         """
@@ -114,7 +121,6 @@ IMPORTANT: After the 2nd question-answer exchange, output a final summary in TEX
                             "voice_name": "Puck"  # Professional voice
                         }
                     }
-                }
-            }
+                },
+            },
         }
-
