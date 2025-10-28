@@ -13,12 +13,11 @@ echo "🔑 Testing SSH connection..."
 ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST "echo '✅ SSH connection successful'" 
 
 # Run deployment commands on EC2
-ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << 'EOF'
-  set -e
+ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << EOF
   echo "📂 Navigating to project directory..."
   cd ~/team2-wed-fall25-deploy || { echo "❌ Directory not found"; exit 1; }
 
-  echo "🔄 Fetching latest code from LeBranch..."
+  echo "🔄 Pulling latest code from LeBranch..."
   git fetch origin LeBranch
   git reset --hard origin/LeBranch
 
@@ -45,6 +44,6 @@ ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << 'EOF'
   echo "✅ Deployment finished successfully"
 EOF
 
-# Cleanup temporary key
+# Cleanup: remove the temporary key
 rm -f travis_temp_key
 echo "🧹 Temporary key removed"
