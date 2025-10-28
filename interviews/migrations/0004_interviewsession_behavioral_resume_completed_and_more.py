@@ -6,18 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('interviews', '0003_systemdesignround_codinground_question_number_and_more'),
+        ("interviews", "0003_systemdesignround_codinground_question_number_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='interviewsession',
-            name='behavioral_resume_completed',
-            field=models.BooleanField(default=False, help_text='Behavioral + Resume live interview completed'),
+            model_name="interviewsession",
+            name="behavioral_resume_completed",
+            field=models.BooleanField(
+                default=False, help_text="Behavioral + Resume live interview completed"
+            ),
         ),
         migrations.AddField(
-            model_name='interviewsession',
-            name='behavioral_resume_summary',
-            field=models.TextField(blank=True, help_text='Final summary from live behavioral interview', null=True),
+            model_name="interviewsession",
+            name="behavioral_resume_summary",
+            field=models.TextField(
+                blank=True,
+                help_text="Final summary from live behavioral interview",
+                null=True,
+            ),
         ),
     ]

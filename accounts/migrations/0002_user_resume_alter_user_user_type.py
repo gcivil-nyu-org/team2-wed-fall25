@@ -7,18 +7,30 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0001_initial'),
+        ("accounts", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='resume',
-            field=models.FileField(blank=True, help_text='Upload your resume (PDF format recommended)', null=True, upload_to=accounts.models.user_resume_upload_path),
+            model_name="user",
+            name="resume",
+            field=models.FileField(
+                blank=True,
+                help_text="Upload your resume (PDF format recommended)",
+                null=True,
+                upload_to=accounts.models.user_resume_upload_path,
+            ),
         ),
         migrations.AlterField(
-            model_name='user',
-            name='user_type',
-            field=models.CharField(choices=[('swe_ng', 'Software Engineer New Grad'), ('pm_ng', 'Product Manager New Grad')], default='swe_ng', max_length=10),
+            model_name="user",
+            name="user_type",
+            field=models.CharField(
+                choices=[
+                    ("swe_ng", "Software Engineer New Grad"),
+                    ("pm_ng", "Product Manager New Grad"),
+                ],
+                default="swe_ng",
+                max_length=10,
+            ),
         ),
     ]
