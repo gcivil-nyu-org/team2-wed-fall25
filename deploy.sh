@@ -15,7 +15,8 @@ ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST "echo '�
 # Run deployment commands on EC2
 ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << EOF
   echo "📂 Navigating to project directory..."
-  cd ~/team2-wed-fall25-deploy || { echo "❌ Directory not found"; exit 1; }
+  cd ~/deploy-LeBranch
+
 
   echo "🔄 Pulling latest code from LeBranch..."
   git fetch origin LeBranch
