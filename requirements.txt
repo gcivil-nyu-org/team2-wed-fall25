@@ -1,5 +1,5 @@
 Django==5.2.7
-# psycopg2-binary==2.9.7
+psycopg2-binary==2.9.7
 python-decouple==3.8
 Pillow==10.0.1
 djangorestframework==3.14.0
