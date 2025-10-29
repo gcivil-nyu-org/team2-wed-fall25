@@ -1,0 +1,12 @@
+SECRET_KEY=django-insecure-^z2)4q#x5)k-qkzg4i%y-=6a%71f_44%8pbegpur82ic1f=pr=
+DEBUG=True
+ALLOWED_HOSTS=18.117.90.95,localhost,127.0.0.1
+
+DB_NAME=mydb
+DB_USER=myuser
+DB_PASSWORD=mypassword
+DB_HOST=localhost
+DB_PORT=5432
+
+REDIS_URL=redis://localhost:6379/0
+OPENAI_API_KEY=
