@@ -4,27 +4,35 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('companies', '0001_initial'),
+        ("companies", "0001_initial"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='companydocument',
-            name='num_chunks',
+            model_name="companydocument",
+            name="num_chunks",
         ),
         migrations.AddField(
-            model_name='companydocument',
-            name='extracted_text',
-            field=models.TextField(blank=True, help_text='Extracted text from PDF'),
+            model_name="companydocument",
+            name="extracted_text",
+            field=models.TextField(blank=True, help_text="Extracted text from PDF"),
         ),
         migrations.AlterField(
-            model_name='companydocument',
-            name='content_type',
-            field=models.CharField(choices=[('CODING', 'Coding Questions'), ('BEHAVIORAL', 'Behavioral Questions'), ('SYSTEM_DESIGN', 'System Design Questions'), ('PRODUCT_SENSE', 'Product Sense Cases'), ('ANALYTICAL', 'Analytical & Strategy Questions')], max_length=20),
+            model_name="companydocument",
+            name="content_type",
+            field=models.CharField(
+                choices=[
+                    ("CODING", "Coding Questions"),
+                    ("BEHAVIORAL", "Behavioral Questions"),
+                    ("SYSTEM_DESIGN", "System Design Questions"),
+                    ("PRODUCT_SENSE", "Product Sense Cases"),
+                    ("ANALYTICAL", "Analytical & Strategy Questions"),
+                ],
+                max_length=20,
+            ),
         ),
         migrations.DeleteModel(
-            name='CompanyChunk',
+            name="CompanyChunk",
         ),
     ]

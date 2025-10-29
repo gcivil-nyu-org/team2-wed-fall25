@@ -5,28 +5,76 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('interviews', '0001_initial'),
+        ("interviews", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CodingRound',
+            name="CodingRound",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('base_question', models.TextField(help_text='Base question retrieved from RAG')),
-                ('generated_questions', models.JSONField(default=list, help_text='List of generated questions with solutions')),
-                ('selected_question_index', models.IntegerField(default=0, help_text='Index of the question shown to user')),
-                ('user_code', models.TextField(blank=True, help_text='User submitted code')),
-                ('language', models.CharField(choices=[('python', 'Python'), ('java', 'Java'), ('javascript', 'JavaScript'), ('cpp', 'C++')], default='python', max_length=20)),
-                ('evaluation_result', models.JSONField(blank=True, help_text='AI evaluation results', null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('session', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='coding_round', to='interviews.interviewsession')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "base_question",
+                    models.TextField(help_text="Base question retrieved from RAG"),
+                ),
+                (
+                    "generated_questions",
+                    models.JSONField(
+                        default=list,
+                        help_text="List of generated questions with solutions",
+                    ),
+                ),
+                (
+                    "selected_question_index",
+                    models.IntegerField(
+                        default=0, help_text="Index of the question shown to user"
+                    ),
+                ),
+                (
+                    "user_code",
+                    models.TextField(blank=True, help_text="User submitted code"),
+                ),
+                (
+                    "language",
+                    models.CharField(
+                        choices=[
+                            ("python", "Python"),
+                            ("java", "Java"),
+                            ("javascript", "JavaScript"),
+                            ("cpp", "C++"),
+                        ],
+                        default="python",
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "evaluation_result",
+                    models.JSONField(
+                        blank=True, help_text="AI evaluation results", null=True
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "session",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="coding_round",
+                        to="interviews.interviewsession",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-created_at'],
+                "ordering": ["-created_at"],
             },
         ),
     ]

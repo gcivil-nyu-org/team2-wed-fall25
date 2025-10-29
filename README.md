@@ -1,5 +1,8 @@
 # Team Project repo
+[![Build Status](https://app.travis-ci.com/gcivil-nyu-org/team2-wed-fall25.svg?token=wr3jyRhzLkupEBEF3Hyv&branch=develop)](https://app.travis-ci.com/gcivil-nyu-org/team2-wed-fall25)
 [![Coverage Status](https://coveralls.io/repos/github/gcivil-nyu-org/team2-wed-fall25/badge.svg?branch=LeBranch)](https://coveralls.io/github/gcivil-nyu-org/team2-wed-fall25?branch=LeBranch)
+
+
 # 🧠 AcePrep — AI-Powered Interview Preparation Platform
 
 **AcePrep** is an AI-driven interview preparation portal designed to help candidates practice **coding**, **system design**, and **behavioral** interviews through personalized, company-specific experiences.  
@@ -203,5 +206,6 @@ Access the deployed instance via:
 
 ## 🧾 License
 This project is licensed under the [MIT License](LICENSE).
+
 
 

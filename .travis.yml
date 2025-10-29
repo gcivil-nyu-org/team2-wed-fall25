@@ -13,7 +13,10 @@ install:
 # Run tests with coverage
 script:
   - source venv/bin/activate
+  - black --check .
+  - flake8 .
   - coverage run --source='.' manage.py test
+  - coverage report -m
 
 # Send coverage to Coveralls
 after_success:
