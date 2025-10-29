@@ -15,12 +15,12 @@ ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST "echo '�
 # Run deployment commands on EC2
 ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << EOF
   echo "📂 Navigating to project directory..."
-  cd ~/deploy-LeBranch
+  cd ~/team2-wed-fall25 || { echo "❌ Directory not found"; exit 1; }
 
 
   echo "🔄 Pulling latest code from LeBranch..."
-  git fetch origin LeBranch
-  git reset --hard origin/LeBranch
+  git fetch origin develop
+  git reset --hard origin/develop
 
   echo "🐍 Activating virtual environment..."
   if [ -f "venv/bin/activate" ]; then
