@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("interviews", "0004_interviewsession_behavioral_resume_completed_and_more"),
     ]

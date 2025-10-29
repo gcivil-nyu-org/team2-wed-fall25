@@ -2,14 +2,15 @@
 WebSocket consumers for live interview features.
 """
 
-import json
 import asyncio
+import json
 import logging
-from channels.generic.websocket import AsyncWebsocketConsumer
-from channels.db import database_sync_to_async
-from django.contrib.auth.models import AnonymousUser
+
 import google.generativeai as genai
+from channels.db import database_sync_to_async
+from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
 
 logger = logging.getLogger(__name__)
 

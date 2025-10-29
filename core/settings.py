@@ -3,8 +3,8 @@ Django settings for AcePrep project.
 """
 
 from pathlib import Path
+
 from decouple import config
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -84,6 +84,7 @@ CHANNEL_LAYERS = {"default": {"BACKEND": "channels.layers.InMemoryChannelLayer"}
 # Database with PostgreSQL
 DATABASES = {
 <<<<<<< HEAD
+<<<<<<< HEAD
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'team2db',
@@ -100,6 +101,15 @@ DATABASES = {
         "HOST": config("DB_HOST", default="localhost"),
         "PORT": config("DB_PORT", default="5432"),
 >>>>>>> c9b6576 (added black and flake8)
+=======
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "team2db",
+        "USER": "team2user",
+        "PASSWORD": "team2pass",
+        "HOST": "localhost",
+        "PORT": "5432",
+>>>>>>> f74a0aa (Format code, fix flake8, add dev tooling and coverage)
     }
 }
 

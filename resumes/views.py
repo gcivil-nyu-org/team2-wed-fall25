@@ -1,11 +1,13 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+import os
+
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import FileResponse, Http404, JsonResponse
+from django.shortcuts import redirect, render
 from django.views.decorators.clickjacking import xframe_options_sameorigin
 from django.views.decorators.http import require_http_methods
+
 from accounts.forms import ResumeUpdateForm
-import os
 
 
 @login_required

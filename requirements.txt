@@ -1,5 +1,5 @@
 Django==5.2.7
-psycopg2-binary==2.9.7
+# psycopg2-binary==2.9.7
 python-decouple==3.8
 Pillow==10.0.1
 djangorestframework==3.14.0
@@ -16,3 +16,13 @@ google-generativeai==0.8.3
 channels==4.0.0
 daphne==4.0.0
 websockets==12.0
+
+# Development and tooling
+black==24.10.0
+isort==5.13.2
+autoflake==2.3.1
+flake8==7.1.1
+# Pin click to avoid Windows incompatibilities with Black
+click==8.1.7
+coverage==7.6.4
+coveralls==4.0.1

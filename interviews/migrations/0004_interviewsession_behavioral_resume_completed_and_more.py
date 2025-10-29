@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("interviews", "0003_systemdesignround_codinground_question_number_and_more"),
     ]

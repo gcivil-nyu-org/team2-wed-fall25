@@ -1,7 +1,7 @@
-from django.contrib import admin
 from django import forms
+from django.contrib import admin, messages
+
 from .models import Company, CompanyDocument
-from django.contrib import messages
 
 
 class CompanyDocumentAdminForm(forms.ModelForm):
@@ -85,8 +85,9 @@ class CompanyDocumentAdmin(admin.ModelAdmin):
                     return
 
                 # Extract text from PDF before saving
-                from PyPDF2 import PdfReader
                 import io
+
+                from PyPDF2 import PdfReader
 
                 # Read the uploaded file
                 uploaded_file.seek(0)

@@ -2,12 +2,13 @@
 Gemini AI service for resume analysis and interview preparation.
 """
 
-import google.generativeai as genai
-from django.conf import settings
-from PyPDF2 import PdfReader
 import io
 import json
 import logging
+
+import google.generativeai as genai
+from django.conf import settings
+from PyPDF2 import PdfReader
 
 logger = logging.getLogger(__name__)
 
@@ -83,7 +84,7 @@ class GeminiAnalyzer:
         try:
             # Create the prompt for Gemini
             prompt = f"""
-{(    "You are an expert technical recruiter analyzing a candidate's resume for a "    f"position at {company_name}.")}
+{(f"You are an expert technical recruiter analyzing a candidate's resume for a position at {company_name}.")}
 
 Job Description:
 {job_description}
@@ -507,28 +508,28 @@ FEEDBACK:
 
         try:
             prompt = f"""
-You are a technical recruiter providing final interview feedback for a candidate interviewing at {session_data.get('company', 'a tech company')}.
+You are a technical recruiter providing final interview feedback for a candidate interviewing at {session_data.get("company", "a tech company")}.
 
 Here are the results from all interview sections:
 
 **Resume Analysis:**
-- Fit Score: {session_data.get('resume_score', 0)}/100
-- Analysis: {session_data.get('resume_analysis', 'N/A')}
+- Fit Score: {session_data.get("resume_score", 0)}/100
+- Analysis: {session_data.get("resume_analysis", "N/A")}
 
 **Coding Question 1:**
-- Score: {session_data.get('coding_q1_score', 0)}/100
-- Correctness: {session_data.get('coding_q1_correct', 'N/A')}
+- Score: {session_data.get("coding_q1_score", 0)}/100
+- Correctness: {session_data.get("coding_q1_correct", "N/A")}
 
 **Coding Question 2:**
-- Score: {session_data.get('coding_q2_score', 0)}/100
-- Correctness: {session_data.get('coding_q2_correct', 'N/A')}
+- Score: {session_data.get("coding_q2_score", 0)}/100
+- Correctness: {session_data.get("coding_q2_correct", "N/A")}
 
 **System Design:**
-- Score: {session_data.get('system_design_score', 0)}/100
-- Quality: {session_data.get('system_design_quality', 'N/A')}
+- Score: {session_data.get("system_design_score", 0)}/100
+- Quality: {session_data.get("system_design_quality", "N/A")}
 
 **Behavioral + Resume Interview:**
-- Summary: {session_data.get('behavioral_resume_summary', 'Not completed')}
+- Summary: {session_data.get("behavioral_resume_summary", "Not completed")}
 
 Based on all the above sections, provide:
 
@@ -611,24 +612,24 @@ ANALYSIS:
 
         try:
             prompt = f"""
-You are a product management recruiter providing final interview feedback for a PM candidate interviewing at {session_data.get('company', 'a tech company')}.
+You are a product management recruiter providing final interview feedback for a PM candidate interviewing at {session_data.get("company", "a tech company")}.
 
 Here are the results from all interview sections:
 
 **Resume Analysis:**
-- Fit Score: {session_data.get('resume_score', 0)}/100
-- Analysis: {session_data.get('resume_analysis', 'N/A')}
+- Fit Score: {session_data.get("resume_score", 0)}/100
+- Analysis: {session_data.get("resume_analysis", "N/A")}
 
 **Product Sense:**
-- Score: {session_data.get('product_sense_score', 0)}/100
-- Quality: {session_data.get('product_sense_quality', 'N/A')}
+- Score: {session_data.get("product_sense_score", 0)}/100
+- Quality: {session_data.get("product_sense_quality", "N/A")}
 
 **Analytical + Strategy:**
-- Score: {session_data.get('analytical_strategy_score', 0)}/100
-- Quality: {session_data.get('analytical_strategy_quality', 'N/A')}
+- Score: {session_data.get("analytical_strategy_score", 0)}/100
+- Quality: {session_data.get("analytical_strategy_quality", "N/A")}
 
 **Behavioral + Resume Interview:**
-- Summary: {session_data.get('behavioral_resume_summary', 'Not completed')}
+- Summary: {session_data.get("behavioral_resume_summary", "Not completed")}
 
 Based on all the above sections, provide:
 

@@ -21,7 +21,7 @@ class RAGService:
         Returns:
             str: Extracted text from random document, or empty string if not found
         """
-        from companies.models import CompanyDocument, Company
+        from companies.models import Company, CompanyDocument
 
         try:
             # Get company
@@ -62,7 +62,7 @@ class RAGService:
         Returns:
             str: Extracted text from random document, or empty string
         """
-        from companies.models import CompanyDocument, Company
+        from companies.models import Company, CompanyDocument
 
         try:
             company = Company.objects.get(slug=company_slug)
@@ -100,7 +100,7 @@ class RAGService:
         Returns:
             str: Extracted text from random document, or empty string
         """
-        from companies.models import CompanyDocument, Company
+        from companies.models import Company, CompanyDocument
 
         try:
             company = Company.objects.get(slug=company_slug)
@@ -138,7 +138,7 @@ class RAGService:
         Returns:
             str: Extracted text from random document, or empty string
         """
-        from companies.models import CompanyDocument, Company
+        from companies.models import Company, CompanyDocument
 
         try:
             company = Company.objects.get(slug=company_slug)
@@ -176,7 +176,7 @@ class RAGService:
         Returns:
             str: Extracted text from random document, or empty string
         """
-        from companies.models import CompanyDocument, Company
+        from companies.models import Company, CompanyDocument
 
         try:
             company = Company.objects.get(slug=company_slug)

@@ -1,6 +1,4 @@
 from django.db import models
-from django.conf import settings
-import os
 
 
 def company_document_upload_path(instance, filename):

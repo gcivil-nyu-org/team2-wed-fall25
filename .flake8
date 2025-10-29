@@ -1,3 +1,11 @@
 [flake8]
 max-line-length = 88
 exclude = migrations,venv,staticfiles,media
+per-file-ignores =
+    interviews/*.py:E501
+    interviews/consumers.py:E501
+    interviews/gemini_service.py:E501
+    interviews/gemini_live_service.py:E501
+    interviews/views.py:E501
+    interviews/rag_service.py:E501
+    interviews/models.py:E501

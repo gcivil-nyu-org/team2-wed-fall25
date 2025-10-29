@@ -3,6 +3,7 @@ WebSocket URL routing for interviews app.
 """
 
 from django.urls import re_path
+
 from . import consumers
 
 websocket_urlpatterns = [

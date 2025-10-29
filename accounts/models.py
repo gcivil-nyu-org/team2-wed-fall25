@@ -1,6 +1,5 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-import os
 
 
 def user_resume_upload_path(instance, filename):

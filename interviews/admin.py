@@ -1,10 +1,11 @@
 from django.contrib import admin
+
 from .models import (
-    InterviewSession,
-    CodingRound,
-    SystemDesignRound,
-    ProductSenseRound,
     AnalyticalStrategyRound,
+    CodingRound,
+    InterviewSession,
+    ProductSenseRound,
+    SystemDesignRound,
 )
 
 

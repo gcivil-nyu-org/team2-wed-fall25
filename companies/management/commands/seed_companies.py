@@ -3,6 +3,7 @@ Management command to seed initial company data.
 """
 
 from django.core.management.base import BaseCommand
+
 from companies.models import Company
 
 

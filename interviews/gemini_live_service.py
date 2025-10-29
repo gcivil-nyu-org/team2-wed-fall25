@@ -4,8 +4,9 @@ Handles initialization and configuration for Live session.
 """
 
 import logging
-from django.conf import settings
+
 import google.generativeai as genai
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 

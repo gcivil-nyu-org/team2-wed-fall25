@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
-from .models import InterviewSession
+from django.shortcuts import get_object_or_404, redirect, render
+
 from .gemini_service import GeminiAnalyzer
+from .models import InterviewSession
 
 
 @login_required
@@ -217,7 +218,7 @@ def coding_round_view(request):
         )
 
         # Save to coding round
-        coding_round.base_question = f"Generated from company-specific document"
+        coding_round.base_question = "Generated from company-specific document"
         coding_round.generated_questions = generated_questions
         coding_round.selected_question_index = 0  # Show first question
         coding_round.save()
@@ -269,12 +270,12 @@ def coding_round_view(request):
                 if evaluation.get("is_correct"):
                     messages.success(
                         request,
-                        f'Great job! Your solution is correct. Score: {evaluation.get("score")}/100',
+                        f"Great job! Your solution is correct. Score: {evaluation.get('score')}/100",
                     )
                 else:
                     messages.info(
                         request,
-                        f'Your solution needs improvement. Score: {evaluation.get("score")}/100',
+                        f"Your solution needs improvement. Score: {evaluation.get('score')}/100",
                     )
             else:
                 print("DEBUG: No selected question found!")  # Debug
@@ -336,7 +337,7 @@ def product_sense_view(request):
         )
 
         # Save to product sense round
-        product_sense_round.base_case = f"Generated from company-specific document"
+        product_sense_round.base_case = "Generated from company-specific document"
         product_sense_round.generated_case = generated_case
         product_sense_round.save()
 
@@ -381,12 +382,12 @@ def product_sense_view(request):
                 if evaluation.get("is_good"):
                     messages.success(
                         request,
-                        f'Excellent answer! Score: {evaluation.get("score")}/100',
+                        f"Excellent answer! Score: {evaluation.get('score')}/100",
                     )
                 else:
                     messages.info(
                         request,
-                        f'Your answer needs improvement. Score: {evaluation.get("score")}/100',
+                        f"Your answer needs improvement. Score: {evaluation.get('score')}/100",
                     )
             else:
                 messages.error(request, "Could not evaluate: case not found.")
@@ -448,7 +449,7 @@ def analytical_strategy_view(request):
 
         # Save to analytical strategy round
         analytical_strategy_round.base_question = (
-            f"Generated from company-specific document"
+            "Generated from company-specific document"
         )
         analytical_strategy_round.generated_question = generated_question
         analytical_strategy_round.save()
@@ -496,12 +497,12 @@ def analytical_strategy_view(request):
                 if evaluation.get("is_good"):
                     messages.success(
                         request,
-                        f'Excellent answer! Score: {evaluation.get("score")}/100',
+                        f"Excellent answer! Score: {evaluation.get('score')}/100",
                     )
                 else:
                     messages.info(
                         request,
-                        f'Your answer needs improvement. Score: {evaluation.get("score")}/100',
+                        f"Your answer needs improvement. Score: {evaluation.get('score')}/100",
                     )
             else:
                 messages.error(request, "Could not evaluate: question not found.")
@@ -566,7 +567,7 @@ def coding_round_q2_view(request):
         )
 
         # Save to coding round
-        coding_round.base_question = f"Generated from company-specific document"
+        coding_round.base_question = "Generated from company-specific document"
         coding_round.generated_questions = generated_questions
         coding_round.selected_question_index = 0  # Show first question
         coding_round.save()
@@ -609,12 +610,12 @@ def coding_round_q2_view(request):
                 if evaluation.get("is_correct"):
                     messages.success(
                         request,
-                        f'Great job! Your solution is correct. Score: {evaluation.get("score")}/100',
+                        f"Great job! Your solution is correct. Score: {evaluation.get('score')}/100",
                     )
                 else:
                     messages.info(
                         request,
-                        f'Your solution needs improvement. Score: {evaluation.get("score")}/100',
+                        f"Your solution needs improvement. Score: {evaluation.get('score')}/100",
                     )
             else:
                 messages.error(request, "Could not evaluate: question not found.")
@@ -677,7 +678,7 @@ def system_design_view(request):
         )
 
         # Save to system design round
-        system_design_round.base_question = f"Generated from company-specific document"
+        system_design_round.base_question = "Generated from company-specific document"
         system_design_round.generated_question = generated_question
         system_design_round.save()
 
@@ -724,12 +725,12 @@ def system_design_view(request):
                 if evaluation.get("is_correct"):
                     messages.success(
                         request,
-                        f'Excellent design! Score: {evaluation.get("score")}/100',
+                        f"Excellent design! Score: {evaluation.get('score')}/100",
                     )
                 else:
                     messages.info(
                         request,
-                        f'Your design needs improvement. Score: {evaluation.get("score")}/100',
+                        f"Your design needs improvement. Score: {evaluation.get('score')}/100",
                     )
             else:
                 messages.error(request, "Could not evaluate: question not found.")
@@ -880,7 +881,7 @@ def final_analysis_view(request):
 
     elif request.user.user_type == "pm_ng":
         # Check if required PM sections are completed (behavioral is optional)
-        from .models import ProductSenseRound, AnalyticalStrategyRound
+        from .models import AnalyticalStrategyRound, ProductSenseRound
 
         if not (
             session.product_sense_completed and session.analytical_strategy_completed

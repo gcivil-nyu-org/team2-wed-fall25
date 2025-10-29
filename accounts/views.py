@@ -1,17 +1,15 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.urls import reverse
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 from rest_framework import generics, permissions, status
-from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
-from .forms import CustomUserCreationForm, CustomAuthenticationForm
+from rest_framework.response import Response
+
+from .forms import CustomAuthenticationForm, CustomUserCreationForm
 from .models import User
-from .serializers import UserSerializer, UserRegistrationSerializer, LoginSerializer
+from .serializers import LoginSerializer, UserRegistrationSerializer, UserSerializer
 
 
 # Django Views (for frontend)

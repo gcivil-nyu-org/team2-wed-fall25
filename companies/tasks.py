@@ -6,11 +6,11 @@ PDF processing now happens synchronously in the admin save_model() method.
 This file is kept for reference but can be deleted if Celery is not needed elsewhere.
 """
 
-from celery import shared_task
-from django.conf import settings
-from PyPDF2 import PdfReader
 import io
 import logging
+
+from celery import shared_task
+from PyPDF2 import PdfReader
 
 logger = logging.getLogger(__name__)
 
