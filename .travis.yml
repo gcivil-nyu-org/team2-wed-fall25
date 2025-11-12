@@ -14,6 +14,8 @@ install:
 script:
   - source venv/bin/activate
   - coverage run --source='.' manage.py test
+  - coverage report
+  - coveralls
 
 # Send coverage to Coveralls
 after_success:
