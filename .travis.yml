@@ -1,54 +1,46 @@
-# language: python
-# python:
-#   - "3.11"
-
-# # Install dependencies in a virtualenv
-# install:
-#   - python3 -m venv venv
-#   - source venv/bin/activate
-#   - pip install --upgrade pip
-#   - pip install -r requirements.txt
-#   - pip install coverage coveralls
-
-# # Run tests with coverage
-# script:
-#   - source venv/bin/activate
-#   - coverage run --source='.' manage.py test
-
-# # Send coverage to Coveralls
-# after_success:
-#   - source venv/bin/activate
-#   - coveralls --verbose
-
-# # Deploy to EC2
-# deploy:
-#   provider: script
-#   skip_cleanup: true
-#   script: bash deploy.sh
-#   on:
-#     all_branches: true
-
 language: python
 python:
   - "3.11"
 
-services:
-  - postgresql
+services: ########
+  - postgresql  ########
 
+
+
+#############
 before_script:
   - psql -c 'create database test_db;' -U postgres
   - psql -c "ALTER USER postgres PASSWORD 'postgres';" -U postgres
   - export DJANGO_SETTINGS_MODULE=core.settings
   - export DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db
   - python manage.py migrate
+#############
 
+
+# Install dependencies in a virtualenv
 install:
+  - python3 -m venv venv
+  - source venv/bin/activate
+  - pip install --upgrade pip
   - pip install -r requirements.txt
   - pip install coverage coveralls
 
+# Run tests with coverage
 script:
+  - source venv/bin/activate
   - coverage run --source='.' manage.py test
 
+# Send coverage to Coveralls
 after_success:
-  - coveralls
+  - source venv/bin/activate
+  - coveralls --verbose
+
+# Deploy to EC2
+deploy:
+  provider: script
+  skip_cleanup: true
+  script: bash deploy.sh
+  on:
+    all_branches: true
+
 
