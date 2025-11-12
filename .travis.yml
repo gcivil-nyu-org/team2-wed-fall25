@@ -1,10 +1,14 @@
+dist: jammy
 language: python
 python:
   - "3.11"
+
 services:
   - postgresql
 
 before_script:
+  - sudo service postgresql start
+  - sleep 3
   - psql -c 'CREATE DATABASE test_db;' -U postgres
   - psql -c "ALTER USER postgres PASSWORD 'postgres';" -U postgres
   - export DJANGO_SETTINGS_MODULE=core.settings
@@ -19,10 +23,9 @@ install:
   - pip install coverage coveralls
 
 script:
-  - . venv/bin/activate && coverage run --source='.' manage.py test
-
-after_success:
-  - . venv/bin/activate && coveralls --verbose
+  - . venv/bin/activate
+  - coverage run --source='.' manage.py test
+  - coveralls --verbose
 
 deploy:
   provider: script
