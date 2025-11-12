@@ -1,7 +1,6 @@
 language: python
 python:
   - "3.11"
-#############
 services:
   - postgresql
 
@@ -11,7 +10,7 @@ before_script:
   - export DJANGO_SETTINGS_MODULE=core.settings
   - export DATABASE_URL=postgres://postgres:postgres@localhost:5432/test_db
   - python manage.py migrate
-###########
+
 install:
   - python3 -m venv venv
   - . venv/bin/activate
