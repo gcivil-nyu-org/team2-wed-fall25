@@ -2,7 +2,9 @@ language: python
 python:
   - "3.11"
 
-# Install dependencies in a virtualenv
+env:
+  - CI=true
+
 install:
   - python3 -m venv venv
   - source venv/bin/activate
@@ -10,17 +12,14 @@ install:
   - pip install -r requirements.txt
   - pip install coverage coveralls
 
-# Run tests with coverage
 script:
   - source venv/bin/activate
   - coverage run --source='.' manage.py test
 
-# Send coverage to Coveralls
 after_success:
   - source venv/bin/activate
   - coveralls --verbose
 
-# Deploy to EC2
 deploy:
   provider: script
   skip_cleanup: true
