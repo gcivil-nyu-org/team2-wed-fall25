@@ -176,3 +176,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/accounts/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
+
+################################################################################################################
+# Use SQLite for CI (Travis, GitHub Actions)
+if os.environ.get("CI"):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'ci.sqlite3',
+        }
+    }
+###############################################################################################################
