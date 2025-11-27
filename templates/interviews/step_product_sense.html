@@ -275,7 +275,10 @@
             {% if case %}
             <div class="alert alert-primary" style="border-radius: 12px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(102, 126, 234, 0.05)); border: 1px solid rgba(102, 126, 234, 0.2);">
                 <h5 class="fw-bold mb-3">Case Scenario</h5>
-                <p style="font-size: 1rem; line-height: 1.6; white-space: pre-wrap;">{{ case }}</p>
+                <div style="font-size: 1rem; line-height: 1.8;">
+                    <div id="case-markdown" style="display: none;">{{ case }}</div>
+                    <div id="case-rendered"></div>
+                </div>
             </div>
             
             <form method="post" class="mt-4">
@@ -287,9 +290,30 @@
                         id="user_answer" 
                         class="form-control" 
                         rows="15" 
-                        placeholder="Provide your comprehensive answer covering user needs, problem framing, metrics, prioritization, and trade-offs..."
+                        placeholder="Provide your comprehensive answer covering user needs, problem framing, metrics, prioritization, and trade-offs... Or use 'Start Speaking' to dictate."
                         {% if product_sense_round.is_submitted %}disabled{% endif %}
                     >{% if product_sense_round.user_answer %}{{ product_sense_round.user_answer }}{% endif %}</textarea>
+                    
+                    {% if not product_sense_round.is_submitted %}
+                    <!-- Speech Control Buttons -->
+                    <div style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 10px;">
+                        <button type="button" class="btn btn-outline-primary" id="startSpeechBtn" title="Start voice input">
+                            <i class="fas fa-microphone me-2"></i>Start Speaking
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" id="stopSpeechBtn" style="display: none;" title="Stop voice input">
+                            <i class="fas fa-stop me-2"></i>Stop Speaking
+                        </button>
+                        <span id="speechStatus" style="display: none; align-self: center; color: #059669; font-weight: 600;">
+                            <i class="fas fa-circle-notch fa-spin me-2"></i>Listening...
+                        </span>
+                    </div>
+                    
+                    <!-- Speech Recognition Status -->
+                    <div id="speechNotSupported" style="display: none; text-align: left; padding: 10px; background: #fef3c7; border: 1px solid #fbbf24; border-radius: 6px; margin-top: 10px;">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <small>Speech recognition is not supported in this browser. Please type your answer.</small>
+                    </div>
+                    {% endif %}
                 </div>
                 
                 {% if not product_sense_round.is_submitted %}
@@ -359,5 +383,241 @@
         </div>
     </div>
 </div>
+
+{% if not product_sense_round.is_submitted %}
+<script>
+    // Speech Recognition (Web Speech API)
+    let recognition = null;
+    let isListening = false;
+    let finalTranscript = '';
+    let interimTranscript = '';
+    
+    const answerTextarea = document.getElementById('user_answer');
+    const startSpeechBtn = document.getElementById('startSpeechBtn');
+    const stopSpeechBtn = document.getElementById('stopSpeechBtn');
+    const speechStatus = document.getElementById('speechStatus');
+    const speechNotSupported = document.getElementById('speechNotSupported');
+    
+    // Initialize Web Speech API
+    function initializeSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            console.warn('Speech recognition not supported');
+            speechNotSupported.style.display = 'block';
+            startSpeechBtn.disabled = true;
+            return false;
+        }
+        
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            console.log('Speech recognition started');
+            isListening = true;
+            startSpeechBtn.style.display = 'none';
+            stopSpeechBtn.style.display = 'inline-block';
+            speechStatus.style.display = 'inline';
+        };
+        
+        recognition.onresult = function(event) {
+            interimTranscript = '';
+            
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript + ' ';
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            
+            // Update textarea with live transcription
+            answerTextarea.value = finalTranscript + interimTranscript;
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            if (event.error === 'no-speech') {
+                return;
+            }
+            stopSpeechRecognition();
+        };
+        
+        recognition.onend = function() {
+            console.log('Speech recognition ended');
+            if (isListening) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.log('Could not restart recognition:', e);
+                    stopSpeechRecognition();
+                }
+            }
+        };
+        
+        return true;
+    }
+    
+    // Start speech recognition
+    function startSpeechRecognition() {
+        if (!recognition) {
+            if (!initializeSpeechRecognition()) {
+                alert('Speech recognition is not available. Please type your answer.');
+                return;
+            }
+        }
+        
+        finalTranscript = answerTextarea.value; // Preserve any existing text
+        interimTranscript = '';
+        
+        try {
+            recognition.start();
+        } catch (e) {
+            console.error('Error starting recognition:', e);
+        }
+    }
+    
+    // Stop speech recognition
+    function stopSpeechRecognition() {
+        if (recognition && isListening) {
+            isListening = false;
+            recognition.stop();
+            startSpeechBtn.style.display = 'inline-block';
+            stopSpeechBtn.style.display = 'none';
+            speechStatus.style.display = 'none';
+            
+            // Clean up final transcript
+            answerTextarea.value = finalTranscript.trim();
+        }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeSpeechRecognition();
+        
+        // Event listeners
+        if (startSpeechBtn) {
+            startSpeechBtn.addEventListener('click', startSpeechRecognition);
+        }
+        if (stopSpeechBtn) {
+            stopSpeechBtn.addEventListener('click', stopSpeechRecognition);
+        }
+    });
+</script>
+{% endif %}
+
+<!-- Markdown rendering script -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    // Configure marked options
+    marked.setOptions({
+        breaks: true,
+        gfm: true,
+        headerIds: true,
+        mangle: false
+    });
+    
+    // Render markdown case
+    document.addEventListener('DOMContentLoaded', function() {
+        // Render case markdown
+        const markdownElement = document.getElementById('case-markdown');
+        const renderedElement = document.getElementById('case-rendered');
+        
+        if (markdownElement && renderedElement) {
+            const markdownText = markdownElement.textContent.trim();
+            if (markdownText) {
+                renderedElement.innerHTML = marked.parse(markdownText);
+                renderedElement.style.fontSize = '15px';
+                renderedElement.style.color = '#1e293b';
+            }
+        }
+    });
+</script>
+
+<style>
+    /* Markdown styling */
+    #case-rendered h1,
+    #case-rendered h2 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 0.5rem;
+    }
+    
+    #case-rendered h3 {
+        color: #475569;
+        font-weight: 600;
+        margin-top: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    #case-rendered h4 {
+        color: #64748b;
+        font-weight: 600;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    #case-rendered p {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+    }
+    
+    #case-rendered ul,
+    #case-rendered ol {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+    }
+    
+    #case-rendered li {
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+    }
+    
+    #case-rendered strong {
+        color: #1e293b;
+        font-weight: 600;
+    }
+    
+    #case-rendered code {
+        background-color: #e2e8f0;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        color: #dc2626;
+    }
+    
+    #case-rendered pre {
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+    }
+    
+    #case-rendered pre code {
+        background-color: transparent;
+        color: inherit;
+        padding: 0;
+    }
+    
+    #case-rendered blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-bottom: 1rem;
+        color: #64748b;
+        font-style: italic;
+    }
+</style>
 {% endblock %}
 

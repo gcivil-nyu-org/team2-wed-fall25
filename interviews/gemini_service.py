@@ -203,22 +203,72 @@ SUGGESTIONS:
 
         try:
             prompt = f"""
-You are a technical interviewer at {company_name}. Below are coding questions \
-commonly asked at {company_name}:
+You are a technical interviewer at {company_name}. Below is a document containing coding question \
+titles/names commonly asked at {company_name}:
 
 {document_text}
 
 Your tasks:
-1. Analyze all the questions above
-2. Select the BEST question that tests core algorithms and data structures
-3. Generate {num_questions} similar questions based on the best one you selected
-4. Provide complete Python solutions for each generated question
+1. **Parse and extract ALL individual question titles** from the document above (e.g., "Rotate Image", \
+"Minimum Window Substring", "Course Schedule", etc.)
+2. **Randomly select {num_questions} DIFFERENT question titles** from the extracted list
+3. **For EACH selected title, create a complete LeetCode-style problem** including:
+   
+   a) **Problem Title**: Use the exact title from the document
+   
+   b) **Problem Description**: Write a clear, detailed problem statement explaining what needs to be solved
+   
+   c) **Examples**: Provide 2-3 example test cases with:
+      - Input (clearly formatted)
+      - Output (expected result)
+      - Explanation (optional, if helpful)
+   
+   d) **Constraints**: List constraints such as:
+      - Input size/range limits (e.g., "1 <= n <= 10^4")
+      - Value ranges (e.g., "-10^9 <= nums[i] <= 10^9")
+      - Expected time/space complexity (e.g., "Try to solve in O(n) time")
+   
+   e) **Edge Cases**: Mention important edge cases to consider (e.g., empty input, single element, \
+all same values, etc.)
+   
+   f) **Solution**: Provide a complete, optimal Python solution with:
+      - Detailed comments explaining the approach
+      - Time and space complexity analysis in comments
+      - Clean, readable code following best practices
+
+4. **IMPORTANT**: Base your questions ONLY on the exact titles from the document. Do NOT invent new \
+question titles. If the document says "Rotate Image", create the standard LeetCode "Rotate Image" problem.
 
 Format your response as a JSON array where each element has:
-- "question": Clear problem statement with example inputs/outputs
-- "solution": Complete Python solution with comments explaining the approach
+- "question": The complete problem (title + description + examples + constraints + edge cases, all \
+formatted as one text block)
+- "solution": Complete optimal Python solution with detailed comments
 
-Make sure each question is different but tests similar concepts.
+Example format for the "question" field:
+\"\"\"
+**Problem: [Title from document]**
+
+[Problem description]
+
+**Example 1:**
+Input: [input]
+Output: [output]
+Explanation: [optional]
+
+**Example 2:**
+Input: [input]
+Output: [output]
+
+**Constraints:**
+- [constraint 1]
+- [constraint 2]
+
+**Edge Cases to Consider:**
+- [edge case 1]
+- [edge case 2]
+\"\"\"
+
+Ensure each of the {num_questions} questions is based on a DIFFERENT title from the document.
 """
 
             response = self.model.generate_content(prompt)
@@ -232,14 +282,31 @@ Make sure each question is different but tests similar concepts.
             if start_idx >= 0 and end_idx > start_idx:
                 json_str = response_text[start_idx:end_idx]
                 questions = json.loads(json_str)
+                logger.info(
+                    f"Successfully generated {len(questions)} coding questions for {company_name}"
+                )
                 return questions[:num_questions]
             else:
                 # Fallback: parse manually or return excerpt from document
                 logger.warning(
-                    "Could not parse JSON from Gemini response, using fallback"
+                    f"Could not parse JSON from Gemini response for {company_name}. "
+                    f"Response text preview: {response_text[:200]}"
                 )
+                # Try to extract question titles from the original document for debugging
+                lines = document_text.split("\n")
+                potential_titles = [
+                    line.strip()
+                    for line in lines[:20]
+                    if line.strip() and len(line.strip()) > 5
+                ]
+                logger.info(
+                    f"Found potential question titles in document: {potential_titles[:10]}"
+                )
+                
                 fallback_question = (
-                    document_text[:500]
+                    f"**Problem: Coding Challenge**\n\n{document_text[:500]}\n\n"
+                    f"**Note**: Question generation failed. Please ensure the document "
+                    f"contains clear question titles."
                     if document_text
                     else "Write a function to solve a coding problem."
                 )
@@ -247,15 +314,55 @@ Make sure each question is different but tests similar concepts.
                     {
                         "question": fallback_question,
                         "solution": (
-                            "Solution not available. Please try regenerating."
+                            "Solution not available. Please regenerate or check document format."
                         ),
                     }
                 ]
 
-        except Exception as e:
-            logger.error(f"Error generating questions: {str(e)}")
+        except json.JSONDecodeError as e:
+            logger.error(
+                f"JSON parsing error for {company_name}: {str(e)}. "
+                f"Raw response preview: {response_text[:300] if 'response_text' in locals() else 'N/A'}"
+            )
+            # Extract question titles from document for debugging
+            lines = document_text.split("\n")
+            potential_titles = [
+                line.strip()
+                for line in lines[:20]
+                if line.strip() and len(line.strip()) > 5
+            ]
+            logger.info(
+                f"Document contains potential titles: {potential_titles[:10]}"
+            )
+            
             fallback_question = (
-                document_text[:500]
+                f"**Problem: Coding Challenge**\n\n{document_text[:500]}\n\n"
+                f"**Note**: Question parsing failed. Document preview shown above."
+                if document_text
+                else "Write a function to solve a coding problem."
+            )
+            return [
+                {
+                    "question": fallback_question,
+                    "solution": f"Error parsing questions: {str(e)}. Please check document format.",
+                }
+            ]
+        except Exception as e:
+            logger.error(f"Error generating questions for {company_name}: {str(e)}")
+            # Try to show what's in the document for debugging
+            lines = document_text.split("\n") if document_text else []
+            potential_titles = [
+                line.strip()
+                for line in lines[:20]
+                if line.strip() and len(line.strip()) > 5
+            ]
+            if potential_titles:
+                logger.info(
+                    f"Document content preview (potential titles): {potential_titles[:10]}"
+                )
+            
+            fallback_question = (
+                f"**Problem: Coding Challenge**\n\n{document_text[:500]}"
                 if document_text
                 else "Write a function to solve a coding problem."
             )
@@ -268,7 +375,8 @@ Make sure each question is different but tests similar concepts.
 
     def select_and_generate_system_design_question(self, document_text, company_name):
         """
-        Select best system design question from document and generate a similar one.
+        Select one actual system design question from document and elaborate it
+        as it would appear in a real interview.
 
         Args:
             document_text (str): Full text from one company document
@@ -299,15 +407,34 @@ commonly asked at {company_name}:
 
 Your tasks:
 1. Analyze all the system design questions above
-2. Select the BEST question that tests scalability, architecture, and design thinking
-3. Generate 1 similar system design question based on the best one you selected
-4. Provide clear evaluation criteria for assessing the answer
+2. Select ONE actual question from the list that best tests scalability, architecture, and design thinking
+3. Elaborate the selected question as it would appear in a real interview by:
+   - Expanding it with clear requirements and functional specifications
+   - Adding realistic constraints (scale, latency, availability, etc.)
+   - Including context about expected usage patterns
+   - Making it interview-ready with specific details
+4. Keep the core question intact - do NOT generate a similar or different question
+5. Provide clear evaluation criteria for assessing the answer
 
 Format your response as a JSON object with:
-- "question": Clear problem statement with requirements and constraints
-- "evaluation_criteria": List of key aspects to evaluate in the answer
+- "question": The elaborated version of the selected question formatted in Markdown with:
+  * A clear title/heading (## Title)
+  * Well-structured sections with headers (### Section Name)
+  * Bullet points for requirements and specifications (- item)
+  * Bold text for emphasis (**text**)
+  * Proper spacing and organization
+  * Structure it like: Title, Prompt/Description, Requirements (with Functional and Non-functional subsections), Context/Usage Patterns, Interview Guidance
+- "evaluation_criteria": List of evaluation criteria, where each criterion is a string formatted as:
+  * "**Criterion Title:** Detailed description/question about what to evaluate"
+  * Each criterion should be comprehensive and specific
+  * Examples:
+    - "**High-Level Architecture:** Does the candidate propose a sensible overall system architecture, identifying core components (e.g., API Gateway, Storage Service, Metadata Service) and their interactions?"
+    - "**Scalability & Performance:** How does the design address millions of users, petabytes of data, and high request rates? Consider strategies like sharding, partitioning, caching, CDN, and load balancing."
+    - "**Data Management:** What storage technologies are chosen? How is data sharded, replicated, and geo-distributed for durability and availability?"
 
-Make sure the question is challenging but appropriate for a new grad/entry-level engineer.
+The question should be well-organized and easy to read, formatted with proper Markdown syntax including headers, bullet points, and bold text for emphasis.
+
+Make sure the elaborated question is challenging but appropriate for a new grad/entry-level engineer.
 """
 
             response = self.model.generate_content(prompt)
@@ -350,7 +477,7 @@ Make sure the question is challenging but appropriate for a new grad/entry-level
                 "evaluation_criteria": ["Scalability", "Design clarity"],
             }
 
-    def evaluate_system_design(self, question, user_answer, evaluation_criteria=None):
+    def evaluate_system_design(self, question, user_answer, evaluation_criteria=None, design_image=None):
         """
         Evaluate user's system design answer.
 
@@ -358,6 +485,7 @@ Make sure the question is challenging but appropriate for a new grad/entry-level
             question (str): The system design question
             user_answer (str): User's submitted answer
             evaluation_criteria (list): Optional list of criteria to evaluate against
+            design_image: Optional image file (Django ImageField) containing architecture diagram
 
         Returns:
             dict: Contains 'is_correct', 'feedback', 'score', 'strengths', 'improvements'
@@ -381,7 +509,10 @@ Make sure the question is challenging but appropriate for a new grad/entry-level
                 else:
                     criteria_text = f"\nEvaluation Criteria:\n{evaluation_criteria}"
 
-            prompt = f"""
+            # Prepare content parts (text + optional image)
+            content_parts = []
+            
+            prompt_text = f"""
 You are an expert system design interviewer evaluating a candidate's answer.
 
 Problem:
@@ -390,7 +521,30 @@ Problem:
 
 Candidate's Answer:
 {user_answer}
-
+"""
+            
+            # Add image if provided
+            if design_image:
+                import PIL.Image
+                
+                # Read the image file
+                # Handle Django ImageField (has .path attribute)
+                if hasattr(design_image, 'path'):
+                    # It's a saved ImageField instance
+                    image = PIL.Image.open(design_image.path)
+                elif hasattr(design_image, 'read'):
+                    # It's a file-like object (uploaded file)
+                    image_bytes = design_image.read()
+                    design_image.seek(0)  # Reset file pointer
+                    image = PIL.Image.open(io.BytesIO(image_bytes))
+                else:
+                    # Fallback: try to open as path string
+                    image = PIL.Image.open(design_image)
+                
+                content_parts.append(image)
+                prompt_text += "\n\nThe candidate has also provided an architecture diagram/image. Please analyze it along with their text answer and consider:\n- How well the diagram illustrates their design\n- Clarity and completeness of the visual representation\n- Alignment between the diagram and written description\n"
+            
+            prompt_text += """
 Please evaluate the candidate's system design answer and provide:
 
 1. **Quality**: Is this a good system design answer? (Yes/No)
@@ -399,6 +553,7 @@ Please evaluate the candidate's system design answer and provide:
    - Consideration of scalability and trade-offs
    - Clear explanation of architecture
    - Handling of edge cases and constraints
+   - Quality of visual diagram (if provided)
 3. **Strengths**: List 2-4 positive aspects of the answer
 4. **Areas for Improvement**: List 2-4 specific suggestions to improve the design
 5. **Detailed Feedback**: Provide 2-3 paragraphs of constructive feedback
@@ -418,8 +573,11 @@ IMPROVEMENTS:
 FEEDBACK:
 [Your detailed feedback here]
 """
-
-            response = self.model.generate_content(prompt)
+            
+            content_parts.append(prompt_text)
+            
+            # Generate content with or without image
+            response = self.model.generate_content(content_parts)
             response_text = response.text
 
             # Parse response
@@ -833,7 +991,8 @@ FEEDBACK:
 
     def select_and_generate_product_sense_case(self, document_text, company_name):
         """
-        Select best product sense case from document and generate a similar one.
+        Select one actual product sense question from document and elaborate it
+        as it would appear in a real interview.
 
         Args:
             document_text (str): Full text from one company document
@@ -863,21 +1022,43 @@ FEEDBACK:
 
         try:
             prompt = f"""
-You are a product management interviewer at {company_name}. Below are product sense cases commonly asked at {company_name}:
+You are a product management interviewer at {company_name}. Below are product sense questions \
+commonly asked at {company_name}:
 
 {document_text}
 
 Your tasks:
-1. Analyze all the product sense cases above
-2. Select the BEST case that tests product thinking, user empathy, and strategic decision-making
-3. Generate 1 similar product sense case based on the best one you selected
-4. Provide clear evaluation criteria for assessing the answer
+1. Parse and extract ALL individual product sense questions from the document above (e.g., "Design an app for an amusement park", \
+"How would you improve Google Chrome?", "Design a product for travel", etc.)
+2. Randomly select ONE actual question from the extracted list
+3. Elaborate the selected question as it would appear in a real interview by:
+   - Expanding it with clear context and problem statement
+   - Adding realistic constraints and considerations
+   - Including what aspects you're looking for in the answer
+   - Making it interview-ready with specific details and guidance
+4. Keep the core question intact - do NOT generate a similar or different question
+5. Provide clear evaluation criteria for assessing the answer
 
 Format your response as a JSON object with:
-- "case": Clear problem statement with context, constraints, and what you're looking for
-- "evaluation_criteria": List of key aspects to evaluate (user-centricity, problem framing, metrics, prioritization, tradeoffs)
+- "case": The elaborated version of the selected question formatted in Markdown with:
+  * A clear title/heading (## Title)
+  * Well-structured sections with headers (### Section Name)
+  * Bullet points for requirements and considerations (- item)
+  * Bold text for emphasis (**text**)
+  * Proper spacing and organization
+  * Structure it like: Title, Problem Statement/Context, What We're Looking For, Key Considerations, Interview Guidance
+- "evaluation_criteria": List of evaluation criteria, where each criterion is a string formatted as:
+  * "**Criterion Title:** Detailed description/question about what to evaluate"
+  * Each criterion should be comprehensive and specific
+  * Examples:
+    - "**User-Centricity:** Does the candidate demonstrate deep understanding of user needs, pain points, and motivations? Do they identify the right user segments?"
+    - "**Problem Framing:** How well does the candidate define and scope the problem? Do they ask clarifying questions and identify root causes?"
+    - "**Metrics & Success Criteria:** What metrics does the candidate propose to measure success? Are they relevant, measurable, and aligned with business goals?"
+    - "**Prioritization & Trade-offs:** Does the candidate demonstrate ability to prioritize features/solutions? Do they discuss trade-offs and make data-driven decisions?"
 
-Make sure the case is challenging but appropriate for a product manager role.
+The case should be well-organized and easy to read, formatted with proper Markdown syntax including headers, bullet points, and bold text for emphasis.
+
+Make sure the elaborated case is challenging but appropriate for a product manager role.
 """
 
             response = self.model.generate_content(prompt)
@@ -1076,7 +1257,8 @@ FEEDBACK:
         self, document_text, company_name
     ):
         """
-        Select best analytical/strategy question from document and generate a similar one.
+        Select one actual analytical/strategy question from document and elaborate it
+        as it would appear in a real interview.
 
         Args:
             document_text (str): Full text from one company document
@@ -1106,21 +1288,45 @@ FEEDBACK:
 
         try:
             prompt = f"""
-You are a product management interviewer at {company_name}. Below are analytical and strategy questions commonly asked at {company_name}:
+You are a product management interviewer at {company_name}. Below are analytical and strategy questions \
+commonly asked at {company_name}:
 
 {document_text}
 
 Your tasks:
-1. Analyze all the analytical/strategy questions above
-2. Select the BEST question that tests analytical thinking, data-driven decision making, and strategic planning
-3. Generate 1 similar analytical/strategy question based on the best one you selected
-4. Provide clear evaluation criteria for assessing the answer
+1. Parse and extract ALL individual analytical/strategy questions from the document above (e.g., "How would you improve Google Chrome?", \
+"Your product's DAU/MAU ratio has been declining. Design an experiment to identify the root cause", \
+"Estimate the market size for X", etc.)
+2. Randomly select ONE actual question from the extracted list
+3. Elaborate the selected question as it would appear in a real interview by:
+   - Expanding it with clear context and problem statement
+   - Adding realistic constraints and data considerations
+   - Including what aspects you're looking for in the answer
+   - Making it interview-ready with specific details and guidance
+4. Keep the core question intact - do NOT generate a similar or different question
+5. Provide clear evaluation criteria for assessing the answer
 
 Format your response as a JSON object with:
-- "question": Clear problem statement (e.g., improve retention, design experiment, market sizing, prioritization framework)
-- "evaluation_criteria": List of key aspects to evaluate (hypothesis clarity, metrics, analytical rigor, decision quality)
+- "question": The elaborated version of the selected question formatted in Markdown with:
+  * A clear title/heading (## Title)
+  * Well-structured sections with headers (### Section Name)
+  * Bullet points for requirements and considerations (- item)
+  * Bold text for emphasis (**text**)
+  * Proper spacing and organization
+  * Structure it like: Title, Problem Statement/Context, What We're Looking For, Key Considerations, Interview Guidance
+- "evaluation_criteria": List of evaluation criteria, where each criterion is a string formatted as:
+  * "**Criterion Title:** Detailed description/question about what to evaluate"
+  * Each criterion should be comprehensive and specific
+  * Examples:
+    - "**Hypothesis Clarity:** Does the candidate formulate a clear, testable hypothesis? Is it specific, measurable, and aligned with the problem?"
+    - "**Metrics & Measurement:** What metrics does the candidate propose? Are they relevant, measurable, and tied to business outcomes? Do they consider leading vs lagging indicators?"
+    - "**Analytical Rigor:** How does the candidate approach data analysis? Do they consider statistical significance, sample sizes, and potential biases?"
+    - "**Decision Framework:** Does the candidate provide a clear framework for making decisions based on the analysis? Do they consider trade-offs and risks?"
+    - "**Strategic Thinking:** Does the candidate think beyond the immediate problem? Do they consider long-term implications and strategic alignment?"
 
-Make sure the question is challenging but appropriate for a product manager role.
+The question should be well-organized and easy to read, formatted with proper Markdown syntax including headers, bullet points, and bold text for emphasis.
+
+Make sure the elaborated question is challenging but appropriate for a product manager role.
 """
 
             response = self.model.generate_content(prompt)

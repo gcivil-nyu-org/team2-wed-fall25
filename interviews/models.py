@@ -13,18 +13,12 @@ class InterviewSession(models.Model):
         ("completed", "Completed"),
     )
 
-    COMPANY_CHOICES = (
-        ("google", "Google"),
-        ("amazon", "Amazon"),
-        ("microsoft", "Microsoft"),
-    )
-
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="interview_sessions",
     )
-    company = models.CharField(max_length=50, choices=COMPANY_CHOICES)
+    company = models.CharField(max_length=50)
     job_description = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="active")
 
@@ -89,6 +83,15 @@ class InterviewSession(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.get_company_display()} - {self.status}"
+
+    def get_company_display(self):
+        """Get company display name from database"""
+        try:
+            from companies.models import Company
+            company_obj = Company.objects.get(slug=self.company)
+            return company_obj.name
+        except Company.DoesNotExist:
+            return self.company  # Fallback to slug if company not found
 
     def is_active(self):
         """Check if the session is active"""
@@ -166,6 +169,11 @@ class CodingRound(models.Model):
         return bool(self.evaluation_result)
 
 
+def system_design_image_upload_path(instance, filename):
+    """Generate upload path for system design images"""
+    return f"system_design/{instance.session.user.username}/{instance.session.id}/{filename}"
+
+
 class SystemDesignRound(models.Model):
     """
     Stores system design round data for an interview session.
@@ -182,6 +190,12 @@ class SystemDesignRound(models.Model):
         help_text="Generated system design question with evaluation criteria",
     )
     user_answer = models.TextField(blank=True, help_text="User submitted design answer")
+    design_image = models.ImageField(
+        upload_to=system_design_image_upload_path,
+        null=True,
+        blank=True,
+        help_text="Optional architecture diagram or design drawing",
+    )
     evaluation_result = models.JSONField(
         null=True, blank=True, help_text="AI evaluation results"
     )

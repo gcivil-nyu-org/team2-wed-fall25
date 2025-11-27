@@ -76,14 +76,15 @@ class CompanyDocumentAdmin(admin.ModelAdmin):
 
         # Only process if new document or file changed
         if is_new or file_changed:
+            # Get the uploaded file from the form
+            uploaded_file = form.cleaned_data.get("file")
+
+            if not uploaded_file:
+                messages.error(request, "No file was uploaded.")
+                # Still let Django save the object normally (may fail if required)
+                return super().save_model(request, obj, form, change)
+
             try:
-                # Get the uploaded file from the form
-                uploaded_file = form.cleaned_data.get("file")
-
-                if not uploaded_file:
-                    messages.error(request, "No file was uploaded.")
-                    return
-
                 # Extract text from PDF before saving
                 import io
 
@@ -105,6 +106,9 @@ class CompanyDocumentAdmin(admin.ModelAdmin):
                     if page_text:
                         full_text += page_text + "\n"
 
+                # Remove null bytes that PostgreSQL cannot handle
+                full_text = full_text.replace('\x00', '')
+
                 # Validate extracted text
                 if not full_text.strip():
                     raise ValueError("No text content could be extracted from the PDF")
@@ -119,23 +123,18 @@ class CompanyDocumentAdmin(admin.ModelAdmin):
                 obj.status = "completed"
                 obj.error_message = ""
 
-                # Now save the model with all the data
-                super().save_model(request, obj, form, change)
-
                 messages.success(
                     request,
                     f"Successfully extracted {len(full_text)} characters from PDF.",
                 )
 
             except Exception as e:
-                # Set error status
+                # Only handle PDF / parsing errors here.
+                # No DB has been touched yet, so the transaction is still clean.
                 obj.status = "failed"
                 obj.error_message = f"Error extracting PDF text: {str(e)}"
-
-                # Save the model even with error
-                super().save_model(request, obj, form, change)
-
                 messages.error(request, f"Error processing PDF: {str(e)}")
-        else:
-            # No file change, just save normally
-            super().save_model(request, obj, form, change)
+
+        # Important: all DB write happens here, outside the try/except
+        # This ensures any DB errors propagate properly instead of breaking the transaction
+        return super().save_model(request, obj, form, change)

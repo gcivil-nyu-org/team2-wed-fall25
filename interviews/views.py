@@ -3,8 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
 
+from companies.models import Company
 from .gemini_service import GeminiAnalyzer
 from .models import InterviewSession
+
+
+def get_companies_list():
+    """Get list of companies from database formatted as (slug, name) tuples"""
+    return [(company.slug, company.name) for company in Company.objects.all().order_by('name')]
 
 
 @login_required
@@ -30,14 +36,18 @@ def start_session_view(request):
         company = request.POST.get("company")
         job_description = request.POST.get("job_description", "").strip()
 
-        # Validation
-        if not company or company not in dict(InterviewSession.COMPANY_CHOICES):
+        # Get companies list for template
+        companies_list = get_companies_list()
+
+        # Validation - check if company slug exists in database
+        valid_company_slugs = [slug for slug, _ in companies_list]
+        if not company or company not in valid_company_slugs:
             messages.error(request, "Please select a valid company.")
             return render(
                 request,
                 "interviews/start_session.html",
                 {
-                    "companies": InterviewSession.COMPANY_CHOICES,
+                    "companies": companies_list,
                     "job_description": job_description,
                 },
             )
@@ -48,7 +58,7 @@ def start_session_view(request):
                 request,
                 "interviews/start_session.html",
                 {
-                    "companies": InterviewSession.COMPANY_CHOICES,
+                    "companies": companies_list,
                     "selected_company": company,
                 },
             )
@@ -61,7 +71,7 @@ def start_session_view(request):
                 request,
                 "interviews/start_session.html",
                 {
-                    "companies": InterviewSession.COMPANY_CHOICES,
+                    "companies": companies_list,
                     "selected_company": company,
                     "job_description": job_description,
                 },
@@ -100,7 +110,7 @@ def start_session_view(request):
     return render(
         request,
         "interviews/start_session.html",
-        {"companies": InterviewSession.COMPANY_CHOICES},
+        {"companies": get_companies_list()},
     )
 
 
@@ -687,6 +697,7 @@ def system_design_view(request):
     # Handle POST: design answer submission and evaluation
     if request.method == "POST":
         user_answer = request.POST.get("user_answer", "").strip()
+        design_image = request.FILES.get("design_image", None)
 
         if not user_answer:
             messages.error(
@@ -695,6 +706,14 @@ def system_design_view(request):
         else:
             # Save user submission
             system_design_round.user_answer = user_answer
+            
+            # Handle image upload if provided
+            if design_image:
+                # Delete old image if exists
+                if system_design_round.design_image:
+                    system_design_round.design_image.delete(save=False)
+                system_design_round.design_image = design_image
+            
             system_design_round.save()
 
             # Evaluate the design
@@ -711,6 +730,7 @@ def system_design_view(request):
                     question=question,
                     user_answer=user_answer,
                     evaluation_criteria=evaluation_criteria,
+                    design_image=system_design_round.design_image if system_design_round.design_image else None,
                 )
 
                 # Save evaluation

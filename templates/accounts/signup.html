@@ -406,24 +406,6 @@
                     </div>
                     
                     <div class="signup-body">
-                        <!-- Display messages -->
-                        {% if messages %}
-                            {% for message in messages %}
-                                <div class="{% if message.tags == 'error' %}error-message{% else %}success-message{% endif %}" role="alert">
-                                    <i class="fas {% if message.tags == 'error' %}fa-exclamation-triangle{% else %}fa-check-circle{% endif %}"></i>
-                                    {{ message }}
-                                </div>
-                            {% endfor %}
-                        {% endif %}
-                        
-                        <!-- Display form errors -->
-                        {% if form.non_field_errors %}
-                            <div class="error-message" role="alert">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                {% for error in form.non_field_errors %}{{ error }}{% endfor %}
-                            </div>
-                        {% endif %}
-                        
                         <form method="post" enctype="multipart/form-data" id="signupForm" novalidate>
                             {% csrf_token %}
                             

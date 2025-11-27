@@ -246,8 +246,9 @@
             <!-- Question Display -->
             <div class="question-section mb-4">
                 <h5 class="fw-bold text-primary mb-3">Problem Statement:</h5>
-                <div class="question-text p-4" style="background: #f8f9fa; border-left: 4px solid var(--primary-color); border-radius: 8px;">
-                    {{ selected_question.question|linebreaks }}
+                <div class="question-text p-4" style="background: #f8f9fa; border-left: 4px solid var(--primary-color); border-radius: 8px; line-height: 1.8;">
+                    <div id="question-markdown" style="display: none;">{{ selected_question.question }}</div>
+                    <div id="question-rendered"></div>
                 </div>
             </div>
             
@@ -367,6 +368,21 @@
                 </div>
                 {% endif %}
                 
+                <!-- Reference Solution -->
+                {% if selected_question.solution %}
+                <div class="mb-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-star me-2" style="color: #fbbf24;"></i>Reference Solution
+                    </h5>
+                    <div class="p-4" style="background: #1e293b; border-radius: 8px; color: #e2e8f0;">
+                        <pre style="margin: 0; color: #e2e8f0; font-family: 'Courier New', monospace; white-space: pre-wrap; word-wrap: break-word;"><code>{{ selected_question.solution }}</code></pre>
+                    </div>
+                    <p class="text-muted mt-2 mb-0" style="font-size: 0.9rem;">
+                        <i class="fas fa-info-circle me-1"></i>Compare your solution with this optimal approach to learn best practices.
+                    </p>
+                </div>
+                {% endif %}
+                
                 <!-- Next Step Button -->
                 <div class="mt-4">
                     <a href="{% url 'system_design' %}" class="btn-action btn-primary-action">
@@ -386,6 +402,116 @@
         </div>
     </div>
 </div>
+
+<!-- Markdown rendering script -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    // Configure marked options
+    marked.setOptions({
+        breaks: true,
+        gfm: true,
+        headerIds: true,
+        mangle: false
+    });
+    
+    // Render markdown question
+    document.addEventListener('DOMContentLoaded', function() {
+        // Render question markdown
+        const markdownElement = document.getElementById('question-markdown');
+        const renderedElement = document.getElementById('question-rendered');
+        
+        if (markdownElement && renderedElement) {
+            const markdownText = markdownElement.textContent.trim();
+            if (markdownText) {
+                renderedElement.innerHTML = marked.parse(markdownText);
+                renderedElement.style.fontSize = '15px';
+                renderedElement.style.color = '#1e293b';
+            }
+        }
+    });
+</script>
+
+<style>
+    /* Markdown styling */
+    #question-rendered h1,
+    #question-rendered h2 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 0.5rem;
+    }
+    
+    #question-rendered h3 {
+        color: #475569;
+        font-weight: 600;
+        margin-top: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    #question-rendered h4 {
+        color: #64748b;
+        font-weight: 600;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    #question-rendered p {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+    }
+    
+    #question-rendered ul,
+    #question-rendered ol {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+    }
+    
+    #question-rendered li {
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+    }
+    
+    #question-rendered strong {
+        color: #1e293b;
+        font-weight: 600;
+    }
+    
+    #question-rendered code {
+        background-color: #e2e8f0;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        color: #dc2626;
+    }
+    
+    #question-rendered pre {
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+    }
+    
+    #question-rendered pre code {
+        background-color: transparent;
+        color: inherit;
+        padding: 0;
+    }
+    
+    #question-rendered blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-bottom: 1rem;
+        color: #64748b;
+        font-style: italic;
+    }
+</style>
 {% endblock %}
 
 
