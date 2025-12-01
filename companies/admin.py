@@ -136,6 +136,6 @@ class CompanyDocumentAdmin(admin.ModelAdmin):
                 messages.error(request, f"Error processing PDF: {str(e)}")
 
         # Important: all DB write happens here, outside the try/except
-        # This ensures any DB errors propagate 
+        # This ensures any DB errors propagate
         # properly instead of breaking the transaction
         return super().save_model(request, obj, form, change)
