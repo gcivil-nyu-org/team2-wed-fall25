@@ -107,7 +107,7 @@ class CompanyDocumentAdmin(admin.ModelAdmin):
                         full_text += page_text + "\n"
 
                 # Remove null bytes that PostgreSQL cannot handle
-                full_text = full_text.replace('\x00', '')
+                full_text = full_text.replace("\x00", "")
 
                 # Validate extracted text
                 if not full_text.strip():

@@ -302,7 +302,7 @@ Ensure each of the {num_questions} questions is based on a DIFFERENT title from 
                 logger.info(
                     f"Found potential question titles in document: {potential_titles[:10]}"
                 )
-                
+
                 fallback_question = (
                     f"**Problem: Coding Challenge**\n\n{document_text[:500]}\n\n"
                     f"**Note**: Question generation failed. Please ensure the document "
@@ -331,10 +331,8 @@ Ensure each of the {num_questions} questions is based on a DIFFERENT title from 
                 for line in lines[:20]
                 if line.strip() and len(line.strip()) > 5
             ]
-            logger.info(
-                f"Document contains potential titles: {potential_titles[:10]}"
-            )
-            
+            logger.info(f"Document contains potential titles: {potential_titles[:10]}")
+
             fallback_question = (
                 f"**Problem: Coding Challenge**\n\n{document_text[:500]}\n\n"
                 f"**Note**: Question parsing failed. Document preview shown above."
@@ -360,7 +358,7 @@ Ensure each of the {num_questions} questions is based on a DIFFERENT title from 
                 logger.info(
                     f"Document content preview (potential titles): {potential_titles[:10]}"
                 )
-            
+
             fallback_question = (
                 f"**Problem: Coding Challenge**\n\n{document_text[:500]}"
                 if document_text
@@ -477,7 +475,9 @@ Make sure the elaborated question is challenging but appropriate for a new grad/
                 "evaluation_criteria": ["Scalability", "Design clarity"],
             }
 
-    def evaluate_system_design(self, question, user_answer, evaluation_criteria=None, design_image=None):
+    def evaluate_system_design(
+        self, question, user_answer, evaluation_criteria=None, design_image=None
+    ):
         """
         Evaluate user's system design answer.
 
@@ -511,7 +511,7 @@ Make sure the elaborated question is challenging but appropriate for a new grad/
 
             # Prepare content parts (text + optional image)
             content_parts = []
-            
+
             prompt_text = f"""
 You are an expert system design interviewer evaluating a candidate's answer.
 
@@ -522,17 +522,17 @@ Problem:
 Candidate's Answer:
 {user_answer}
 """
-            
+
             # Add image if provided
             if design_image:
                 import PIL.Image
-                
+
                 # Read the image file
                 # Handle Django ImageField (has .path attribute)
-                if hasattr(design_image, 'path'):
+                if hasattr(design_image, "path"):
                     # It's a saved ImageField instance
                     image = PIL.Image.open(design_image.path)
-                elif hasattr(design_image, 'read'):
+                elif hasattr(design_image, "read"):
                     # It's a file-like object (uploaded file)
                     image_bytes = design_image.read()
                     design_image.seek(0)  # Reset file pointer
@@ -540,10 +540,10 @@ Candidate's Answer:
                 else:
                     # Fallback: try to open as path string
                     image = PIL.Image.open(design_image)
-                
+
                 content_parts.append(image)
                 prompt_text += "\n\nThe candidate has also provided an architecture diagram/image. Please analyze it along with their text answer and consider:\n- How well the diagram illustrates their design\n- Clarity and completeness of the visual representation\n- Alignment between the diagram and written description\n"
-            
+
             prompt_text += """
 Please evaluate the candidate's system design answer and provide:
 
@@ -573,9 +573,9 @@ IMPROVEMENTS:
 FEEDBACK:
 [Your detailed feedback here]
 """
-            
+
             content_parts.append(prompt_text)
-            
+
             # Generate content with or without image
             response = self.model.generate_content(content_parts)
             response_text = response.text

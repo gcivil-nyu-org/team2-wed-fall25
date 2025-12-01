@@ -10,7 +10,10 @@ from .models import InterviewSession
 
 def get_companies_list():
     """Get list of companies from database formatted as (slug, name) tuples"""
-    return [(company.slug, company.name) for company in Company.objects.all().order_by('name')]
+    return [
+        (company.slug, company.name)
+        for company in Company.objects.all().order_by("name")
+    ]
 
 
 @login_required
@@ -706,14 +709,14 @@ def system_design_view(request):
         else:
             # Save user submission
             system_design_round.user_answer = user_answer
-            
+
             # Handle image upload if provided
             if design_image:
                 # Delete old image if exists
                 if system_design_round.design_image:
                     system_design_round.design_image.delete(save=False)
                 system_design_round.design_image = design_image
-            
+
             system_design_round.save()
 
             # Evaluate the design
@@ -730,7 +733,11 @@ def system_design_view(request):
                     question=question,
                     user_answer=user_answer,
                     evaluation_criteria=evaluation_criteria,
-                    design_image=system_design_round.design_image if system_design_round.design_image else None,
+                    design_image=(
+                        system_design_round.design_image
+                        if system_design_round.design_image
+                        else None
+                    ),
                 )
 
                 # Save evaluation

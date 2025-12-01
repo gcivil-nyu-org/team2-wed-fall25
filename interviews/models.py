@@ -88,6 +88,7 @@ class InterviewSession(models.Model):
         """Get company display name from database"""
         try:
             from companies.models import Company
+
             company_obj = Company.objects.get(slug=self.company)
             return company_obj.name
         except Company.DoesNotExist:
