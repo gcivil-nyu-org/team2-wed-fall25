@@ -109,7 +109,9 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
 
         try:
             # use filter().first() to avoid exceptions if none found
-            return InterviewSession.objects.filter(user=self.user, status="active").first()
+            return InterviewSession.objects.filter(
+                user=self.user, status="active"
+            ).first()
         except Exception:
             logger.exception("Error fetching interview session")
             return None
@@ -444,8 +446,8 @@ Format the summary professionally but concisely."""
                 )
             )
 
-###########################################
 
+###########################################
 
 
 # """
