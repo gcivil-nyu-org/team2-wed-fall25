@@ -1518,7 +1518,10 @@ Traceback (most recent call last):
   File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1894, in _changeform_view
     self.save_model(request, new_object, form, not add)
   File "/home/ubuntu/team2-wed-fall25-deploy/companies/admin.py", line 30, in save_model
-    ingest_company_document.delay(obj.pk)
+    from asgiref.sync import sync_to_async
+
+    sync_to_async(ingest_company_document.delay)(obj.pk)
+
   File "/home/ubuntu/team2-wed-fall25-deploy/venv/lib/python3.12/site-packages/celery/app/task.py", line 444, in delay
     return self.apply_async(args, kwargs)
            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
