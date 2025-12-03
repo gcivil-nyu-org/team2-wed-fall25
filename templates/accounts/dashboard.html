@@ -4,6 +4,10 @@
 
 {% block extra_css %}
 <style>
+    :root {
+        --profile-completion-width: {% if user.has_resume %}85%{% else %}60%{% endif %};
+        --interview-readiness-width: {% if user.has_resume %}45%{% else %}15%{% endif %};
+    }
     .dashboard-container {
         min-height: 100vh;
         background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
@@ -496,7 +500,7 @@
                                     <span class="fw-bold">{% if user.has_resume %}85%{% else %}60%{% endif %}</span>
                                 </div>
                                 <div class="progress-modern">
-                                    <div class="progress-bar-modern" style="width: {% if user.has_resume %}85%{% else %}60%{% endif %};"></div>
+                                    <div class="progress-bar-modern" style="width: var(--profile-completion-width);"></div>
                                 </div>
                             </div>
                             <div class="progress-item">
@@ -505,7 +509,7 @@
                                     <span class="fw-bold">{% if user.has_resume %}45%{% else %}15%{% endif %}</span>
                                 </div>
                                 <div class="progress-modern">
-                                    <div class="progress-bar-modern" style="width: {% if user.has_resume %}45%{% else %}15%{% endif %};"></div>
+                                    <div class="progress-bar-modern" style="width: var(--interview-readiness-width);"></div>
                                 </div>
                             </div>
                         </div>

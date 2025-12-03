@@ -49,7 +49,7 @@
             background: rgba(255, 255, 255, 0.95) !important;
             backdrop-filter: blur(20px);
             border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            padding: 15px 0;
+            padding: 8px 0; /* Reduced padding for smaller height */
             position: fixed;
             top: 0;
             width: 100%;
@@ -62,6 +62,25 @@
             font-size: 1.5rem;
             color: var(--primary-color) !important;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Specific styling for navbar logo icon */
+        .navbar-logo-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+            display: flex; /* Make it a flex container to center the icon */
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            color: white;
+            border-radius: 50%;
+        }
+
+        .navbar-brand span {
+            line-height: 1;
         }
 
         .navbar-nav .nav-link {
@@ -264,11 +283,36 @@
             transform: translateY(-2px);
         }
 
-        /* Footer */
-        footer {
-            background: var(--dark-color);
+        /* Footer specific styles */
+        .footer-brand-container {
+            display: flex;
+            align-items: center;
+            /* To move it further left, we'll override Bootstrap's default padding on the column */
+        }
+
+        .footer-brand-logo-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             color: white;
-            padding: 60px 0 30px;
+            border-radius: 50%;
+            margin-right: 8px; /* Standard spacing from Bootstrap's me-2 */
+        }
+
+        .footer-brand-text {
+            line-height: 1; /* Normalize line height */
+            display: flex; /* Treat text as flex item for centering */
+            align-items: center; /* Vertically center the text itself */
+            margin-bottom: 0; /* Remove default h5 margin */
+        }
+
+        /* Override Bootstrap's column padding for the first footer column */
+        .footer-first-col {
+            padding-left: 0 !important;
         }
 
         /* Accessibility Improvements */
@@ -303,6 +347,10 @@
             .navbar-nav .nav-link {
                 margin: 5px 0;
             }
+
+            .footer-first-col {
+                padding-left: 15px !important; /* Restore default Bootstrap padding for small screens */
+            }
         }
 
         /* Loading Animation */
@@ -327,14 +375,10 @@
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <div class="d-flex align-items-center">
-                    <div class="feature-icon me-2" style="width: 40px; height: 40px; font-size: 1rem;">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    AcePrep
-                </div>
+        <div class="container d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="{% url 'home' %}">
+                <i class="fas fa-graduation-cap me-2 navbar-logo-icon"></i>
+                <span>AcePrep</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -376,44 +420,64 @@
     </main>
 
     <!-- Footer -->
-    <footer>
+    <footer class="bg-dark text-white py-5">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4 mb-4">
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="feature-icon me-2" style="width: 40px; height: 40px; font-size: 1rem;">
-                            <i class="fas fa-graduation-cap"></i>
-                        </div>
-                        <h5 class="mb-0">AcePrep</h5>
+                <!-- Brand Description -->
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0 footer-first-col">
+                    <div class="footer-brand-container mb-3">
+                        <i class="fas fa-graduation-cap footer-brand-logo-icon"></i>
+                        <h5 class="text-white footer-brand-text">AcePrep</h5>
                     </div>
-                    <p class="text-muted">Your ultimate platform for interview preparation and career development.</p>
+                    <p class="text-muted-footer mb-0">Your ultimate platform for AI-powered interview preparation and career development. Ace your next interview with confidence.</p>
                 </div>
-                <div class="col-lg-4 mb-4">
-                    <h6 class="mb-3">Quick Links</h6>
-                    <ul class="list-unstyled">
-                        <li><a href="{% url 'home' %}" class="text-muted text-decoration-none">Home</a></li>
-                        {% if not user.is_authenticated %}
-                            <li><a href="{% url 'signup' %}" class="text-muted text-decoration-none">Sign Up</a></li>
-                            <li><a href="{% url 'login' %}" class="text-muted text-decoration-none">Login</a></li>
+
+                <!-- Quick Links -->
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="text-white fw-bold mb-3">Quick Links</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="{% url 'home' %}" class="text-muted-footer text-decoration-none py-1 d-block">Home</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'dashboard' %}" class="text-muted-footer text-decoration-none py-1 d-block">Dashboard</a></li>
+                            <li><a href="{% url 'profile' %}" class="text-muted-footer text-decoration-none py-1 d-block">Profile</a></li>
+                        {% else %}
+                            <li><a href="{% url 'login' %}" class="text-muted-footer text-decoration-none py-1 d-block">Login</a></li>
+                            <li><a href="{% url 'signup' %}" class="text-muted-footer text-decoration-none py-1 d-block">Sign Up</a></li>
                         {% endif %}
-                        <li><a href="{% url 'admin:index' %}" class="text-muted text-decoration-none">Admin Panel</a></li>
+                        <li><a href="{% url 'admin:index' %}" class="text-muted-footer text-decoration-none py-1 d-block">Admin Panel</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-4 mb-4">
-                    <h6 class="mb-3">Contact</h6>
-                    <p class="text-muted mb-1">
-                        <i class="fas fa-envelope me-2"></i>
-                        support@aceprep.com
-                    </p>
-                    <p class="text-muted">
-                        <i class="fas fa-phone me-2"></i>
-                        +1 (555) 123-4567
-                    </p>
+
+                <!-- Legal Pages -->
+                <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="text-white fw-bold mb-3">Legal</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="#" class="text-muted-footer text-decoration-none py-1 d-block">Privacy Policy</a></li>
+                        <li><a href="#" class="text-muted-footer text-decoration-none py-1 d-block">Terms of Service</a></li>
+                        <li><a href="#" class="text-muted-footer text-decoration-none py-1 d-block">Disclaimer</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info & Social Media -->
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <h6 class="text-white fw-bold mb-3">Contact Us</h6>
+                    <p class="text-muted-footer mb-1"><i class="fas fa-envelope me-2"></i> support@aceprep.com</p>
+                    <p class="text-muted-footer mb-3"><i class="fas fa-phone me-2"></i> +1 (555) 123-4567</p>
+                    
+                    <h6 class="text-white fw-bold mb-3">Follow Us</h6>
+                    <div class="d-flex mt-3">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter fa-lg"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-linkedin-in fa-lg"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-instagram fa-lg"></i></a>
+                    </div>
                 </div>
             </div>
+            
             <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+            
             <div class="text-center">
-                <p class="mb-0 text-muted">&copy; 2024 AcePrep. Built with Django & Modern Design Principles.</p>
+                <p class="mb-0 text-muted-footer">&copy; <span id="current-year"></span> AcePrep. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -423,6 +487,7 @@
     
     <!-- Custom JavaScript for Interactions -->
     <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
