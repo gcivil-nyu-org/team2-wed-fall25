@@ -459,8 +459,6 @@ Format the summary professionally but concisely."""
             logger.exception("Error ending interview")
             await self.send(text_data=json.dumps({"type": "error", "message": "Error ending interview"}))
 
-
-
 # ###########################################
 # """
 # WebSocket consumers for live interview features.
