@@ -107,7 +107,9 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         except Exception:
             logger.exception("Error in receive")
             await self.send(
-                text_data=json.dumps({"type": "error", "message": "Internal server error"})
+                text_data=json.dumps(
+                    {"type": "error", "message": "Internal server error"}
+                )
             )
 
     @database_sync_to_async
@@ -218,7 +220,9 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
 
         # Get resume text and behavioral doc (also via DB/service wrappers)
         resume_text = await self.get_resume_text()
-        behavioral_document_text = await self.get_behavioral_document(self.session.company)
+        behavioral_document_text = await self.get_behavioral_document(
+            self.session.company
+        )
 
         if not behavioral_document_text:
             logger.warning(f"No behavioral document found for {self.session.company}")
@@ -302,7 +306,9 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         except Exception:
             logger.exception("Error starting interview")
             await self.send(
-                text_data=json.dumps({"type": "error", "message": "Failed to start interview"})
+                text_data=json.dumps(
+                    {"type": "error", "message": "Failed to start interview"}
+                )
             )
 
     async def ask_next_question(self):
@@ -322,7 +328,9 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
             context += f"\nGenerate interview question #{self.question_count + 1}. Keep it concise and relevant to the candidate's resume and company culture. Only output the question text, nothing else."
 
             # Call Gemini on the threadpool
-            question_text = await self.run_blocking(self._generate_question_sync, context)
+            question_text = await self.run_blocking(
+                self._generate_question_sync, context
+            )
 
             # Store current question
             self.current_question = question_text
@@ -345,7 +353,9 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         except Exception:
             logger.exception("Error generating question")
             await self.send(
-                text_data=json.dumps({"type": "error", "message": "Failed to generate question"})
+                text_data=json.dumps(
+                    {"type": "error", "message": "Failed to generate question"}
+                )
             )
 
     async def handle_text_answer(self, answer_text):
@@ -355,9 +365,13 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         """
         try:
             if not self.is_interview_active or not hasattr(self, "current_question"):
-                logger.warning("Received answer but interview not active or no question pending")
+                logger.warning(
+                    "Received answer but interview not active or no question pending"
+                )
                 await self.send(
-                    text_data=json.dumps({"type": "error", "message": "No active question to answer"})
+                    text_data=json.dumps(
+                        {"type": "error", "message": "No active question to answer"}
+                    )
                 )
                 return
 
@@ -365,12 +379,16 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
             answer_text = (answer_text or "").strip()
             if not answer_text:
                 await self.send(
-                    text_data=json.dumps({"type": "error", "message": "Answer cannot be empty"})
+                    text_data=json.dumps(
+                        {"type": "error", "message": "Answer cannot be empty"}
+                    )
                 )
                 return
 
             # Store Q&A in history
-            self.conversation_history.append({"question": self.current_question, "answer": answer_text})
+            self.conversation_history.append(
+                {"question": self.current_question, "answer": answer_text}
+            )
 
             logger.info(f"Answer received (text): {answer_text[:100]}...")
 
@@ -398,7 +416,9 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         except Exception:
             logger.exception("Error handling text answer")
             await self.send(
-                text_data=json.dumps({"type": "error", "message": "Error processing answer"})
+                text_data=json.dumps(
+                    {"type": "error", "message": "Error processing answer"}
+                )
             )
 
     async def request_final_summary(self):
@@ -428,21 +448,31 @@ Please provide a structured summary including:
 
 Format the summary professionally but concisely."""
 
-            summary = await self.run_blocking(self._generate_summary_sync, summary_prompt)
+            summary = await self.run_blocking(
+                self._generate_summary_sync, summary_prompt
+            )
 
             # Save summary to database
             await self.save_final_summary(summary)
 
             # Send summary to client
             await self.send(
-                text_data=json.dumps({"type": "summary", "summary": summary, "completed": True})
+                text_data=json.dumps(
+                    {"type": "summary", "summary": summary, "completed": True}
+                )
             )
 
-            logger.info(f"Final summary generated and saved for user {self.user.username}")
+            logger.info(
+                f"Final summary generated and saved for user {self.user.username}"
+            )
 
         except Exception:
             logger.exception("Error generating summary")
-            await self.send(text_data=json.dumps({"type": "error", "message": "Failed to generate summary"}))
+            await self.send(
+                text_data=json.dumps(
+                    {"type": "error", "message": "Failed to generate summary"}
+                )
+            )
 
     async def end_interview(self):
         """End the interview session"""
@@ -450,14 +480,23 @@ Format the summary professionally but concisely."""
             if not self.session_ended:
                 await self.request_final_summary()
 
-            await self.send(text_data=json.dumps({"type": "ended", "message": "Interview ended successfully."}))
+            await self.send(
+                text_data=json.dumps(
+                    {"type": "ended", "message": "Interview ended successfully."}
+                )
+            )
 
             # Close the WebSocket connection
             await self.close()
 
         except Exception:
             logger.exception("Error ending interview")
-            await self.send(text_data=json.dumps({"type": "error", "message": "Error ending interview"}))
+            await self.send(
+                text_data=json.dumps(
+                    {"type": "error", "message": "Error ending interview"}
+                )
+            )
+
 
 # ###########################################
 # """
