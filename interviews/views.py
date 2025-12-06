@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, redirect, render
-from django.http import Http404 # Added for raising 404 in async wrapper
+from django.http import Http404  # Added for raising 404 in async wrapper
 
 # IMPORT FIX: We need this to safely run synchronous database calls in the ASGI environment
 from channels.db import database_sync_to_async
@@ -17,12 +17,13 @@ from .models import InterviewSession
 def get_session_or_404(user):
     """Safely fetch the active session using synchronous ORM."""
     session = InterviewSession.objects.filter(user=user, status="active").first()
-    
+
     if not session:
         # Raise standard Django exception if session is not found
         raise Http404("No active InterviewSession matches the given query.")
     return session
-    
+
+
 # ASYNC WRAPPER FIX: Create a wrapper for get_companies_list too, as it uses the ORM
 @database_sync_to_async
 def get_companies_list():
@@ -31,6 +32,7 @@ def get_companies_list():
         (company.slug, company.name)
         for company in Company.objects.all().order_by("name")
     ]
+
 
 # The rest of the synchronous views will now use the wrapped get_companies_list
 # IMPORTANT: These views are still synchronous and may need to be converted to async
@@ -53,9 +55,9 @@ def start_session_view(request):
         else:
             # Process the analysis
             return redirect("interview_analysis")
-    
-    # NOTE: get_companies_list() remains synchronous here, as it's being called 
-    # from a synchronous view. If this view also throws the error later, you 
+
+    # NOTE: get_companies_list() remains synchronous here, as it's being called
+    # from a synchronous view. If this view also throws the error later, you
     # would need to change it to async def and await get_companies_list().
 
     if request.method == "POST":
@@ -809,8 +811,10 @@ async def behavioral_resume_live_view(request):
     except Http404:
         # If no active session is found, redirect to start one (or another appropriate page)
         messages.error(request, "No active interview session found.")
-        return redirect("start_session") # Assuming 'start_session' is the correct URL name
-        
+        return redirect(
+            "start_session"
+        )  # Assuming 'start_session' is the correct URL name
+
     # Check if already completed
     if session.behavioral_resume_completed:
         messages.info(
@@ -1031,6 +1035,8 @@ def final_analysis_view(request):
         return redirect("dashboard")
 
     return render(request, "interviews/step_final_analysis.html", context)
+
+
 # ########################
 # from django.contrib import messages
 # from django.contrib.auth.decorators import login_required
