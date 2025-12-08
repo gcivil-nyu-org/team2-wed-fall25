@@ -21,8 +21,7 @@ class GeminiLiveService:
         """Initialize Gemini Live API (NOW NON-BLOCKING)"""
         # Configuration is handled in consumers.py inside a threadpool.
         if not settings.GEMINI_API_KEY:
-             logger.error("GEMINI_API_KEY not configured")
-
+            logger.error("GEMINI_API_KEY not configured")
 
     def build_system_prompt(
         self, company_name, resume_text, behavioral_document_text, user_type="swe_ng"
