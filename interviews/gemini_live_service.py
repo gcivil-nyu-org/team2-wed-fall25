@@ -5,7 +5,7 @@ Handles initialization and configuration for Live session.
 
 import logging
 
-import google.generativeai as genai
+# Removed: import google.generativeai as genai (Fixes F401 error)
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
@@ -19,28 +19,17 @@ class GeminiLiveService:
 
     def __init__(self):
         """Initialize Gemini Live API (NOW NON-BLOCKING)"""
-        # --- FIX APPLIED HERE ---
-        # Removed the blocking call: genai.configure(api_key=settings.GEMINI_API_KEY)
-        # Configuration is now handled later in consumers.py inside a threadpool.
+        # Configuration is handled in consumers.py inside a threadpool.
         if not settings.GEMINI_API_KEY:
-            logger.error("GEMINI_API_KEY not configured")
+             logger.error("GEMINI_API_KEY not configured")
+
 
     def build_system_prompt(
         self, company_name, resume_text, behavioral_document_text, user_type="swe_ng"
     ):
         """
         Build the system prompt for the live interview.
-        This function is pure logic (string manipulation) and is safe to call directly
-        from an async context once the __init__ is fixed.
-
-        Args:
-            company_name (str): Company name for context
-            resume_text (str): Extracted resume text
-            behavioral_document_text (str): Full text from one behavioral document
-            user_type (str): User type ('swe_ng' or 'pm_ng')
-
-        Returns:
-            str: System prompt for Gemini
+        This function is pure logic (string manipulation).
         """
         # Truncate behavioral document to stay within token budget (max 3000 chars)
         behavioral_context = (
@@ -54,7 +43,7 @@ class GeminiLiveService:
 
         # Role-specific guidance
         if user_type == "pm_ng":
-            role_context = """You are an expert PM behavioral interviewer conducting a live interview for a Product Manager position at {company_name}.
+            role_context = f"""You are an expert PM behavioral interviewer conducting a live interview for a Product Manager position at {company_name}.
 
 FOCUS AREAS FOR PM INTERVIEWS:
 - Leadership and influence without authority
