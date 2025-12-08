@@ -24,8 +24,7 @@ def get_session_or_404(user):
     return session
 
 
-# ASYNC WRAPPER FIX: Create a wrapper for get_companies_list too, as it uses the ORM
-@database_sync_to_async
+# Get companies list function - synchronous since it's only used in sync views
 def get_companies_list():
     """Get list of companies from database formatted as (slug, name) tuples"""
     return [
@@ -34,9 +33,6 @@ def get_companies_list():
     ]
 
 
-# The rest of the synchronous views will now use the wrapped get_companies_list
-# IMPORTANT: These views are still synchronous and may need to be converted to async
-# if you encounter the error in them later. For now, we only fix the one you are on.
 @login_required
 def start_session_view(request):
     """

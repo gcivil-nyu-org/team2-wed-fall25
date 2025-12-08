@@ -175,6 +175,11 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         except Exception:
             logger.exception("Unexpected error saving final summary")
 
+    @database_sync_to_async
+    def get_company_display_safe(self, session):
+        """Safely get company display name from session (does DB query)"""
+        return session.get_company_display()
+
     # ---------------------
     # Helpers to run blocking code in a threadpool
     # ---------------------
@@ -237,13 +242,16 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         # Build system prompt via your service
         from .gemini_live_service import GeminiLiveService
 
+        # FIX: Get company name safely - get_company_display() does a DB query
+        company_name = await self.get_company_display_safe(self.session)
+
         # FIX: __init__ is now safe (non-blocking) and can be called directly.
         live_service = GeminiLiveService()
 
         # FIX: build_system_prompt is pure logic and is called directly
         # (no need for run_blocking wrapper).
         system_prompt = live_service.build_system_prompt(
-            company_name=self.session.get_company_display(),
+            company_name=company_name,
             resume_text=resume_text,
             behavioral_document_text=behavioral_document_text,
             user_type=self.user.user_type,
@@ -259,7 +267,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
                 {
                     "type": "ready",
                     "message": "Interview initialized. Ready to start.",
-                    "company": self.session.get_company_display(),
+                    "company": company_name,
                 }
             )
         )
@@ -425,8 +433,11 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
                 conversation_text += f"\nQuestion {i}: {entry['question']}\n"
                 conversation_text += f"Answer {i}: {entry['answer']}\n"
 
+            # FIX: Get company name safely - get_company_display() does a DB query
+            company_display = await self.get_company_display_safe(self.session)
+
             # Generate comprehensive summary using Gemini (blocking) on threadpool
-            summary_prompt = f"""Based on this behavioral interview for a position at {self.session.get_company_display()}, provide a comprehensive summary.
+            summary_prompt = f"""Based on this behavioral interview for a position at {company_display}, provide a comprehensive summary.
 
 Interview Transcript:
 {conversation_text}
