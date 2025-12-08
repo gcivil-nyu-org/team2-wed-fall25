@@ -277,6 +277,15 @@
                     </div>
                     
                     <div class="login-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags == 'success' %}success-message{% else %}error-message{% endif %} alert-dismissible fade show" role="alert">
+                                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                         <form method="post" id="loginForm" novalidate>
                             {% csrf_token %}
                             
