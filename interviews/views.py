@@ -796,7 +796,7 @@ def system_design_view(request):
 
 # THE FIX IS HERE: Change 'def' to 'async def' and use 'await'
 # interviews/views.py (Snippet around line 824)
-from asgiref.sync import sync_to_async # <-- Add this import
+from asgiref.sync import sync_to_async  # <-- Add this import
 
 # Note: Your view function is already async (which is why the error occurs)
 # interviews/views.py
@@ -818,13 +818,15 @@ from django.contrib import messages
 from django.http import Http404
 from django.contrib.auth.decorators import login_required
 
+
 # Helper to send messages safely in async
 @database_sync_to_async
 def async_message(request, level, message):
-    if level == 'error':
+    if level == "error":
         messages.error(request, message)
-    elif level == 'info':
+    elif level == "info":
         messages.info(request, message)
+
 
 @login_required
 async def behavioral_resume_live_view(request):
@@ -836,12 +838,16 @@ async def behavioral_resume_live_view(request):
     try:
         session = await get_session_or_404(request.user)
     except Http404:
-        await async_message(request, 'error', "No active interview session found.")
+        await async_message(request, "error", "No active interview session found.")
         return redirect("start_session")
 
     # 2. Check completed status (Safe) and send message safely
     if session.behavioral_resume_completed:
-        await async_message(request, 'info', "Behavioral interview already completed. View your summary below.")
+        await async_message(
+            request,
+            "info",
+            "Behavioral interview already completed. View your summary below.",
+        )
 
     # 3. Fetch Company Name (Safe)
     # This wrapper prevents the DB crash
@@ -853,11 +859,12 @@ async def behavioral_resume_live_view(request):
         "interviews/step_behavioral_resume_live.html",
         {
             "session": session,
-            "company_name": company_name, # <--- PASSING SAFE STRING
+            "company_name": company_name,  # <--- PASSING SAFE STRING
             "ws_scheme": "wss" if request.is_secure() else "ws",
             "ws_host": request.get_host(),
         },
     )
+
 
 @login_required
 def final_analysis_view(request):
