@@ -816,27 +816,39 @@ from channels.db import database_sync_to_async  # <--- Essential import
 
 # ... (keep your existing imports like get_session_or_404) ...
 
+from channels.db import database_sync_to_async
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.http import Http404
+from django.contrib.auth.decorators import login_required
+
+# Helper to send messages safely in async
+@database_sync_to_async
+def async_message(request, level, message):
+    if level == 'error':
+        messages.error(request, message)
+    elif level == 'info':
+        messages.info(request, message)
+
 @login_required
 async def behavioral_resume_live_view(request):
     """
     View for behavioral + resume live interview.
     Audio-to-audio interview using Gemini Live API.
     """
-    # 1. Safely fetch the session
+    # 1. Fetch Session (Safe)
     try:
         session = await get_session_or_404(request.user)
     except Http404:
-        messages.error(request, "No active interview session found.")
+        await async_message(request, 'error', "No active interview session found.")
         return redirect("start_session")
 
-    # 2. Check if completed (Safe, boolean check)
+    # 2. Check completed status (Safe) and send message safely
     if session.behavioral_resume_completed:
-        messages.info(
-            request, "Behavioral interview already completed. View your summary below."
-        )
+        await async_message(request, 'info', "Behavioral interview already completed. View your summary below.")
 
-    # 3. FIX: Fetch company name safely in async wrapper
-    # This prevents the template from trying to hit the DB
+    # 3. Fetch Company Name (Safe)
+    # This wrapper prevents the DB crash
     get_company_name_task = database_sync_to_async(session.get_company_display)
     company_name = await get_company_name_task()
 
@@ -845,7 +857,7 @@ async def behavioral_resume_live_view(request):
         "interviews/step_behavioral_resume_live.html",
         {
             "session": session,
-            "company_name": company_name,  # <--- Passing the safe string here
+            "company_name": company_name, # <--- PASSING SAFE STRING
             "ws_scheme": "wss" if request.is_secure() else "ws",
             "ws_host": request.get_host(),
         },
