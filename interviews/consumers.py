@@ -12,8 +12,6 @@ import logging
 from functools import partial
 
 import google.generativeai as genai
-
-# Removed unused import: from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
@@ -145,7 +143,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         from .rag_service import RAGService
 
         try:
-            # RAG retrieval is likely blocking I/O (database, file, or network),
+            # RAG retrieval is likely blocking I/O (database, file, or network), 
             # so it must be run in a sync context.
             rag = RAGService()
             return rag.retrieve_behavioral_question(company_slug)
@@ -236,13 +234,13 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
                 "Give an example of when you showed leadership."
             )
 
-        # Build system prompt via your service
+        # Build system prompt via your service 
         from .gemini_live_service import GeminiLiveService
 
         # FIX: __init__ is now safe (non-blocking) and can be called directly.
         live_service = GeminiLiveService()
-
-        # FIX: build_system_prompt is pure logic and is called directly
+        
+        # FIX: build_system_prompt is pure logic and is called directly 
         # (no need for run_blocking wrapper).
         system_prompt = live_service.build_system_prompt(
             company_name=self.session.get_company_display(),
