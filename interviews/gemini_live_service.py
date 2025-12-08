@@ -18,17 +18,21 @@ class GeminiLiveService:
     """
 
     def __init__(self):
-        """Initialize Gemini Live API"""
-        if settings.GEMINI_API_KEY:
-            genai.configure(api_key=settings.GEMINI_API_KEY)
-        else:
-            logger.error("GEMINI_API_KEY not configured")
+        """Initialize Gemini Live API (NOW NON-BLOCKING)"""
+        # --- FIX APPLIED HERE ---
+        # Removed the blocking call: genai.configure(api_key=settings.GEMINI_API_KEY)
+        # Configuration is now handled later in consumers.py inside a threadpool.
+        if not settings.GEMINI_API_KEY:
+             logger.error("GEMINI_API_KEY not configured")
+
 
     def build_system_prompt(
         self, company_name, resume_text, behavioral_document_text, user_type="swe_ng"
     ):
         """
         Build the system prompt for the live interview.
+        This function is pure logic (string manipulation) and is safe to call directly
+        from an async context once the __init__ is fixed.
 
         Args:
             company_name (str): Company name for context
@@ -86,14 +90,14 @@ YOUR ROLE AND GUIDELINES:
 5. Ask follow-up questions based on candidate responses to probe deeper
 6. Keep the interview conversational and natural
 7. After asking 2 questions and receiving 2 answers, you MUST:
-   - Thank the candidate
-   - Generate a comprehensive FINAL SUMMARY in TEXT format (not audio)
-   - The summary should include:
-     * Overall assessment of the candidate
-     * Key strengths demonstrated
-     * Areas for improvement
-     * Notable responses
-     * Recommendation for next steps
+    - Thank the candidate
+    - Generate a comprehensive FINAL SUMMARY in TEXT format (not audio)
+    - The summary should include:
+      * Overall assessment of the candidate
+      * Key strengths demonstrated
+      * Areas for improvement
+      * Notable responses
+      * Recommendation for next steps
 
 AUDIO GUIDELINES:
 - Speak naturally and professionally
