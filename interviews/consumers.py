@@ -12,9 +12,7 @@ import logging
 from functools import partial
 
 import google.generativeai as genai
-
-# Removed from asgiref.sync import sync_to_async as it is no longer needed
-
+# Removed unused import: from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings
@@ -75,8 +73,6 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         )
 
         # If any cleanup for live session is necessary, do it here.
-        # Most SDKs handle cleanup on garbage collection; if Gemini Live SDK
-        # requires a close/stop call, call it inside run_in_executor.
         if hasattr(self, "live_session") and self.live_session:
             try:
                 # Example if SDK had a close: await self.run_blocking(self.live_session.close)
@@ -148,7 +144,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         from .rag_service import RAGService
 
         try:
-            # RAG retrieval is likely blocking I/O (database, file, or network),
+            # RAG retrieval is likely blocking I/O (database, file, or network), 
             # so it must be run in a sync context.
             rag = RAGService()
             return rag.retrieve_behavioral_question(company_slug)
@@ -201,6 +197,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
 
     def _generate_question_sync(self, context):
         """Blocking call to generate a question via the Gemini SDK."""
+        self._configure_genai()
         model = genai.GenerativeModel("gemini-2.5-flash")
         response = model.generate_content(context)
         # many SDKs return .text or .result; adapt if needed
@@ -208,6 +205,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
 
     def _generate_summary_sync(self, prompt):
         """Blocking call to generate summary via Gemini SDK."""
+        self._configure_genai()
         model = genai.GenerativeModel("gemini-2.5-flash")
         response = model.generate_content(prompt)
         return getattr(response, "text", str(response)).strip()
@@ -237,23 +235,20 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
                 "Give an example of when you showed leadership."
             )
 
-        # Build system prompt via your service
+        # Build system prompt via your service 
         from .gemini_live_service import GeminiLiveService
 
+        # FIX: __init__ is now safe (non-blocking) and can be called directly.
         live_service = GeminiLiveService()
-
-        # --- START OF CORRECTION ---
-        # The build_system_prompt is synchronous and must be run in a separate thread.
-        # We use run_blocking to move the synchronous call off the async event loop,
-        # which fixes the "cannot call this from an async context" error.
-        system_prompt = await self.run_blocking(
-            live_service.build_system_prompt,
+        
+        # FIX: build_system_prompt is pure logic and is called directly 
+        # (no need for run_blocking wrapper).
+        system_prompt = live_service.build_system_prompt(
             company_name=self.session.get_company_display(),
             resume_text=resume_text,
             behavioral_document_text=behavioral_document_text,
             user_type=self.user.user_type,
         )
-        # --- END OF CORRECTION ---
 
         # Store initialization data
         self.system_prompt = system_prompt
@@ -277,7 +272,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
     async def start_interview(self):
         """Start the Gemini Live interview session"""
         try:
-            # Configure Gemini SDK (blocking) in a thread
+            # Configure Gemini SDK (blocking) in a thread (this is where the call belongs)
             await self.run_blocking(self._configure_genai)
 
             # Initialize conversation history
