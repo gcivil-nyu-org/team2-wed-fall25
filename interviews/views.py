@@ -831,38 +831,29 @@ def async_message(request, level, message):
         messages.info(request, message)
 
 @login_required
-async def behavioral_resume_live_view(request):
+def behavioral_resume_live_view(request):
     """
     View for behavioral + resume live interview.
     Audio-to-audio interview using Gemini Live API.
     """
-    # 1. Fetch Session (Safe)
-    try:
-        session = await get_session_or_404(request.user)
-    except Http404:
-        await async_message(request, 'error', "No active interview session found.")
-        return redirect("start_session")
+    # Get active session
+    session = get_object_or_404(InterviewSession, user=request.user, status="active")
 
-    # 2. Check completed status (Safe) and send message safely
+    # Check if already completed
     if session.behavioral_resume_completed:
-        await async_message(request, 'info', "Behavioral interview already completed. View your summary below.")
-
-    # 3. Fetch Company Name (Safe)
-    # This wrapper prevents the DB crash
-    get_company_name_task = database_sync_to_async(session.get_company_display)
-    company_name = await get_company_name_task()
+        messages.info(
+            request, "Behavioral interview already completed. View your summary below."
+        )
 
     return render(
         request,
         "interviews/step_behavioral_resume_live.html",
         {
             "session": session,
-            "company_name": company_name, # <--- PASSING SAFE STRING
             "ws_scheme": "wss" if request.is_secure() else "ws",
             "ws_host": request.get_host(),
         },
     )
-
 @login_required
 def final_analysis_view(request):
     """
