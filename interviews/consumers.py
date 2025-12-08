@@ -12,6 +12,7 @@ import logging
 from functools import partial
 
 import google.generativeai as genai
+
 # Removed from asgiref.sync import sync_to_async as it is no longer needed
 
 from channels.db import database_sync_to_async
@@ -147,7 +148,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         from .rag_service import RAGService
 
         try:
-            # RAG retrieval is likely blocking I/O (database, file, or network), 
+            # RAG retrieval is likely blocking I/O (database, file, or network),
             # so it must be run in a sync context.
             rag = RAGService()
             return rag.retrieve_behavioral_question(company_slug)
@@ -236,11 +237,11 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
                 "Give an example of when you showed leadership."
             )
 
-        # Build system prompt via your service 
+        # Build system prompt via your service
         from .gemini_live_service import GeminiLiveService
 
         live_service = GeminiLiveService()
-        
+
         # --- START OF CORRECTION ---
         # The build_system_prompt is synchronous and must be run in a separate thread.
         # We use run_blocking to move the synchronous call off the async event loop,
