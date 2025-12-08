@@ -796,29 +796,13 @@ def system_design_view(request):
 
 # THE FIX IS HERE: Change 'def' to 'async def' and use 'await'
 # interviews/views.py (Snippet around line 824)
-from asgiref.sync import sync_to_async  # <-- Add this import
+# <-- Add this import
 
 # Note: Your view function is already async (which is why the error occurs)
 # interviews/views.py
 # ... (other imports should remain) ...
 
 # interviews/views.py
-
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.http import Http404
-from django.contrib.auth.decorators import login_required
-from channels.db import database_sync_to_async  # <--- Essential import
-
-# ... (keep your existing imports like get_session_or_404) ...
-
-from channels.db import database_sync_to_async
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.http import Http404
-from django.contrib.auth.decorators import login_required
-
-
 # Helper to send messages safely in async
 @database_sync_to_async
 def async_message(request, level, message):
