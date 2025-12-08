@@ -799,38 +799,45 @@ def system_design_view(request):
 
 
 # THE FIX IS HERE: Change 'def' to 'async def' and use 'await'
-@login_required
+# interviews/views.py (Snippet around line 824)
+from asgiref.sync import sync_to_async # <-- Add this import
+
+# Note: Your view function is already async (which is why the error occurs)
+@login_required 
 async def behavioral_resume_live_view(request):
-    """
-    View for behavioral + resume live interview.
-    Audio-to-audio interview using Gemini Live API.
-    """
-    # Get active session safely using the new async wrapper
+    # Retrieve the InterviewSession object (assuming this is done earlier in the actual view)
+    # The traceback shows: session = <InterviewSession: 1234 - Google - active>
+    
+    # 1. Get the session object. If the object retrieval is synchronous, it must also be wrapped.
+    # Assuming 'session' is an InterviewSession instance available here:
+    session = await sync_to_async(InterviewSession.objects.get)(user=request.user, is_active=True) 
+
+    # 2. Asynchronously get the company name directly from the model using the slug.
+    # This replaces the synchronous logic inside get_company_display.
     try:
-        session = await get_session_or_404(request.user)
-    except Http404:
-        # If no active session is found, redirect to start one (or another appropriate page)
-        messages.error(request, "No active interview session found.")
-        return redirect(
-            "start_session"
-        )  # Assuming 'start_session' is the correct URL name
+        Company = session.get_company_model() # Assuming you have access to the Company model
+        company_obj = await sync_to_async(Company.objects.get)(slug=session.company)
+        company_name = company_obj.name
+    except Exception:
+        # Handle case where company is not found
+        company_name = "N/A" 
+        
+    # --- OR, if you prefer to call the model method, wrap the method call: ---
+    # company_name = await sync_to_async(session.get_company_display)()
 
-    # Check if already completed
-    if session.behavioral_resume_completed:
-        messages.info(
-            request, "Behavioral interview already completed. View your summary below."
-        )
-
+    context = {
+        'session': session,
+        'company_name': company_name, # <-- New context variable
+        'ws_host': request.get_host(),
+        'ws_scheme': "wss" if request.is_secure() else "ws",
+    }
+    
+    # render is also a synchronous function, but Django 5.x handles this internally for async views.
     return render(
-        request,
-        "interviews/step_behavioral_resume_live.html",
-        {
-            "session": session,
-            "ws_scheme": "wss" if request.is_secure() else "ws",
-            "ws_host": request.get_host(),
-        },
+        request, 
+        'interviews/step_behavioral_resume_live.html', 
+        context
     )
-
 
 @login_required
 def final_analysis_view(request):
