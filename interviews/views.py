@@ -806,39 +806,51 @@ from asgiref.sync import sync_to_async # <-- Add this import
 # interviews/views.py
 # ... (other imports should remain) ...
 
+# interviews/views.py
+
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.http import Http404
+from django.contrib.auth.decorators import login_required
+from channels.db import database_sync_to_async  # <--- Essential import
+
+# ... (keep your existing imports like get_session_or_404) ...
+
 @login_required
 async def behavioral_resume_live_view(request):
     """
     View for behavioral + resume live interview.
     Audio-to-audio interview using Gemini Live API.
     """
-    # FIX: Use the helper function directly (it handles status='active' correctly)
+    # 1. Safely fetch the session
     try:
         session = await get_session_or_404(request.user)
     except Http404:
         messages.error(request, "No active interview session found.")
         return redirect("start_session")
 
-    # Check if already completed
+    # 2. Check if completed (Safe, boolean check)
     if session.behavioral_resume_completed:
         messages.info(
             request, "Behavioral interview already completed. View your summary below."
         )
 
-    # FIX: Fetch company name safely in async
-    get_company_name_async = database_sync_to_async(session.get_company_display)
-    company_name = await get_company_name_async()
+    # 3. FIX: Fetch company name safely in async wrapper
+    # This prevents the template from trying to hit the DB
+    get_company_name_task = database_sync_to_async(session.get_company_display)
+    company_name = await get_company_name_task()
 
     return render(
         request,
         "interviews/step_behavioral_resume_live.html",
         {
             "session": session,
-            "company_name": company_name,
+            "company_name": company_name,  # <--- Passing the safe string here
             "ws_scheme": "wss" if request.is_secure() else "ws",
             "ws_host": request.get_host(),
         },
     )
+
 @login_required
 def final_analysis_view(request):
     """
