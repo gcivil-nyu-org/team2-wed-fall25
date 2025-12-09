@@ -113,5 +113,9 @@ class TestResumeUpdateForm(TestCase):
 class TestCustomAuthenticationForm(TestCase):
     def test_placeholders_set(self):
         form = CustomAuthenticationForm()
-        self.assertEqual(form.fields["username"].widget.attrs["placeholder"], "Username or Email")
-        self.assertEqual(form.fields["password"].widget.attrs["placeholder"], "Password")
+        self.assertEqual(
+            form.fields["username"].widget.attrs["placeholder"], "Username or Email"
+        )
+        self.assertEqual(
+            form.fields["password"].widget.attrs["placeholder"], "Password"
+        )
