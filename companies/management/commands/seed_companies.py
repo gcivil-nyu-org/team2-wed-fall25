@@ -1,6 +1,5 @@
 from unittest import mock
 import pytest
-from django.core.management import call_command
 from companies.management.commands.seed_companies import Command
 
 
