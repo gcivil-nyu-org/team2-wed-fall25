@@ -64,10 +64,12 @@ def login_view(request):
 
     return render(request, "accounts/login.html", {"form": form})
 
+
 def logout_view(request):
     logout(request)
     messages.success(request, "You have been logged out successfully.")
-    return redirect("login") # Changed from "home"
+    return redirect("login")  # Changed from "home"
+
 
 @login_required
 def dashboard_view(request):
