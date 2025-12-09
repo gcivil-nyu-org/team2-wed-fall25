@@ -19,8 +19,8 @@ ssh -o StrictHostKeyChecking=no -i travis_temp_key $EC2_USER@$EC2_HOST << EOF
 
 
   echo "🔄 Pulling latest code from LeBranch..."
-  git fetch origin develop
-  git reset --hard origin/develop
+  git fetch origin sahil_feature_branch
+  git reset --hard origin/sahil_feature_branch
 
   echo "🐍 Activating virtual environment..."
   if [ -f "venv/bin/activate" ]; then
