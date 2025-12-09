@@ -1,7 +1,5 @@
 import tempfile
 from django.conf import settings
-settings.MEDIA_ROOT = tempfile.mkdtemp()
-
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.contrib.auth import get_user_model
@@ -10,6 +8,9 @@ from accounts.forms import (
     CustomAuthenticationForm,
     ResumeUpdateForm,
 )
+
+# Ensure MEDIA_ROOT exists for file uploads
+settings.MEDIA_ROOT = getattr(settings, "MEDIA_ROOT", tempfile.mkdtemp())
 
 User = get_user_model()
 
@@ -34,7 +35,30 @@ class TestCustomUserCreationForm(TestCase):
                 "password2": "pass12345!",
             }
         )
+        # DEBUG: print form errors if it fails
+        if not form.is_valid():
+            print(form.errors)
         self.assertTrue(form.is_valid())
+
+    def test_form_save_saves_resume(self):
+        pdf = self.get_pdf()
+        form = CustomUserCreationForm(
+            data={
+                "username": "john3",
+                "email": "john3@example.com",
+                "first_name": "John",
+                "last_name": "Doe",
+                "user_type": "candidate",
+                "password1": "pass12345!",
+                "password2": "pass12345!",
+            },
+            files={"resume": pdf},
+        )
+        if not form.is_valid():
+            print(form.errors)
+        self.assertTrue(form.is_valid())
+        user = form.save()
+        self.assertTrue(user.resume)  # resume saved
 
     def test_resume_validation_fails_file_too_big(self):
         pdf = self.get_pdf(size=6 * 1024 * 1024)  # 6MB
@@ -85,24 +109,6 @@ class TestCustomUserCreationForm(TestCase):
             files={"resume": pdf},
         )
         self.assertFalse(form.is_valid())
-
-    def test_form_save_saves_resume(self):
-        pdf = self.get_pdf()
-        form = CustomUserCreationForm(
-            data={
-                "username": "john3",
-                "email": "john3@example.com",
-                "first_name": "John",
-                "last_name": "Doe",
-                "user_type": "candidate",
-                "password1": "pass12345!",
-                "password2": "pass12345!",
-            },
-            files={"resume": pdf},
-        )
-        self.assertTrue(form.is_valid())
-        user = form.save()
-        self.assertTrue(user.resume)  # resume saved
 
 
 class TestResumeUpdateForm(TestCase):
