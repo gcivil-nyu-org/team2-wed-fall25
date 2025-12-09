@@ -21,6 +21,7 @@ script:
 # Send coverage to Coveralls
 after_success:
   - source venv/bin/activate
+  - coverage xml
   - coveralls --verbose
 
 # Deploy to EC2
