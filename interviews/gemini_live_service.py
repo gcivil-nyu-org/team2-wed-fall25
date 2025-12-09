@@ -8,6 +8,7 @@ def patch_settings(monkeypatch):
     # Ensure GEMINI_API_KEY is set to something for most tests
     monkeypatch.setattr(settings, "GEMINI_API_KEY", "dummy_key")
 
+
 def test_init_sets_api_key(monkeypatch):
     monkeypatch.setattr(settings, "GEMINI_API_KEY", "test_key")
     service = GeminiLiveService()
@@ -67,5 +68,7 @@ def test_get_model_config_returns_expected_dict():
     assert "response_modalities" in gen_config
     assert gen_config["response_modalities"] == ["audio"]
     assert "speech_config" in gen_config
-    voice_name = gen_config["speech_config"]["voice_config"]["prebuilt_voice_config"]["voice_name"]
+    voice_name = gen_config["speech_config"]["voice_config"]["prebuilt_voice_config"][
+        "voice_name"
+    ]
     assert voice_name == "Puck"
