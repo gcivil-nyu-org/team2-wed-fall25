@@ -210,9 +210,7 @@ def coding_round_view(request):
         document_text = rag_service.retrieve_coding_question(session.company)
 
         if not document_text:
-            document_text = (
-                "Write a function to find the longest substring without repeating characters."
-            )
+            document_text = "Write a function to find the longest substring without repeating characters."
             messages.warning(request, "Using fallback question.")
 
         analyzer = GeminiAnalyzer()
@@ -387,7 +385,9 @@ def system_design_view(request):
         design_image = request.FILES.get("design_image", None)
 
         if not user_answer:
-            messages.error(request, "Please write your design answer before submitting.")
+            messages.error(
+                request, "Please write your design answer before submitting."
+            )
         else:
             sd_round.user_answer = user_answer
             if design_image:
@@ -542,7 +542,9 @@ def analytical_strategy_view(request):
         as_round.base_question = "Generated from company-specific document"
         as_round.generated_question = generated_question
         as_round.save()
-        messages.success(request, "Analytical/strategy question generated successfully!")
+        messages.success(
+            request, "Analytical/strategy question generated successfully!"
+        )
 
     if request.method == "POST":
         user_answer = request.POST.get("user_answer", "").strip()
@@ -823,7 +825,10 @@ class InterviewsViewsTests(TestCase):
         # Test POST
         response = self.client.post(
             reverse("start_session"),
-            {"company": "google", "job_description": "A very long job description..." * 5},
+            {
+                "company": "google",
+                "job_description": "A very long job description..." * 5,
+            },
         )
         self.assertEqual(response.status_code, 302)  # Redirects to analysis
         self.assertTrue(
@@ -865,7 +870,9 @@ class InterviewsViewsTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         coding_round = CodingRound.objects.get(session=self.session, question_number=1)
-        self.assertEqual(coding_round.base_question, "Generated from company-specific document")
+        self.assertEqual(
+            coding_round.base_question, "Generated from company-specific document"
+        )
 
         # Test POST (Submit Code)
         response = self.client.post(
@@ -873,7 +880,7 @@ class InterviewsViewsTests(TestCase):
             {"user_code": "print('hello')", "language": "python"},
         )
         self.assertEqual(response.status_code, 200)
-        
+
         coding_round.refresh_from_db()
         self.assertEqual(coding_round.evaluation_result["score"], 90)
         self.session.refresh_from_db()
