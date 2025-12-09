@@ -217,16 +217,12 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
     async def handle_text_answer(self, answer_text):
         """Process user answer."""
         if not self.is_active:
-            await self.send_json(
-                {"type": "error", "message": "Interview not active"}
-            )
+            await self.send_json({"type": "error", "message": "Interview not active"})
             return
 
         answer_text = answer_text.strip()
         if not answer_text:
-            await self.send_json(
-                {"type": "error", "message": "Answer cannot be empty"}
-            )
+            await self.send_json({"type": "error", "message": "Answer cannot be empty"})
             return
 
         # Save to history
