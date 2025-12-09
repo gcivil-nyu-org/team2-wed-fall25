@@ -15,7 +15,7 @@ script:
   - source venv/bin/activate
   - black --check .
   - flake8 .
-  - coverage run --source='.' manage.py test
+  - coverage run --source='accounts,ai_feedback,companies,core,forums,interviews,profiles,resumes' manage.py test
   - coverage report -m
 
 # Send coverage to Coveralls
