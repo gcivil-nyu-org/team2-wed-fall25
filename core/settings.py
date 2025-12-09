@@ -6,6 +6,7 @@ from pathlib import Path
 
 from decouple import config
 import os
+import tempfile
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -101,7 +102,7 @@ if os.environ.get("CI"):  # Travis sets CI=true
             "NAME": ":memory:",  # In-memory database, fast for tests
         }
     }
-
+    MEDIA_ROOT = tempfile.mkdtemp()
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
