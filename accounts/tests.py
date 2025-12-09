@@ -1,3 +1,7 @@
+import tempfile
+from django.conf import settings
+settings.MEDIA_ROOT = tempfile.mkdtemp()
+
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.contrib.auth import get_user_model
