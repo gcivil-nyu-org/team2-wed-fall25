@@ -5,13 +5,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404  # Added for raising 404 in async wrapper
 
 # --- TEST IMPORTS (Added for integrated testing) ---
-import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.contrib.messages import get_messages
 # ---------------------------------------------------
 
 # IMPORT FIX: We need this to safely run synchronous database calls in the ASGI environment
