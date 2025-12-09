@@ -6,7 +6,6 @@ Optimized for high coverage by consolidating helpers and removing unreachable er
 import asyncio
 import json
 import logging
-from functools import partial
 
 import google.generativeai as genai
 from channels.db import database_sync_to_async
@@ -72,7 +71,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
                     await self.send_json({"type": "pong"})
                 else:
                     logger.warning(f"Unknown message: {msg_type}")
-        except Exception as e:
+        except Exception:
             logger.exception("Receive loop error")
             await self.send_json({"type": "error", "message": "Server error"})
 
