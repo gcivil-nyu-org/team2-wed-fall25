@@ -93,7 +93,13 @@ DATABASES = {
         "PORT": "5432",
     }
 }
-
+if os.environ.get("CI"):  # Travis sets CI=true
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": ":memory:",  # In-memory database, fast for tests
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
