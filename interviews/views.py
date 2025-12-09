@@ -10,6 +10,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
+
 # ---------------------------------------------------
 
 # IMPORT FIX: We need this to safely run synchronous database calls in the ASGI environment
@@ -18,12 +19,13 @@ from channels.db import database_sync_to_async
 from companies.models import Company
 from .gemini_service import GeminiAnalyzer
 from .models import (
-    InterviewSession, 
-    CodingRound, 
-    SystemDesignRound, 
-    ProductSenseRound, 
-    AnalyticalStrategyRound
+    InterviewSession,
+    CodingRound,
+    SystemDesignRound,
+    ProductSenseRound,
+    AnalyticalStrategyRound,
 )
+
 
 # ASYNC WRAPPER FIX: Create a wrapper function to safely run synchronous ORM logic
 @database_sync_to_async
@@ -300,9 +302,14 @@ def coding_round_view(request):
 
                 # Show feedback message
                 if evaluation.get("is_correct"):
-                    messages.success(request, f"Great job! Score: {evaluation.get('score')}/100")
+                    messages.success(
+                        request, f"Great job! Score: {evaluation.get('score')}/100"
+                    )
                 else:
-                    messages.info(request, f"Needs improvement. Score: {evaluation.get('score')}/100")
+                    messages.info(
+                        request,
+                        f"Needs improvement. Score: {evaluation.get('score')}/100",
+                    )
             else:
                 messages.error(request, "Could not evaluate: question not found.")
 
@@ -331,7 +338,9 @@ def product_sense_view(request):
         messages.error(request, "This step is only available for Product Manager role.")
         return redirect("interview_analysis")
 
-    product_sense_round, created = ProductSenseRound.objects.get_or_create(session=session)
+    product_sense_round, created = ProductSenseRound.objects.get_or_create(
+        session=session
+    )
 
     if created or not product_sense_round.generated_case:
         rag_service = RAGService()
@@ -379,9 +388,13 @@ def product_sense_view(request):
                 session.save()
 
                 if evaluation.get("is_good"):
-                    messages.success(request, f"Excellent! Score: {evaluation.get('score')}/100")
+                    messages.success(
+                        request, f"Excellent! Score: {evaluation.get('score')}/100"
+                    )
                 else:
-                    messages.info(request, f"Needs work. Score: {evaluation.get('score')}/100")
+                    messages.info(
+                        request, f"Needs work. Score: {evaluation.get('score')}/100"
+                    )
 
     return render(
         request,
@@ -408,14 +421,18 @@ def analytical_strategy_view(request):
         messages.error(request, "This step is only available for Product Manager role.")
         return redirect("interview_analysis")
 
-    analytical_strategy_round, created = AnalyticalStrategyRound.objects.get_or_create(session=session)
+    analytical_strategy_round, created = AnalyticalStrategyRound.objects.get_or_create(
+        session=session
+    )
 
     if created or not analytical_strategy_round.generated_question:
         rag_service = RAGService()
         document_text = rag_service.retrieve_analytical_strategy_prompt(session.company)
 
         if not document_text:
-            document_text = "Design an experiment to identify the root cause of metric drop."
+            document_text = (
+                "Design an experiment to identify the root cause of metric drop."
+            )
             messages.warning(request, "Using fallback question.")
 
         analyzer = GeminiAnalyzer()
@@ -423,10 +440,14 @@ def analytical_strategy_view(request):
             document_text=document_text, company_name=session.get_company_display()
         )
 
-        analytical_strategy_round.base_question = "Generated from company-specific document"
+        analytical_strategy_round.base_question = (
+            "Generated from company-specific document"
+        )
         analytical_strategy_round.generated_question = generated_question
         analytical_strategy_round.save()
-        messages.success(request, "Analytical/strategy question generated successfully!")
+        messages.success(
+            request, "Analytical/strategy question generated successfully!"
+        )
 
     if request.method == "POST":
         user_answer = request.POST.get("user_answer", "").strip()
@@ -456,9 +477,13 @@ def analytical_strategy_view(request):
                 session.save()
 
                 if evaluation.get("is_good"):
-                    messages.success(request, f"Excellent! Score: {evaluation.get('score')}/100")
+                    messages.success(
+                        request, f"Excellent! Score: {evaluation.get('score')}/100"
+                    )
                 else:
-                    messages.info(request, f"Needs work. Score: {evaluation.get('score')}/100")
+                    messages.info(
+                        request, f"Needs work. Score: {evaluation.get('score')}/100"
+                    )
 
     return render(
         request,
@@ -482,10 +507,14 @@ def coding_round_q2_view(request):
     session = get_object_or_404(InterviewSession, user=request.user, status="active")
 
     if request.user.user_type != "swe_ng":
-        messages.error(request, "This step is only available for Software Engineer role.")
+        messages.error(
+            request, "This step is only available for Software Engineer role."
+        )
         return redirect("interview_analysis")
 
-    coding_round, created = CodingRound.objects.get_or_create(session=session, question_number=2)
+    coding_round, created = CodingRound.objects.get_or_create(
+        session=session, question_number=2
+    )
 
     if created or not coding_round.generated_questions:
         rag_service = RAGService()
@@ -534,9 +563,14 @@ def coding_round_q2_view(request):
                 session.save()
 
                 if evaluation.get("is_correct"):
-                    messages.success(request, f"Great job! Score: {evaluation.get('score')}/100")
+                    messages.success(
+                        request, f"Great job! Score: {evaluation.get('score')}/100"
+                    )
                 else:
-                    messages.info(request, f"Needs improvement. Score: {evaluation.get('score')}/100")
+                    messages.info(
+                        request,
+                        f"Needs improvement. Score: {evaluation.get('score')}/100",
+                    )
 
     return render(
         request,
@@ -560,10 +594,14 @@ def system_design_view(request):
     session = get_object_or_404(InterviewSession, user=request.user, status="active")
 
     if request.user.user_type != "swe_ng":
-        messages.error(request, "This step is only available for Software Engineer role.")
+        messages.error(
+            request, "This step is only available for Software Engineer role."
+        )
         return redirect("interview_analysis")
 
-    system_design_round, created = SystemDesignRound.objects.get_or_create(session=session)
+    system_design_round, created = SystemDesignRound.objects.get_or_create(
+        session=session
+    )
 
     if created or not system_design_round.generated_question:
         rag_service = RAGService()
@@ -588,7 +626,9 @@ def system_design_view(request):
         design_image = request.FILES.get("design_image", None)
 
         if not user_answer:
-            messages.error(request, "Please write your design answer before submitting.")
+            messages.error(
+                request, "Please write your design answer before submitting."
+            )
         else:
             system_design_round.user_answer = user_answer
             if design_image:
@@ -611,7 +651,11 @@ def system_design_view(request):
                     question=question,
                     user_answer=user_answer,
                     evaluation_criteria=evaluation_criteria,
-                    design_image=(system_design_round.design_image if system_design_round.design_image else None),
+                    design_image=(
+                        system_design_round.design_image
+                        if system_design_round.design_image
+                        else None
+                    ),
                 )
                 system_design_round.evaluation_result = evaluation
                 system_design_round.save()
@@ -619,9 +663,15 @@ def system_design_view(request):
                 session.save()
 
                 if evaluation.get("is_correct"):
-                    messages.success(request, f"Excellent design! Score: {evaluation.get('score')}/100")
+                    messages.success(
+                        request,
+                        f"Excellent design! Score: {evaluation.get('score')}/100",
+                    )
                 else:
-                    messages.info(request, f"Needs improvement. Score: {evaluation.get('score')}/100")
+                    messages.info(
+                        request,
+                        f"Needs improvement. Score: {evaluation.get('score')}/100",
+                    )
 
     return render(
         request,
@@ -707,8 +757,12 @@ def final_analysis_view(request):
             elif not session.system_design_completed:
                 return redirect("system_design")
 
-        coding_q1 = CodingRound.objects.filter(session=session, question_number=1).first()
-        coding_q2 = CodingRound.objects.filter(session=session, question_number=2).first()
+        coding_q1 = CodingRound.objects.filter(
+            session=session, question_number=1
+        ).first()
+        coding_q2 = CodingRound.objects.filter(
+            session=session, question_number=2
+        ).first()
         system_design = SystemDesignRound.objects.filter(session=session).first()
 
         if not session.final_analysis or not session.overall_readiness_score:
@@ -716,10 +770,23 @@ def final_analysis_view(request):
                 "company": session.get_company_display(),
                 "resume_score": session.resume_fit_score or 0,
                 "resume_analysis": session.resume_analysis or "N/A",
-                "coding_q1_score": coding_q1.evaluation_result.get("score", 0) if coding_q1 and coding_q1.evaluation_result else 0,
-                "coding_q2_score": coding_q2.evaluation_result.get("score", 0) if coding_q2 and coding_q2.evaluation_result else 0,
-                "system_design_score": system_design.evaluation_result.get("score", 0) if system_design and system_design.evaluation_result else 0,
-                "behavioral_resume_summary": session.behavioral_resume_summary or "Not completed",
+                "coding_q1_score": (
+                    coding_q1.evaluation_result.get("score", 0)
+                    if coding_q1 and coding_q1.evaluation_result
+                    else 0
+                ),
+                "coding_q2_score": (
+                    coding_q2.evaluation_result.get("score", 0)
+                    if coding_q2 and coding_q2.evaluation_result
+                    else 0
+                ),
+                "system_design_score": (
+                    system_design.evaluation_result.get("score", 0)
+                    if system_design and system_design.evaluation_result
+                    else 0
+                ),
+                "behavioral_resume_summary": session.behavioral_resume_summary
+                or "Not completed",
             }
 
             scores = [
@@ -733,7 +800,9 @@ def final_analysis_view(request):
             analyzer = GeminiAnalyzer()
             final_result = analyzer.generate_final_analysis(session_data)
 
-            session.overall_readiness_score = final_result.get("overall_score", overall_score)
+            session.overall_readiness_score = final_result.get(
+                "overall_score", overall_score
+            )
             session.final_analysis = final_result["analysis"]
             session.save()
             messages.success(request, "Final analysis generated successfully!")
@@ -746,23 +815,36 @@ def final_analysis_view(request):
         }
 
     elif request.user.user_type == "pm_ng":
-        if not (session.product_sense_completed and session.analytical_strategy_completed):
-             messages.warning(request, "Please complete all sections.")
-             if not session.product_sense_completed:
-                 return redirect("product_sense")
-             return redirect("analytical_strategy")
-             
+        if not (
+            session.product_sense_completed and session.analytical_strategy_completed
+        ):
+            messages.warning(request, "Please complete all sections.")
+            if not session.product_sense_completed:
+                return redirect("product_sense")
+            return redirect("analytical_strategy")
+
         product_sense = ProductSenseRound.objects.filter(session=session).first()
-        analytical_strategy = AnalyticalStrategyRound.objects.filter(session=session).first()
+        analytical_strategy = AnalyticalStrategyRound.objects.filter(
+            session=session
+        ).first()
 
         if not session.final_analysis or not session.overall_readiness_score:
             session_data = {
                 "company": session.get_company_display(),
                 "role": "Product Manager",
                 "resume_score": session.resume_fit_score or 0,
-                "product_sense_score": product_sense.evaluation_result.get("score", 0) if product_sense and product_sense.evaluation_result else 0,
-                "analytical_strategy_score": analytical_strategy.evaluation_result.get("score", 0) if analytical_strategy and analytical_strategy.evaluation_result else 0,
-                "behavioral_resume_summary": session.behavioral_resume_summary or "Not completed",
+                "product_sense_score": (
+                    product_sense.evaluation_result.get("score", 0)
+                    if product_sense and product_sense.evaluation_result
+                    else 0
+                ),
+                "analytical_strategy_score": (
+                    analytical_strategy.evaluation_result.get("score", 0)
+                    if analytical_strategy and analytical_strategy.evaluation_result
+                    else 0
+                ),
+                "behavioral_resume_summary": session.behavioral_resume_summary
+                or "Not completed",
             }
 
             scores = [
@@ -775,7 +857,9 @@ def final_analysis_view(request):
             analyzer = GeminiAnalyzer()
             final_result = analyzer.generate_final_analysis_pm(session_data)
 
-            session.overall_readiness_score = final_result.get("overall_score", overall_score)
+            session.overall_readiness_score = final_result.get(
+                "overall_score", overall_score
+            )
             session.final_analysis = final_result["analysis"]
             session.save()
 
@@ -802,23 +886,30 @@ def final_analysis_view(request):
 
 User = get_user_model()
 
+
 class InterviewViewsTest(TestCase):
     """
     Test suite integrated directly into views.py.
     Uses 'dummy' (mock) objects to simulate Gemini/RAG responses.
     """
+
     def setUp(self):
         # Setup Users
         self.swe_user = User.objects.create_user(
-            username='swe_user', password='password', user_type='swe_ng', has_resume=True
+            username="swe_user",
+            password="password",
+            user_type="swe_ng",
+            has_resume=True,
         )
-        self.swe_user.resume = SimpleUploadedFile("resume.pdf", b"dummy content", content_type="application/pdf")
+        self.swe_user.resume = SimpleUploadedFile(
+            "resume.pdf", b"dummy content", content_type="application/pdf"
+        )
         self.swe_user.save()
 
         self.pm_user = User.objects.create_user(
-            username='pm_user', password='password', user_type='pm_ng', has_resume=True
+            username="pm_user", password="password", user_type="pm_ng", has_resume=True
         )
-        
+
         # Setup Company
         self.company = Company.objects.create(name="TechCorp", slug="techcorp")
         self.client = Client()
@@ -826,36 +917,47 @@ class InterviewViewsTest(TestCase):
     # --- Start Session Tests ---
     def test_start_session_view_get(self):
         self.client.force_login(self.swe_user)
-        response = self.client.get(reverse('start_session'))
+        response = self.client.get(reverse("start_session"))
         self.assertEqual(response.status_code, 200)
 
     def test_start_session_success(self):
         self.client.force_login(self.swe_user)
-        response = self.client.post(reverse('start_session'), {
-            'company': 'techcorp',
-            'job_description': 'A very long valid job description ' * 5
-        })
-        self.assertRedirects(response, reverse('interview_analysis'))
-        self.assertTrue(InterviewSession.objects.filter(user=self.swe_user, status='active').exists())
+        response = self.client.post(
+            reverse("start_session"),
+            {
+                "company": "techcorp",
+                "job_description": "A very long valid job description " * 5,
+            },
+        )
+        self.assertRedirects(response, reverse("interview_analysis"))
+        self.assertTrue(
+            InterviewSession.objects.filter(
+                user=self.swe_user, status="active"
+            ).exists()
+        )
 
     # --- Resume Analysis Tests (Dummy Gemini) ---
-    @patch('interviews.views.GeminiAnalyzer')
+    @patch("interviews.views.GeminiAnalyzer")
     def test_resume_analysis_generation(self, MockAnalyzer):
         # DUMMY / MOCK RESPONSE
         mock_instance = MockAnalyzer.return_value
         mock_instance.extract_text_from_pdf.return_value = "Resume Text"
         mock_instance.analyze_resume_fit.return_value = {
-            "fit_score": 85, "analysis": "Good fit", "suggestions": "None"
+            "fit_score": 85,
+            "analysis": "Good fit",
+            "suggestions": "None",
         }
 
-        InterviewSession.objects.create(user=self.swe_user, company='techcorp', status="active")
+        InterviewSession.objects.create(
+            user=self.swe_user, company="techcorp", status="active"
+        )
         self.client.force_login(self.swe_user)
-        response = self.client.get(reverse('interview_analysis'))
+        response = self.client.get(reverse("interview_analysis"))
         self.assertEqual(response.status_code, 200)
 
     # --- Coding Round Tests (Dummy RAG + Gemini) ---
-    @patch('interviews.views.RAGService')
-    @patch('interviews.views.GeminiAnalyzer')
+    @patch("interviews.views.RAGService")
+    @patch("interviews.views.GeminiAnalyzer")
     def test_coding_round_generation(self, MockAnalyzer, MockRAG):
         # DUMMY / MOCK RESPONSE
         MockRAG.return_value.retrieve_coding_question.return_value = "Doc content"
@@ -863,50 +965,65 @@ class InterviewViewsTest(TestCase):
             {"question": "Two Sum", "solution": "Code"}
         ]
 
-        session = InterviewSession.objects.create(user=self.swe_user, company='techcorp', status="active")
-        self.client.force_login(self.swe_user)
-        response = self.client.get(reverse('coding_round'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(CodingRound.objects.filter(session=session, question_number=1).exists())
-
-    @patch('interviews.views.GeminiAnalyzer')
-    def test_coding_round_submission(self, MockAnalyzer):
-        session = InterviewSession.objects.create(user=self.swe_user, company='techcorp', status="active")
-        CodingRound.objects.create(
-            session=session, question_number=1,
-            generated_questions=[{"question": "Q1", "solution": "Sol"}],
-            selected_question_index=0
+        session = InterviewSession.objects.create(
+            user=self.swe_user, company="techcorp", status="active"
         )
-        
+        self.client.force_login(self.swe_user)
+        response = self.client.get(reverse("coding_round"))
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(
+            CodingRound.objects.filter(session=session, question_number=1).exists()
+        )
+
+    @patch("interviews.views.GeminiAnalyzer")
+    def test_coding_round_submission(self, MockAnalyzer):
+        session = InterviewSession.objects.create(
+            user=self.swe_user, company="techcorp", status="active"
+        )
+        CodingRound.objects.create(
+            session=session,
+            question_number=1,
+            generated_questions=[{"question": "Q1", "solution": "Sol"}],
+            selected_question_index=0,
+        )
+
         # DUMMY EVALUATION
         MockAnalyzer.return_value.evaluate_code.return_value = {
-            "is_correct": True, "score": 95, "feedback": "Great"
+            "is_correct": True,
+            "score": 95,
+            "feedback": "Great",
         }
 
         self.client.force_login(self.swe_user)
-        response = self.client.post(reverse('coding_round'), {
-            'user_code': 'print("hello")',
-            'language': 'python'
-        })
+        response = self.client.post(
+            reverse("coding_round"),
+            {"user_code": 'print("hello")', "language": "python"},
+        )
         self.assertEqual(response.status_code, 200)
 
     # --- Product Sense Tests (PM) ---
-    @patch('interviews.views.RAGService')
-    @patch('interviews.views.GeminiAnalyzer')
+    @patch("interviews.views.RAGService")
+    @patch("interviews.views.GeminiAnalyzer")
     def test_product_sense_flow(self, MockAnalyzer, MockRAG):
         MockRAG.return_value.retrieve_product_sense_case.return_value = "Case Doc"
         MockAnalyzer.return_value.select_and_generate_product_sense_case.return_value = {
-            "case": "Design X", "evaluation_criteria": "Metrics"
+            "case": "Design X",
+            "evaluation_criteria": "Metrics",
         }
         MockAnalyzer.return_value.evaluate_product_sense.return_value = {
-            "is_good": True, "score": 90
+            "is_good": True,
+            "score": 90,
         }
 
-        InterviewSession.objects.create(user=self.pm_user, company='techcorp', status="active")
+        InterviewSession.objects.create(
+            user=self.pm_user, company="techcorp", status="active"
+        )
         self.client.force_login(self.pm_user)
-        
+
         # Test Generate
-        self.client.get(reverse('product_sense'))
+        self.client.get(reverse("product_sense"))
         # Test Submit
-        response = self.client.post(reverse('product_sense'), {'user_answer': 'My Strategy'})
+        response = self.client.post(
+            reverse("product_sense"), {"user_answer": "My Strategy"}
+        )
         self.assertEqual(response.status_code, 200)
