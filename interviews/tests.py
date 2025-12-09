@@ -208,10 +208,6 @@ class InterviewViewsCoverageTest(TestCase):
 
         self.client.force_login(self.swe_user)
 
-        img = SimpleUploadedFile(
-            "design.png", b"\x89PNG\r\n...", content_type="image/png"
-        )
-
         session.refresh_from_db()
         self.assertTrue(session.system_design_completed)
         self.assertTrue(session.system_design_round.design_image)
