@@ -6,7 +6,9 @@ from companies.management.commands.seed_companies import Command
 
 @pytest.fixture
 def mock_get_or_create():
-    with mock.patch("companies.management.commands.seed_companies.Company.objects.get_or_create") as m:
+    with mock.patch(
+        "companies.management.commands.seed_companies.Company.objects.get_or_create"
+    ) as m:
         # Each call returns (mocked company object, True)
         class MockCompany:
             name = "Dummy Company"
