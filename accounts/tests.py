@@ -118,3 +118,17 @@ class TestCustomAuthenticationForm(TestCase):
         self.assertEqual(
             form.fields["password"].widget.attrs["placeholder"], "Password"
         )
+form = CustomUserCreationForm(
+    data={
+        "username": "john3",
+        "email": "john3@example.com",
+        "first_name": "John",
+        "last_name": "Doe",
+        "user_type": "candidate",
+        "password1": "pass12345!",
+        "password2": "pass12345!",
+    },
+    files={"resume": pdf},
+)
+print(form.errors)
+self.assertTrue(form.is_valid())
