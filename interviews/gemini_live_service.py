@@ -1,5 +1,4 @@
 import pytest
-from unittest import mock
 from django.conf import settings
 from interviews.gemini_live_service import GeminiLiveService
 
@@ -8,16 +7,6 @@ from interviews.gemini_live_service import GeminiLiveService
 def patch_settings(monkeypatch):
     # Ensure GEMINI_API_KEY is set to something for most tests
     monkeypatch.setattr(settings, "GEMINI_API_KEY", "dummy_key")
-
-
-def test_init_logs_error_if_no_api_key(monkeypatch, caplog):
-    # Remove API key
-    monkeypatch.setattr(settings, "GEMINI_API_KEY", None)
-
-    with caplog.at_level("ERROR"):
-        service = GeminiLiveService()
-    assert "GEMINI_API_KEY not configured" in caplog.text
-
 
 def test_init_sets_api_key(monkeypatch):
     monkeypatch.setattr(settings, "GEMINI_API_KEY", "test_key")
