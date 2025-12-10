@@ -203,3 +203,15 @@ LOGOUT_REDIRECT_URL = "/"
 # DEFAULT PK
 # ----------------------------
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Added for https, lets see
+# ----------------------------
+# SECURITY (Cloudflare)
+# ----------------------------
+CSRF_TRUSTED_ORIGINS = [
+    "https://yourdomain.com",
+    "https://www.yourdomain.com",
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
