@@ -22,13 +22,13 @@ ALLOWED_HOSTS = [
     "*",
     "marshall-cooling-clause-buffalo.trycloudflare.com",
     "https://total-mobility-ability-schemes.trycloudflare.com",
-    "https://likewise-recovered-port-golden.trycloudflare.com",
+    "likewise-recovered-port-golden.trycloudflare.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://marshall-cooling-clause-buffalo.trycloudflare.com",
     "https://total-mobility-ability-schemes.trycloudflare.com",
-    "https://likewise-recovered-port-golden.trycloudflare.com",
+    "likewise-recovered-port-golden.trycloudflare.com",
 ]
 
 # ----------------------------
