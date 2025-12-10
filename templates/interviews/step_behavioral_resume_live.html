@@ -597,9 +597,8 @@
     
     // Connect to WebSocket
     function connectWebSocket() {
-        const wsScheme = '{{ ws_scheme }}';
-        const wsHost = '{{ ws_host }}';
-        const wsUrl = `${wsScheme}://${wsHost}/ws/interview/behavioral-resume/`;
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+        const wsUrl = `${protocol}://${window.location.host}/ws/interview/behavioral-resume/`;
         
         updateStatus('connecting', 'Connecting...');
         
