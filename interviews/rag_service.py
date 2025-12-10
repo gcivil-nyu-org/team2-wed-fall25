@@ -41,9 +41,7 @@ class RAGService:
                 logger.warning(f"No {log_label} found for company {company_slug}")
                 return ""
 
-            logger.info(
-                f"Retrieved {log_label} (ID: {document.id}) for {company_slug}"
-            )
+            logger.info(f"Retrieved {log_label} (ID: {document.id}) for {company_slug}")
             return document.extracted_text
 
         except Company.DoesNotExist:
@@ -59,7 +57,9 @@ class RAGService:
 
     def retrieve_behavioral_question(self, company_slug):
         """Randomly select ONE behavioral document."""
-        return self._retrieve_document(company_slug, "BEHAVIORAL", "behavioral document")
+        return self._retrieve_document(
+            company_slug, "BEHAVIORAL", "behavioral document"
+        )
 
     def retrieve_system_design_question(self, company_slug):
         """Randomly select ONE system design document."""
