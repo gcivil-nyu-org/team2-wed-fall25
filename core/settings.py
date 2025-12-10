@@ -21,14 +21,14 @@ DEBUG = config("DEBUG", default=True, cast=bool)
 ALLOWED_HOSTS = [
     "*",
     "marshall-cooling-clause-buffalo.trycloudflare.com",
-    "https://total-mobility-ability-schemes.trycloudflare.com",
+    "total-mobility-ability-schemes.trycloudflare.com",
     "likewise-recovered-port-golden.trycloudflare.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://marshall-cooling-clause-buffalo.trycloudflare.com",
     "https://total-mobility-ability-schemes.trycloudflare.com",
-    "likewise-recovered-port-golden.trycloudflare.com",
+    "https://likewise-recovered-port-golden.trycloudflare.com",
 ]
 
 # ----------------------------
