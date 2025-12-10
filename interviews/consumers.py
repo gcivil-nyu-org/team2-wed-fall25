@@ -1,6 +1,5 @@
 """
 WebSocket consumers for live interview features.
-Optimized for high coverage by consolidating helpers and removing unreachable error branches.
 """
 
 import asyncio
@@ -19,6 +18,7 @@ logger = logging.getLogger(__name__)
 class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
     """
     WebSocket consumer for behavioral + resume live interview.
+    Relays text-based answers between browser and Gemini Live API.
     """
 
     async def connect(self):
@@ -26,239 +26,235 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         self.user = self.scope.get("user")
 
         if not self.user or isinstance(self.user, AnonymousUser):
-            logger.warning("Unauthorized WebSocket connection")
+            logger.warning("Unauthorized WebSocket connection attempt")
             await self.close(code=4001)
             return
 
         await self.accept()
+        logger.info(f"WebSocket connected for user: {self.user.username}")
 
-        # Initialize state
-        self.conversation_history = []
+        self.session = None
+        self.live_session = None
         self.question_count = 0
         self.max_questions = 2
+        self.final_summary = ""
         self.session_ended = False
-        self.is_active = False
-        self.current_q = ""
 
         try:
-            # Single consolidated initialization step
             await self.initialize_interview()
         except Exception as e:
-            logger.error(f"Initialization error: {e}")
-            await self.send_json(
-                {"type": "error", "message": f"Failed to init: {str(e)}"}
+            logger.error(f"Failed to initialize interview: {str(e)}")
+            await self.send(
+                text_data=json.dumps({"type": "error", "message": f"Failed to initialize interview: {str(e)}"})
             )
             await self.close()
 
     async def disconnect(self, close_code):
-        """Cleanup on disconnect"""
-        pass
+        logger.info(
+            f"WebSocket disconnected for user: {self.user.username if hasattr(self, 'user') else 'Unknown'}"
+        )
 
     async def receive(self, text_data=None, bytes_data=None):
-        """Handle incoming messages"""
         try:
             if text_data:
                 data = json.loads(text_data)
-                msg_type = data.get("type")
+                message_type = data.get("type")
 
-                if msg_type == "start":
+                if message_type == "start":
                     await self.start_interview()
-                elif msg_type == "answer":
-                    await self.handle_text_answer(data.get("text", ""))
-                elif msg_type == "end":
+                elif message_type == "end":
                     await self.end_interview()
-                elif msg_type == "ping":
-                    await self.send_json({"type": "pong"})
+                elif message_type == "answer":
+                    await self.handle_text_answer(data.get("text", ""))
+                elif message_type == "ping":
+                    await self.send(text_data=json.dumps({"type": "pong"}))
                 else:
-                    logger.warning(f"Unknown message: {msg_type}")
-        except Exception:
-            logger.exception("Receive loop error")
-            await self.send_json({"type": "error", "message": "Server error"})
+                    logger.warning(f"Unknown message type: {message_type}")
 
-    async def send_json(self, content):
-        """Helper to send JSON data"""
-        await self.send(text_data=json.dumps(content))
-
-    # ------------------------------------------------------------------
-    # Data & Service Helpers (Consolidated for Coverage)
-    # ------------------------------------------------------------------
+        except Exception as e:
+            logger.error(f"Error in receive: {str(e)}")
+            await self.send(text_data=json.dumps({"type": "error", "message": str(e)}))
 
     @database_sync_to_async
-    def get_session_context(self):
-        """
-        Fetches Session, Resume, and RAG data in one go.
-        Consolidating this removes multiple try/except blocks that hurt coverage.
-        """
+    def get_interview_session(self):
         from .models import InterviewSession
+        return InterviewSession.objects.filter(user=self.user, status="active").first()
+
+    @database_sync_to_async
+    def get_resume_text(self):
         from .gemini_service import GeminiAnalyzer
+
+        try:
+            if self.user.resume:
+                analyzer = GeminiAnalyzer()
+                return analyzer.extract_text_from_pdf(self.user.resume)
+            return "No resume available."
+        except Exception as e:
+            logger.error(f"Error extracting resume: {str(e)}")
+            return "Resume could not be extracted."
+
+    @database_sync_to_async
+    def get_behavioral_document(self, company_slug):
         from .rag_service import RAGService
 
-        # 1. Session
-        session = InterviewSession.objects.filter(
-            user=self.user, status="active"
-        ).first()
-        if not session:
-            raise ValueError("No active interview session found")
-
-        # 2. Resume Text
-        resume_text = "No resume provided."
-        if getattr(self.user, "resume", None):
-            try:
-                resume_text = GeminiAnalyzer().extract_text_from_pdf(self.user.resume)
-            except Exception:
-                logger.warning("Resume extraction failed, using fallback.")
-
-        # 3. RAG Document
-        behavioral_doc = None
-        try:
-            behavioral_doc = RAGService().retrieve_behavioral_question(session.company)
-        except Exception:
-            logger.warning("RAG retrieval failed, using fallback.")
-
-        if not behavioral_doc:
-            behavioral_doc = "Tell me about a challenge you faced."
-
-        return session, resume_text, behavioral_doc, session.get_company_display()
+        rag = RAGService()
+        return rag.retrieve_behavioral_question(company_slug)
 
     @database_sync_to_async
-    def save_summary_db(self, session_id, summary):
-        """Efficiently update the session summary."""
-        from .models import InterviewSession
-
-        InterviewSession.objects.filter(id=session_id).update(
-            behavioral_resume_summary=summary, behavioral_resume_completed=True
-        )
-
-    # ------------------------------------------------------------------
-    # Gemini Integration
-    # ------------------------------------------------------------------
-
-    async def run_gemini(self, prompt):
-        """Unified wrapper for all Gemini calls (Questions & Summaries)."""
-        loop = asyncio.get_running_loop()
-        return await loop.run_in_executor(None, self._sync_gemini_call, prompt)
-
-    def _sync_gemini_call(self, prompt):
-        """Blocking sync call to Gemini."""
-        genai.configure(api_key=settings.GEMINI_API_KEY)
-        model = genai.GenerativeModel("gemini-2.5-flash")
-        response = model.generate_content(prompt)
-        # Safely access text result
-        return getattr(response, "text", str(response)).strip()
-
-    # ------------------------------------------------------------------
-    # Interview Logic
-    # ------------------------------------------------------------------
+    def save_final_summary(self, summary):
+        if self.session:
+            self.session.behavioral_resume_summary = summary
+            self.session.behavioral_resume_completed = True
+            self.session.save()
+            logger.info(f"Saved final summary for session {self.session.id}")
 
     async def initialize_interview(self):
-        """Prepare the system prompt and notify client."""
-        (
-            self.session,
-            resume,
-            doc,
-            company_name,
-        ) = await self.get_session_context()
+        """Initialize interview session and Gemini Live"""
+        self.session = await self.get_interview_session()
+        if not self.session:
+            raise Exception("No active interview session found")
 
+        resume_text = await self.get_resume_text()
+        behavioral_document_text = await self.get_behavioral_document(self.session.company)
+        if not behavioral_document_text:
+            behavioral_document_text = """Tell me about a time when you faced a challenging problem at work.
+Describe a situation where you had to work with a difficult team member.
+Give an example of when you showed leadership."""
+
+        # ✅ Move import here to avoid circular import
         from .gemini_live_service import GeminiLiveService
 
-        self.system_prompt = GeminiLiveService().build_system_prompt(
-            company_name=company_name,
-            resume_text=resume,
-            behavioral_document_text=doc,
+        live_service = GeminiLiveService()
+        system_prompt = live_service.build_system_prompt(
+            company_name=self.session.get_company_display(),
+            resume_text=resume_text,
+            behavioral_document_text=behavioral_document_text,
             user_type=self.user.user_type,
         )
 
-        await self.send_json(
-            {"type": "ready", "message": "Ready", "company": company_name}
+        self.system_prompt = system_prompt
+        self.initialized = True
+
+        await self.send(
+            text_data=json.dumps(
+                {
+                    "type": "ready",
+                    "message": "Interview initialized. Ready to start.",
+                    "company": self.session.get_company_display(),
+                }
+            )
         )
 
     async def start_interview(self):
-        """Begin the Q&A loop."""
-        self.is_active = True
-        await self.send_json(
-            {
-                "type": "started",
-                "message": "Interview started.",
-                "max_questions": self.max_questions,
-            }
-        )
-        await self.ask_next_question()
+        try:
+            genai.configure(api_key=settings.GEMINI_API_KEY)
+            self.conversation_history = []
+            self.is_interview_active = True
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "type": "started",
+                        "message": "Interview started. Asking first question...",
+                        "question_count": 0,
+                        "max_questions": self.max_questions,
+                    }
+                )
+            )
+            await self.ask_next_question()
+        except Exception as e:
+            logger.error(f"Error starting interview: {str(e)}")
+            await self.send(
+                text_data=json.dumps({"type": "error", "message": f"Failed to start interview: {str(e)}"})
+            )
 
     async def ask_next_question(self):
-        """Generate and send the next question."""
-        if self.question_count >= self.max_questions:
-            await self.generate_final_summary()
-            return
-
-        # Build context from history
-        context = f"{self.system_prompt}\n\nHistory: {json.dumps(self.conversation_history)}\n"
-        context += f"Generate interview question #{self.question_count + 1}. Output ONLY the question text."
-
         try:
-            question_text = await self.run_gemini(context)
-            self.current_q = question_text
+            if self.question_count >= self.max_questions:
+                await self.request_final_summary()
+                return
+
+            context = f"{self.system_prompt}\n\n"
+            if self.conversation_history:
+                context += "Previous conversation:\n"
+                for entry in self.conversation_history:
+                    context += f"Q: {entry['question']}\nA: {entry['answer']}\n\n"
+
+            context += f"\nGenerate interview question #{self.question_count + 1}. Keep it concise and relevant."
+
+            model = genai.GenerativeModel("gemini-2.5-flash")
+            response = model.generate_content(context)
+            question_text = response.text.strip()
+
+            self.current_question = question_text
             self.question_count += 1
 
-            await self.send_json(
-                {
-                    "type": "question",
-                    "question": question_text,
-                    "question_number": self.question_count,
-                    "max_questions": self.max_questions,
-                }
+            await self.send(
+                text_data=json.dumps(
+                    {
+                        "type": "question",
+                        "question": question_text,
+                        "question_number": self.question_count,
+                        "max_questions": self.max_questions,
+                    }
+                )
             )
         except Exception as e:
-            logger.error(f"Gen Question Error: {e}")
-            await self.send_json(
-                {"type": "error", "message": "Failed to generate question"}
-            )
+            logger.error(f"Error generating question: {str(e)}")
+            await self.send(text_data=json.dumps({"type": "error", "message": str(e)}))
 
     async def handle_text_answer(self, answer_text):
-        """Process user answer."""
-        if not self.is_active:
-            await self.send_json({"type": "error", "message": "Interview not active"})
+        if not self.is_interview_active or not hasattr(self, "current_question"):
+            await self.send(text_data=json.dumps({"type": "error", "message": "No active question"}))
             return
 
         answer_text = answer_text.strip()
         if not answer_text:
-            await self.send_json({"type": "error", "message": "Answer cannot be empty"})
+            await self.send(text_data=json.dumps({"type": "error", "message": "Answer cannot be empty"}))
             return
 
-        # Save to history
-        self.conversation_history.append({"q": self.current_q, "a": answer_text})
+        self.conversation_history.append({"question": self.current_question, "answer": answer_text})
 
-        await self.send_json(
-            {"type": "answer_received", "question_count": self.question_count}
+        await self.send(
+            text_data=json.dumps(
+                {"type": "answer_received", "answer": answer_text, "question_count": self.question_count, "max_questions": self.max_questions}
+            )
         )
 
-        # Small natural pause
-        await asyncio.sleep(0.5)
-        await self.ask_next_question()
+        if self.question_count >= self.max_questions:
+            await asyncio.sleep(0.5)
+            await self.request_final_summary()
+        else:
+            await asyncio.sleep(1)
+            await self.ask_next_question()
 
-    async def generate_final_summary(self):
-        """End session and save summary."""
-        if self.session_ended:
-            return
+    async def request_final_summary(self):
         self.session_ended = True
-        self.is_active = False
+        self.is_interview_active = False
 
-        company = await database_sync_to_async(self.session.get_company_display)()
-        prompt = f"Summarize this interview for {company}. History: {json.dumps(self.conversation_history)}"
+        conversation_text = ""
+        for i, entry in enumerate(self.conversation_history, 1):
+            conversation_text += f"\nQuestion {i}: {entry['question']}\nAnswer {i}: {entry['answer']}\n"
+
+        summary_prompt = f"""Based on this behavioral interview for a position at {self.session.get_company_display()}, provide a comprehensive summary.
+
+Interview Transcript:
+{conversation_text}
+
+Please provide a structured summary including overall assessment, key strengths, areas for improvement, notable responses, and recommendation."""
 
         try:
-            summary = await self.run_gemini(prompt)
-            await self.save_summary_db(self.session.id, summary)
-            await self.send_json(
-                {"type": "summary", "summary": summary, "completed": True}
-            )
+            model = genai.GenerativeModel("gemini-2.5-flash")
+            response = model.generate_content(summary_prompt)
+            summary = response.text.strip()
+            await self.save_final_summary(summary)
+
+            await self.send(text_data=json.dumps({"type": "summary", "summary": summary, "completed": True}))
         except Exception as e:
-            logger.error(f"Summary Error: {e}")
-            await self.send_json(
-                {"type": "error", "message": "Failed to generate summary"}
-            )
+            logger.error(f"Error generating summary: {str(e)}")
+            await self.send(text_data=json.dumps({"type": "error", "message": str(e)}))
 
     async def end_interview(self):
-        """Manual termination."""
-        await self.generate_final_summary()
-        await self.send_json({"type": "ended"})
+        if not self.session_ended:
+            await self.request_final_summary()
+        await self.send(text_data=json.dumps({"type": "ended", "message": "Interview ended successfully."}))
         await self.close()
