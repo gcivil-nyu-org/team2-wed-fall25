@@ -11,7 +11,9 @@ class GeminiLiveService:
         self.api_key = settings.GEMINI_API_KEY
         genai.configure(api_key=self.api_key)
 
-    def build_system_prompt(self, company_name, resume_text, behavioral_document_text, user_type):
+    def build_system_prompt(
+        self, company_name, resume_text, behavioral_document_text, user_type
+    ):
         """Build a system prompt combining resume, behavioral doc, and role type"""
         if not resume_text:
             resume_text = "No resume available."
@@ -48,6 +50,8 @@ Role-specific instructions:
             "model": "gemini-2.5-flash",
             "generation_config": {
                 "response_modalities": ["audio"],
-                "speech_config": {"voice_config": {"prebuilt_voice_config": {"voice_name": "Puck"}}},
+                "speech_config": {
+                    "voice_config": {"prebuilt_voice_config": {"voice_name": "Puck"}}
+                },
             },
         }

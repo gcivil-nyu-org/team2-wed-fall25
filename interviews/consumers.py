@@ -45,7 +45,12 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
         except Exception as e:
             logger.error(f"Failed to initialize interview: {str(e)}")
             await self.send(
-                text_data=json.dumps({"type": "error", "message": f"Failed to initialize interview: {str(e)}"})
+                text_data=json.dumps(
+                    {
+                        "type": "error",
+                        "message": f"Failed to initialize interview: {str(e)}",
+                    }
+                )
             )
             await self.close()
 
@@ -78,6 +83,7 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def get_interview_session(self):
         from .models import InterviewSession
+
         return InterviewSession.objects.filter(user=self.user, status="active").first()
 
     @database_sync_to_async
@@ -115,7 +121,9 @@ class BehavioralResumeLiveConsumer(AsyncWebsocketConsumer):
             raise Exception("No active interview session found")
 
         resume_text = await self.get_resume_text()
-        behavioral_document_text = await self.get_behavioral_document(self.session.company)
+        behavioral_document_text = await self.get_behavioral_document(
+            self.session.company
+        )
         if not behavioral_document_text:
             behavioral_document_text = """Tell me about a time when you faced a challenging problem at work.
 Describe a situation where you had to work with a difficult team member.
@@ -164,7 +172,9 @@ Give an example of when you showed leadership."""
         except Exception as e:
             logger.error(f"Error starting interview: {str(e)}")
             await self.send(
-                text_data=json.dumps({"type": "error", "message": f"Failed to start interview: {str(e)}"})
+                text_data=json.dumps(
+                    {"type": "error", "message": f"Failed to start interview: {str(e)}"}
+                )
             )
 
     async def ask_next_question(self):
@@ -204,19 +214,32 @@ Give an example of when you showed leadership."""
 
     async def handle_text_answer(self, answer_text):
         if not self.is_interview_active or not hasattr(self, "current_question"):
-            await self.send(text_data=json.dumps({"type": "error", "message": "No active question"}))
+            await self.send(
+                text_data=json.dumps({"type": "error", "message": "No active question"})
+            )
             return
 
         answer_text = answer_text.strip()
         if not answer_text:
-            await self.send(text_data=json.dumps({"type": "error", "message": "Answer cannot be empty"}))
+            await self.send(
+                text_data=json.dumps(
+                    {"type": "error", "message": "Answer cannot be empty"}
+                )
+            )
             return
 
-        self.conversation_history.append({"question": self.current_question, "answer": answer_text})
+        self.conversation_history.append(
+            {"question": self.current_question, "answer": answer_text}
+        )
 
         await self.send(
             text_data=json.dumps(
-                {"type": "answer_received", "answer": answer_text, "question_count": self.question_count, "max_questions": self.max_questions}
+                {
+                    "type": "answer_received",
+                    "answer": answer_text,
+                    "question_count": self.question_count,
+                    "max_questions": self.max_questions,
+                }
             )
         )
 
@@ -233,7 +256,9 @@ Give an example of when you showed leadership."""
 
         conversation_text = ""
         for i, entry in enumerate(self.conversation_history, 1):
-            conversation_text += f"\nQuestion {i}: {entry['question']}\nAnswer {i}: {entry['answer']}\n"
+            conversation_text += (
+                f"\nQuestion {i}: {entry['question']}\nAnswer {i}: {entry['answer']}\n"
+            )
 
         summary_prompt = f"""Based on this behavioral interview for a position at {self.session.get_company_display()}, provide a comprehensive summary.
 
@@ -248,7 +273,11 @@ Please provide a structured summary including overall assessment, key strengths,
             summary = response.text.strip()
             await self.save_final_summary(summary)
 
-            await self.send(text_data=json.dumps({"type": "summary", "summary": summary, "completed": True}))
+            await self.send(
+                text_data=json.dumps(
+                    {"type": "summary", "summary": summary, "completed": True}
+                )
+            )
         except Exception as e:
             logger.error(f"Error generating summary: {str(e)}")
             await self.send(text_data=json.dumps({"type": "error", "message": str(e)}))
@@ -256,5 +285,9 @@ Please provide a structured summary including overall assessment, key strengths,
     async def end_interview(self):
         if not self.session_ended:
             await self.request_final_summary()
-        await self.send(text_data=json.dumps({"type": "ended", "message": "Interview ended successfully."}))
+        await self.send(
+            text_data=json.dumps(
+                {"type": "ended", "message": "Interview ended successfully."}
+            )
+        )
         await self.close()
