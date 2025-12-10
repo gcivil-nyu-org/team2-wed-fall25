@@ -18,10 +18,15 @@ SECRET_KEY = config(
 )
 
 DEBUG = config("DEBUG", default=True, cast=bool)
-ALLOWED_HOSTS = ["*", "marshall-cooling-clause-buffalo.trycloudflare.com", "https://total-mobility-ability-schemes.trycloudflare.com"]
+ALLOWED_HOSTS = [
+    "*",
+    "marshall-cooling-clause-buffalo.trycloudflare.com",
+    "https://total-mobility-ability-schemes.trycloudflare.com",
+]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://marshall-cooling-clause-buffalo.trycloudflare.com", "https://total-mobility-ability-schemes.trycloudflare.com",
+    "https://marshall-cooling-clause-buffalo.trycloudflare.com",
+    "https://total-mobility-ability-schemes.trycloudflare.com",
 ]
 
 # ----------------------------
