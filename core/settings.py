@@ -23,7 +23,7 @@ ALLOWED_HOSTS = [
     "marshall-cooling-clause-buffalo.trycloudflare.com",
     "total-mobility-ability-schemes.trycloudflare.com",
     "likewise-recovered-port-golden.trycloudflare.com",
-    "touched-editors-producing-soil.trycloudflare.com/"
+    "touched-editors-producing-soil.trycloudflare.com/",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
