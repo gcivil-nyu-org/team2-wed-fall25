@@ -5,6 +5,7 @@ from django.contrib.messages.storage.fallback import FallbackStorage
 
 from accounts import views
 
+
 class AccountViewsTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -32,7 +33,9 @@ class AccountViewsTests(TestCase):
         req.session.save()
         req._messages = FallbackStorage(req)
 
-        with mock.patch("accounts.views.CustomUserCreationForm", return_value=mock_form):
+        with mock.patch(
+            "accounts.views.CustomUserCreationForm", return_value=mock_form
+        ):
             with mock.patch("accounts.views.authenticate", return_value=mock.Mock()):
                 with mock.patch("accounts.views.render") as mock_render:
                     mock_render.return_value = mock.Mock(status_code=302)
