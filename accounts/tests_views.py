@@ -4,6 +4,7 @@ from django.test import RequestFactory, TestCase
 
 from accounts import views
 
+
 class AccountViewsTests(TestCase):
     def setUp(self):
         self.factory = RequestFactory()
@@ -23,7 +24,9 @@ class AccountViewsTests(TestCase):
         mock_form.is_valid.return_value = True
         mock_form.save.return_value = mock.Mock(username="u")
 
-        with mock.patch("accounts.views.CustomUserCreationForm", return_value=mock_form):
+        with mock.patch(
+            "accounts.views.CustomUserCreationForm", return_value=mock_form
+        ):
             with mock.patch("accounts.views.authenticate", return_value=mock.Mock()):
                 resp = views.signup_view(req)
                 # Expect a redirect when login happens
