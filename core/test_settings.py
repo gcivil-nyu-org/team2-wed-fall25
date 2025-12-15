@@ -1,6 +1,7 @@
 from django.test import SimpleTestCase, RequestFactory
 from core import views
 
+
 class CoreViewsTests(SimpleTestCase):
     def test_home_view_renders(self):
         req = RequestFactory().get("/")
