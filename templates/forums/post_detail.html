@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }} - Forum - AcePrep{% endblock %}
+
+{% block content %}
+<div class="container" style="margin-top: 100px; padding: 40px 0;">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <!-- Back to Forum -->
+            <div class="mb-4">
+                <a href="{% url 'forum' %}" class="text-decoration-none text-muted">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Forum
+                </a>
+            </div>
+            
+            <!-- Post -->
+            <div class="card-modern p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="flex-grow-1">
+                        <h1 class="fw-bold mb-3">{{ post.title }}</h1>
+                        <div class="text-muted mb-4">{{ post.content|linebreaks }}</div>
+                    </div>
+                </div>
+                
+                <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                    <div class="d-flex align-items-center">
+                        <div class="feature-icon me-2" style="width: 40px; height: 40px; font-size: 1rem;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <small class="fw-medium text-dark">{{ post.author.username }}</small>
+                            <br>
+                            <small class="text-muted">{{ post.created_at|date:"F d, Y g:i A" }}</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-4">
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-sm btn-outline-primary react-btn-post {% if post_user_reacted %}active{% endif %}" 
+                                data-post-id="{{ post.id }}" style="border-radius: 20px;">
+                            <i class="fas fa-thumbs-up me-1"></i>
+                            <span class="reaction-count-post">{{ post.reaction_count }}</span>
+                        </button>
+                        {% else %}
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="fas fa-thumbs-up me-2"></i>
+                            <span>{{ post.reaction_count }}</span>
+                        </div>
+                        {% endif %}
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="fas fa-comments me-2"></i>
+                            <span>{{ post.comment_count }} comment{{ post.comment_count|pluralize }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Comments Section -->
+            <div class="card-modern p-4 mb-4">
+                <h3 class="fw-bold mb-4">
+                    <i class="fas fa-comments me-2" style="color: var(--primary-color);"></i>
+                    Comments ({{ comments.count }})
+                </h3>
+                
+                <!-- Comment Form -->
+                {% if user.is_authenticated %}
+                    {% if messages %}
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" class="mb-4">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="content" class="form-label fw-medium">Add a Comment</label>
+                            <textarea class="form-control" id="content" name="content" rows="3" 
+                                      placeholder="Write your comment..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-modern btn-primary-modern">
+                            <i class="fas fa-paper-plane me-2"></i>Post Comment
+                        </button>
+                    </form>
+                {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Please <a href="{% url 'login' %}" class="alert-link">login</a> to add a comment.
+                    </div>
+                {% endif %}
+                
+                <!-- Comments List -->
+                {% if comments %}
+                    <div class="mt-4">
+                        {% for comment in comments %}
+                        <div class="border-start border-3 border-primary ps-4 mb-4 pb-3">
+                            <div class="d-flex align-items-start mb-2">
+                                <div class="feature-icon me-2" style="width: 35px; height: 35px; font-size: 0.9rem;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <div class="fw-medium text-dark mb-1">{{ comment.author.username }}</div>
+                                    <small class="text-muted">{{ comment.created_at|date:"F d, Y g:i A" }}</small>
+                                </div>
+                            </div>
+                            <div class="mt-2 mb-3">{{ comment.content|linebreaks }}</div>
+                            <div class="d-flex align-items-center">
+                                {% if user.is_authenticated %}
+                                <button class="btn btn-sm btn-outline-primary react-btn-comment {% if comment.user_reacted %}active{% endif %}" 
+                                        data-comment-id="{{ comment.id }}" style="border-radius: 20px;">
+                                    <i class="fas fa-thumbs-up me-1"></i>
+                                    <span class="reaction-count-comment-{{ comment.id }}">{{ comment.reaction_count }}</span>
+                                </button>
+                                {% else %}
+                                <div class="d-flex align-items-center text-muted">
+                                    <i class="fas fa-thumbs-up me-2"></i>
+                                    <span>{{ comment.reaction_count }}</span>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-4 text-muted">
+                        <i class="fas fa-comments fa-2x mb-3"></i>
+                        <p>No comments yet. Be the first to comment!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .border-primary {
+        border-color: var(--primary-color) !important;
+    }
+    
+    .react-btn-post.active,
+    .react-btn-comment.active {
+        background-color: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .react-btn-post:hover,
+    .react-btn-comment:hover {
+        transform: translateY(-1px);
+    }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    const csrftoken = getCookie('csrftoken');
+    
+    // Post reaction handler
+    const postReactBtn = document.querySelector('.react-btn-post');
+    if (postReactBtn) {
+        postReactBtn.addEventListener('click', function() {
+            const postId = this.dataset.postId;
+            const countSpan = this.querySelector('.reaction-count-post');
+            
+            fetch(`/forums/post/${postId}/react/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                countSpan.textContent = data.count;
+                if (data.reacted) {
+                    this.classList.add('active');
+                } else {
+                    this.classList.remove('active');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Fallback: reload page
+                window.location.reload();
+            });
+        });
+    }
+    
+    // Comment reaction handlers
+    document.querySelectorAll('.react-btn-comment').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const commentId = this.dataset.commentId;
+            const countSpan = this.querySelector(`.reaction-count-comment-${commentId}`);
+            
+            fetch(`/forums/comment/${commentId}/react/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                credentials: 'same-origin'
+            })
+            .then(response => response.json())
+            .then(data => {
+                countSpan.textContent = data.count;
+                if (data.reacted) {
+                    this.classList.add('active');
+                } else {
+                    this.classList.remove('active');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Fallback: reload page
+                window.location.reload();
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
+
