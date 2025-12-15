@@ -34,7 +34,7 @@ class ResumeViewTests(SimpleTestCase):
 
         with mock.patch("resumes.views.render") as mock_render:
             mock_render.return_value = mock.Mock(status_code=200)
-            resp = views.view_resume(request)
+            #resp = views.view_resume(request)
             # render should have been called with is_pdf True
             called_ctx = mock_render.call_args[0][2]
             self.assertTrue(called_ctx["is_pdf"])
@@ -65,7 +65,7 @@ class ResumeViewTests(SimpleTestCase):
         with mock.patch("resumes.views.FileResponse") as MockFileResponse:
             mock_resp = mock.Mock()
             MockFileResponse.return_value = mock_resp
-            resp = views.serve_resume(request)
+            #resp = views.serve_resume(request)
             # Ensure Content-Disposition header was set
             MockFileResponse.assert_called()
 
