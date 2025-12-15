@@ -1,5 +1,6 @@
 from companies.models import company_document_upload_path, Company, CompanyDocument
 
+
 def test_company_document_upload_path():
     class Itt:
         company = mock = type("C", (), {"slug": "acme"})
@@ -7,6 +8,7 @@ def test_company_document_upload_path():
 
     path = company_document_upload_path(Itt(), "doc.pdf")
     assert "companies/acme/" in path
+
 
 def test_company_str_methods():
     c = Company(name="ACME")
