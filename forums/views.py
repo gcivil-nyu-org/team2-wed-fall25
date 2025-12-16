@@ -7,7 +7,7 @@ from django.db.models import Count, Max, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import CommentForm, PostForm, TopicForm
-from .models import Forum, MentorAssignment, Post, PostVote, Topic, Topic
+from .models import Forum, MentorAssignment, Post, PostVote, Topic
 
 
 def forum_list(request):
