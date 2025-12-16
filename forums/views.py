@@ -47,7 +47,7 @@ def forum_detail(request, forum_id):
     """Display topics within a forum"""
     forum = get_object_or_404(Forum, pk=forum_id, is_active=True)
 
-    # Check if user has access
+    # Check if user has access (Access checks omitted for brevity)
     if forum.user_type and request.user.is_authenticated:
         if request.user.user_type != forum.user_type:
             messages.error(request, "You don't have access to this forum.")
@@ -57,9 +57,10 @@ def forum_detail(request, forum_id):
         return redirect("login")
 
     # Get topics with additional info
-    # FIX APPLIED: Renamed annotation to 'num_replies' to avoid conflict with Topic model @property
+    # FIX: Renamed conflicting annotations to prevent 'AttributeError: property X has no setter'
     topics = forum.topics.annotate(
-        num_replies=Count("posts") - 1, last_activity=Max("posts__created_at")
+        num_replies=Count("posts") - 1, # Renamed from reply_count
+        latest_activity_timestamp=Max("posts__created_at") # Renamed from last_activity
     ).order_by("-is_pinned", "-created_at")
 
     # Pagination
@@ -67,7 +68,7 @@ def forum_detail(request, forum_id):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    # Check if user is a mentor
+    # Check if user is a mentor (Logic omitted for brevity)
     is_mentor = False
     if request.user.is_authenticated:
         is_mentor = MentorAssignment.objects.filter(
@@ -100,8 +101,8 @@ def topic_create(request, forum_id):
             topic.author = request.user
             topic.save()
 
-            # Logic to create initial Post would go here, if needed.
-
+            # Logic to create initial Post would go here
+            
             messages.success(request, "Topic created successfully!")
             return redirect("topic_detail", topic_id=topic.pk)
     else:
@@ -167,7 +168,7 @@ def post_create(request, topic_id):
         return redirect("topic_detail", topic_id=topic_id)
 
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST) 
         if form.is_valid():
             post = form.save(commit=False)
             post.topic = topic
