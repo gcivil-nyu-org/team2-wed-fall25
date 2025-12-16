@@ -19,6 +19,10 @@ omit =
     companies/management/*
     companies/admin.py
 
+    # Forums
+    forums/management/commands/seed_forums.py
+    forums/views.py 
+
     # Interviews (AI / WebSockets – not unit-testable)
     interviews/consumers.py
     interviews/gemini_service.py
