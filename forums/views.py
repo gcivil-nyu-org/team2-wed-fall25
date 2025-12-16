@@ -59,8 +59,10 @@ def forum_detail(request, forum_id):
     # Get topics with additional info
     # FIX: Renamed conflicting annotations to prevent 'AttributeError: property X has no setter'
     topics = forum.topics.annotate(
-        num_replies=Count("posts") - 1, # Renamed from reply_count
-        latest_activity_timestamp=Max("posts__created_at") # Renamed from last_activity
+        num_replies=Count("posts") - 1,  # Renamed from reply_count
+        latest_activity_timestamp=Max(
+            "posts__created_at"
+        ),  # Renamed from last_activity
     ).order_by("-is_pinned", "-created_at")
 
     # Pagination
@@ -102,7 +104,7 @@ def topic_create(request, forum_id):
             topic.save()
 
             # Logic to create initial Post would go here
-            
+
             messages.success(request, "Topic created successfully!")
             return redirect("topic_detail", topic_id=topic.pk)
     else:
@@ -168,7 +170,7 @@ def post_create(request, topic_id):
         return redirect("topic_detail", topic_id=topic_id)
 
     if request.method == "POST":
-        form = PostForm(request.POST) 
+        form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.topic = topic
