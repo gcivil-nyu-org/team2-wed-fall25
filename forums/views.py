@@ -101,7 +101,7 @@ def topic_create(request, forum_id):
             topic.save()
 
             # Logic to create initial Post would go here, if needed.
-            
+
             messages.success(request, "Topic created successfully!")
             return redirect("topic_detail", topic_id=topic.pk)
     else:
@@ -167,7 +167,7 @@ def post_create(request, topic_id):
         return redirect("topic_detail", topic_id=topic_id)
 
     if request.method == "POST":
-        form = PostForm(request.POST) 
+        form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.topic = topic
