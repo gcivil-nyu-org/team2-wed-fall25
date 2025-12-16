@@ -1,12 +1,7 @@
 from django.contrib import admin
 
-from .models import (
-    AnalyticalStrategyRound,
-    CodingRound,
-    InterviewSession,
-    ProductSenseRound,
-    SystemDesignRound,
-)
+from .models import (AnalyticalStrategyRound, CodingRound, InterviewSession,
+                     ProductSenseRound, SystemDesignRound)
 
 
 @admin.register(InterviewSession)

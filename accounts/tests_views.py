@@ -1,4 +1,4 @@
-from accounts.models import user_resume_upload_path, User
+from accounts.models import User, user_resume_upload_path
 
 
 def test_user_resume_upload_path():

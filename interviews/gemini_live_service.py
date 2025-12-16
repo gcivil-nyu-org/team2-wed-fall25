@@ -2,8 +2,8 @@
 Service wrapper for Gemini Live API.
 """
 
-from django.conf import settings
 import google.generativeai as genai
+from django.conf import settings
 
 
 class GeminiLiveService:

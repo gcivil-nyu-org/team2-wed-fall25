@@ -2,10 +2,11 @@
 Django settings for AcePrep project.
 """
 
-from pathlib import Path
-from decouple import config
 import os
 import tempfile
+from pathlib import Path
+
+from decouple import config
 
 # ----------------------------
 # BASE

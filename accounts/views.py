@@ -9,7 +9,8 @@ from rest_framework.response import Response
 
 from .forms import CustomAuthenticationForm, CustomUserCreationForm
 from .models import User
-from .serializers import LoginSerializer, UserRegistrationSerializer, UserSerializer
+from .serializers import (LoginSerializer, UserRegistrationSerializer,
+                          UserSerializer)
 
 
 # Django Views (for frontend)

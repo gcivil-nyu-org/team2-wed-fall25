@@ -1,4 +1,5 @@
-from django.test import SimpleTestCase, RequestFactory
+from django.test import RequestFactory, SimpleTestCase
+
 from core import views
 
 

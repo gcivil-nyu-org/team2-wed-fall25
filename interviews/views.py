@@ -1,30 +1,25 @@
 import logging
 from unittest.mock import patch
 
+from channels.db import database_sync_to_async
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.db import IntegrityError
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
-from django.test import TestCase, Client
+from django.test import Client, TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-from django.core.files.uploadedfile import SimpleUploadedFile
-
-from channels.db import database_sync_to_async
 
 # Local Imports
 # (Ensure these apps exist in your project, otherwise tests will fail on import)
 from companies.models import Company
+
 from .gemini_service import GeminiAnalyzer
+from .models import (AnalyticalStrategyRound, CodingRound, InterviewSession,
+                     ProductSenseRound, SystemDesignRound)
 from .rag_service import RAGService
-from .models import (
-    InterviewSession,
-    CodingRound,
-    SystemDesignRound,
-    ProductSenseRound,
-    AnalyticalStrategyRound,
-)
 
 logger = logging.getLogger(__name__)
 

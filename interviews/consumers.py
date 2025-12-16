@@ -2,8 +2,8 @@ import asyncio
 import json
 import logging
 
-from asgiref.sync import sync_to_async
 import google.generativeai as genai
+from asgiref.sync import sync_to_async
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 from django.conf import settings

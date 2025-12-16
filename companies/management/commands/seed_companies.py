@@ -1,5 +1,7 @@
 from unittest import mock
+
 import pytest
+
 from companies.management.commands.seed_companies import Command
 
 
