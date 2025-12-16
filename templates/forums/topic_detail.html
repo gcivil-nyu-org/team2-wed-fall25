@@ -53,6 +53,19 @@
     .post-content {
         line-height: 1.8;
         color: var(--dark-color);
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: pre-wrap;
+        max-width: 100%;
+        overflow: visible;
+    }
+    
+    .post-content p {
+        margin-bottom: 1rem;
+    }
+    
+    .post-content p:last-child {
+        margin-bottom: 0;
     }
     
     .post-footer {
