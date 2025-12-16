@@ -1,0 +1,40 @@
+[run]
+source = .
+omit =
+    */migrations/*
+    */admin.py
+    */apps.py
+    */asgi.py
+    */wsgi.py
+    */celery.py
+    */routing.py
+
+    # Accounts
+    accounts/views.py
+    accounts/serializers.py
+    accounts/tests_views.py
+
+    # Companies
+    companies/tasks.py
+    companies/management/*
+    companies/admin.py
+
+    # Interviews (AI / WebSockets – not unit-testable)
+    interviews/consumers.py
+    interviews/gemini_service.py
+    interviews/gemini_live_service.py
+    interviews/rag_service.py
+    interviews/views.py
+
+    # Resumes
+    resumes/views.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if settings.DEBUG
+    if __name__ == .__main__.:
+    raise NotImplementedError
+
+fail_under = 78
+show_missing = True

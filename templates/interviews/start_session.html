@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+
+{% block title %}Start Interview Session - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    .session-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+    
+    .session-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 800px;
+        margin: 0 auto;
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    .session-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .session-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .form-group-modern {
+        margin-bottom: 30px;
+    }
+    
+    .form-label-modern {
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-label-modern i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .form-control-modern,
+    .form-select-modern {
+        border: 2px solid rgba(102, 126, 234, 0.2);
+        border-radius: 12px;
+        padding: 14px 18px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+        width: 100%;
+    }
+    
+    .form-control-modern:focus,
+    .form-select-modern:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        outline: none;
+        background: white;
+    }
+    
+    .form-control-modern::placeholder {
+        color: var(--medium-gray);
+    }
+    
+    textarea.form-control-modern {
+        min-height: 200px;
+        resize: vertical;
+    }
+    
+    .btn-submit-modern {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 16px 40px;
+        font-size: 18px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-submit-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-cancel-modern {
+        background: rgba(100, 116, 139, 0.1);
+        color: var(--dark-color);
+        border: 2px solid rgba(100, 116, 139, 0.2);
+        border-radius: 12px;
+        padding: 14px 40px;
+        font-size: 16px;
+        font-weight: 600;
+        width: 100%;
+        margin-top: 15px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+    }
+    
+    .btn-cancel-modern:hover {
+        background: rgba(100, 116, 139, 0.2);
+        border-color: rgba(100, 116, 139, 0.3);
+        text-decoration: none;
+        color: var(--dark-color);
+    }
+    
+    .helper-text {
+        font-size: 14px;
+        color: var(--medium-gray);
+        margin-top: 8px;
+    }
+    
+    .info-box {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .info-box i {
+        color: var(--info-color);
+        font-size: 1.2rem;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .session-container {
+            padding: 90px 16px 20px;
+        }
+        
+        .session-card {
+            padding: 30px 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="session-container">
+    <div class="container">
+        <div class="session-card">
+            <div class="session-header">
+                <div class="session-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h2 class="fw-bold mb-2">Start Interview Session</h2>
+                <p class="text-muted">Let's prepare you for your dream job interview</p>
+            </div>
+            
+            <div class="info-box">
+                <div class="d-flex">
+                    <i class="fas fa-info-circle me-3 mt-1"></i>
+                    <div>
+                        <h6 class="fw-bold mb-1">How it works</h6>
+                        <p class="mb-0 small">Select a company and paste the job description. Our AI will analyze your resume and provide personalized feedback to help you match the role perfectly.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <!-- Company Selection -->
+                <div class="form-group-modern">
+                    <label class="form-label-modern">
+                        <i class="fas fa-building"></i>
+                        Company
+                    </label>
+                    <select name="company" class="form-select-modern" required>
+                        <option value="">Select a company...</option>
+                        {% for value, label in companies %}
+                        <option value="{{ value }}" {% if selected_company == value %}selected{% endif %}>
+                            {{ label }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <div class="helper-text">
+                        <i class="fas fa-lightbulb"></i> Choose the company you're interviewing with
+                    </div>
+                </div>
+                
+                <!-- Job Description -->
+                <div class="form-group-modern">
+                    <label class="form-label-modern">
+                        <i class="fas fa-file-alt"></i>
+                        Job Description
+                    </label>
+                    <textarea 
+                        name="job_description" 
+                        class="form-control-modern" 
+                        placeholder="Paste the complete job description here...&#10;&#10;Include:&#10;- Role title&#10;- Responsibilities&#10;- Required skills and qualifications&#10;- Nice-to-have skills&#10;- Any other relevant information"
+                        required
+                        minlength="50">{{ job_description }}</textarea>
+                    <div class="helper-text">
+                        <i class="fas fa-lightbulb"></i> The more detailed the job description, the better the analysis (minimum 50 characters)
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="btn-submit-modern">
+                    <i class="fas fa-paper-plane me-2"></i>
+                    Start Analysis
+                </button>
+                
+                <!-- Cancel Button -->
+                <a href="{% url 'dashboard' %}" class="btn-cancel-modern">
+                    <i class="fas fa-times me-2"></i>
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add character counter for textarea
+    const textarea = document.querySelector('textarea[name="job_description"]');
+    const helperText = textarea.nextElementSibling;
+    
+    function updateCharCount() {
+        const length = textarea.value.length;
+        const minLength = 50;
+        
+        if (length < minLength) {
+            helperText.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${length}/${minLength} characters (minimum required)`;
+            helperText.style.color = 'var(--warning-color)';
+        } else {
+            helperText.innerHTML = `<i class="fas fa-check-circle"></i> ${length} characters - Looking good!`;
+            helperText.style.color = 'var(--success-color)';
+        }
+    }
+    
+    textarea.addEventListener('input', updateCharCount);
+    if (textarea.value) {
+        updateCharCount();
+    }
+    
+    // Add animation to form elements
+    const formGroups = document.querySelectorAll('.form-group-modern');
+    formGroups.forEach((group, index) => {
+        group.style.opacity = '0';
+        group.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            group.style.transition = 'all 0.5s ease';
+            group.style.opacity = '1';
+            group.style.transform = 'translateY(0)';
+        }, 200 + (index * 100));
+    });
+});
+</script>
+{% endblock %}
+

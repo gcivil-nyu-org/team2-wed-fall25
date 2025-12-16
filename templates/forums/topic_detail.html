@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ topic.title }} - AcePrep Forums{% endblock %}
+
+{% block extra_css %}
+<style>
+    .post-card {
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius);
+        padding: 25px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
+    
+    .post-card:hover {
+        box-shadow: var(--shadow-md);
+    }
+    
+    .post-card.initial-post {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+        border-left: 4px solid var(--primary-color);
+    }
+    
+    .post-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .post-author {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .author-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+    }
+    
+    .post-content {
+        line-height: 1.8;
+        color: var(--dark-color);
+    }
+    
+    .post-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .vote-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .vote-btn {
+        background: none;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 6px;
+        padding: 5px 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .vote-btn:hover {
+        background: var(--light-gray);
+    }
+    
+    .vote-btn.upvoted {
+        background: var(--success-color);
+        color: white;
+        border-color: var(--success-color);
+    }
+    
+    .vote-btn.downvoted {
+        background: var(--danger-color);
+        color: white;
+        border-color: var(--danger-color);
+    }
+    
+    .badge-custom {
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+    
+    .badge-case-study {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+    }
+    
+    .badge-strategy {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        color: white;
+    }
+    
+    .comment-card {
+        background: var(--light-gray);
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 10px;
+        margin-left: 30px;
+    }
+    
+    .topic-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 40px 0;
+        margin-top: 70px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="topic-header">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                {% if topic.is_pinned %}
+                    <span class="badge bg-light text-dark mb-2">PINNED</span>
+                {% endif %}
+                {% if topic.is_locked %}
+                    <span class="badge bg-warning mb-2"><i class="fas fa-lock me-1"></i>LOCKED</span>
+                {% endif %}
+                <h1 class="mb-2">{{ topic.title }}</h1>
+                <p class="mb-0 opacity-75">{{ topic.description|truncatewords:30 }}</p>
+            </div>
+            {% if user.is_authenticated and not topic.is_locked %}
+                <a href="{% url 'post_create' topic.id %}" class="btn btn-light btn-modern">
+                    <i class="fas fa-reply me-2"></i>Reply
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'forum_list' %}">Forums</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'forum_detail' forum.id %}">{{ forum.name }}</a></li>
+            <li class="breadcrumb-item active">{{ topic.title|truncatewords:5 }}</li>
+        </ol>
+    </nav>
+    
+    <div class="row">
+        <div class="col-12">
+            {% if page_obj %}
+                {% for post in page_obj %}
+                    <div class="post-card {% if post.is_initial_post %}initial-post{% endif %}">
+                        <div class="post-header">
+                            <div class="post-author">
+                                <div class="author-avatar">
+                                    {{ post.author.username|first|upper }}
+                                </div>
+                                <div>
+                                    <strong>{{ post.author.username }}</strong>
+                                    {% if post.is_case_study %}
+                                        <span class="badge-custom badge-case-study">Case Study</span>
+                                    {% endif %}
+                                    {% if post.is_preparation_strategy %}
+                                        <span class="badge-custom badge-strategy">Strategy</span>
+                                    {% endif %}
+                                    <br>
+                                    <small class="text-muted">{{ post.created_at|timesince }} ago</small>
+                                    {% if post.edited_at %}
+                                        <small class="text-muted">(edited)</small>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="post-content">
+                            {{ post.content|linebreaks }}
+                        </div>
+                        
+                        <div class="post-footer">
+                            <div class="vote-buttons">
+                                <button class="vote-btn" data-post-id="{{ post.id }}" data-vote-type="up" onclick="votePost({{ post.id }}, 'up')">
+                                    <i class="fas fa-arrow-up"></i> <span id="upvotes-{{ post.id }}">{{ post.upvotes }}</span>
+                                </button>
+                                <span id="score-{{ post.id }}" class="fw-bold">{{ post.score }}</span>
+                                <button class="vote-btn" data-post-id="{{ post.id }}" data-vote-type="down" onclick="votePost({{ post.id }}, 'down')">
+                                    <i class="fas fa-arrow-down"></i> <span id="downvotes-{{ post.id }}">{{ post.downvotes }}</span>
+                                </button>
+                            </div>
+                            
+                            {% if user.is_authenticated and not topic.is_locked %}
+                                <button class="btn btn-sm btn-outline-secondary" onclick="showCommentForm({{ post.id }})">
+                                    <i class="fas fa-comment me-1"></i>Comment
+                                </button>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Comments Section -->
+                        {% if post.comments.all %}
+                            <div class="mt-3">
+                                {% for comment in post.comments.all %}
+                                    <div class="comment-card">
+                                        <div class="d-flex align-items-start">
+                                            <div class="author-avatar" style="width: 30px; height: 30px; font-size: 0.8rem;">
+                                                {{ comment.author.username|first|upper }}
+                                            </div>
+                                            <div class="ms-2 flex-grow-1">
+                                                <strong>{{ comment.author.username }}</strong>
+                                                <small class="text-muted ms-2">{{ comment.created_at|timesince }} ago</small>
+                                                <p class="mb-0 mt-1">{{ comment.content }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Comment Form (Hidden by default) -->
+                        {% if user.is_authenticated and not topic.is_locked %}
+                            <div id="comment-form-{{ post.id }}" class="mt-3" style="display: none;">
+                                <form method="post" action="{% url 'comment_create' post.id %}">
+                                    {% csrf_token %}
+                                    <div class="mb-2">
+                                        <textarea name="content" class="form-control" rows="3" placeholder="Write a comment..." required></textarea>
+                                    </div>
+                                    <div>
+                                        <button type="submit" class="btn btn-sm btn-primary">Post Comment</button>
+                                        <button type="button" class="btn btn-sm btn-secondary" onclick="hideCommentForm({{ post.id }})">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                
+                <!-- Pagination -->
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="Posts pagination">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% endif %}
+            
+            <div class="mt-4">
+                <a href="{% url 'forum_detail' forum.id %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to {{ forum.name }}
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function votePost(postId, voteType) {
+    fetch(`/forums/post/${postId}/vote/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+        },
+        body: `vote_type=${voteType}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            document.getElementById(`upvotes-${postId}`).textContent = data.upvotes;
+            document.getElementById(`downvotes-${postId}`).textContent = data.downvotes;
+            document.getElementById(`score-${postId}`).textContent = data.score;
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function showCommentForm(postId) {
+    document.getElementById(`comment-form-${postId}`).style.display = 'block';
+}
+
+function hideCommentForm(postId) {
+    document.getElementById(`comment-form-${postId}`).style.display = 'none';
+}
+</script>
+{% endblock %}
+

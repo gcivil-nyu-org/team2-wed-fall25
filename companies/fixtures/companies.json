@@ -1,0 +1,27 @@
+[
+    {
+        "model": "companies.company",
+        "pk": 1,
+        "fields": {
+            "slug": "amazon",
+            "name": "Amazon"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 2,
+        "fields": {
+            "slug": "google",
+            "name": "Google"
+        }
+    },
+    {
+        "model": "companies.company",
+        "pk": 3,
+        "fields": {
+            "slug": "microsoft",
+            "name": "Microsoft"
+        }
+    }
+]
+

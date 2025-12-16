@@ -1,0 +1,623 @@
+{% extends 'base.html' %}
+
+{% block title %}Product Sense - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    .step-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+    
+    .step-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        margin-bottom: 24px;
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    /* Stepper Styles */
+    .stepper-container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 30px 40px;
+        margin-bottom: 30px;
+    }
+    
+    .stepper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        margin: 20px 0;
+    }
+    
+    .stepper-step {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .stepper-step:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 25px;
+        left: calc(50% + 30px);
+        right: calc(-50% + 30px);
+        height: 3px;
+        background: rgba(100, 116, 139, 0.2);
+        z-index: -1;
+    }
+    
+    .stepper-step.completed::after {
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .stepper-step.active::after {
+        background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+    }
+    
+    .stepper-circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(100, 116, 139, 0.1);
+        border: 3px solid rgba(100, 116, 139, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--medium-gray);
+        transition: all 0.3s ease;
+        margin-bottom: 10px;
+    }
+    
+    .stepper-step.completed .stepper-circle {
+        background: linear-gradient(135deg, var(--success-color), #059669);
+        border-color: var(--success-color);
+        color: white;
+    }
+    
+    .stepper-step.active .stepper-circle {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        border-color: var(--primary-color);
+        color: white;
+        box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.1);
+        animation: pulse-ring 2s infinite;
+    }
+    
+    .stepper-label {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--medium-gray);
+        text-align: center;
+        max-width: 120px;
+    }
+    
+    .stepper-step.completed .stepper-label,
+    .stepper-step.active .stepper-label {
+        color: var(--dark-color);
+    }
+    
+    @keyframes pulse-ring {
+        0%, 100% {
+            box-shadow: 0 0 0 6px rgba(102, 126, 234, 0.1);
+        }
+        50% {
+            box-shadow: 0 0 0 10px rgba(102, 126, 234, 0.2);
+        }
+    }
+    
+    .placeholder-content {
+        text-align: center;
+        padding: 60px 20px;
+    }
+    
+    .placeholder-icon {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #ec4899, #f97316);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        font-size: 3rem;
+        box-shadow: 0 20px 40px rgba(236, 72, 153, 0.3);
+    }
+    
+    .btn-action {
+        border-radius: 12px;
+        padding: 16px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        text-align: center;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        margin: 10px;
+    }
+    
+    .btn-primary-action {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border: none;
+    }
+    
+    .btn-primary-action:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        color: white;
+        text-decoration: none;
+    }
+    
+    .btn-outline-action {
+        background: rgba(100, 116, 139, 0.1);
+        color: var(--dark-color);
+        border: 2px solid rgba(100, 116, 139, 0.2);
+    }
+    
+    .btn-outline-action:hover {
+        background: rgba(100, 116, 139, 0.2);
+        color: var(--dark-color);
+        text-decoration: none;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @media (max-width: 768px) {
+        .step-container {
+            padding: 90px 16px 20px;
+        }
+        
+        .step-card, .stepper-container {
+            padding: 20px;
+        }
+        
+        .stepper {
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .stepper-step {
+            width: 100%;
+        }
+        
+        .stepper-step:not(:last-child)::after {
+            display: none;
+        }
+        
+        .stepper-circle {
+            width: 45px;
+            height: 45px;
+            font-size: 1rem;
+        }
+        
+        .stepper-label {
+            font-size: 0.85rem;
+            max-width: 100%;
+        }
+        
+        .placeholder-icon {
+            width: 100px;
+            height: 100px;
+            font-size: 2.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="step-container">
+    <div class="container">
+        <!-- Progress Stepper -->
+        <div class="stepper-container">
+            <h5 class="fw-bold mb-3 text-center">
+                <i class="fas fa-route me-2 text-primary"></i>Interview Journey
+            </h5>
+            <div class="stepper">
+                <div class="stepper-step completed">
+                    <div class="stepper-circle">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <div class="stepper-label">Resume Review</div>
+                </div>
+                <div class="stepper-step active">
+                    <div class="stepper-circle">2</div>
+                    <div class="stepper-label">Product Sense</div>
+                </div>
+                <div class="stepper-step">
+                    <div class="stepper-circle">3</div>
+                    <div class="stepper-label">Analytical + Strategy</div>
+                </div>
+                <div class="stepper-step">
+                    <div class="stepper-circle">4</div>
+                    <div class="stepper-label">Technical + Resume</div>
+                </div>
+                <div class="stepper-step">
+                    <div class="stepper-circle">5</div>
+                    <div class="stepper-label">Final Analysis</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Sense Case -->
+        <div class="step-card">
+            <h2 class="fw-bold mb-4">
+                <i class="fas fa-lightbulb me-2 text-primary"></i>Product Sense Case
+            </h2>
+            
+            {% if case %}
+            <div class="alert alert-primary" style="border-radius: 12px; background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(102, 126, 234, 0.05)); border: 1px solid rgba(102, 126, 234, 0.2);">
+                <h5 class="fw-bold mb-3">Case Scenario</h5>
+                <div style="font-size: 1rem; line-height: 1.8;">
+                    <div id="case-markdown" style="display: none;">{{ case }}</div>
+                    <div id="case-rendered"></div>
+                </div>
+            </div>
+            
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="user_answer" class="form-label fw-bold">Your Answer:</label>
+                    <textarea 
+                        name="user_answer" 
+                        id="user_answer" 
+                        class="form-control" 
+                        rows="15" 
+                        placeholder="Provide your comprehensive answer covering user needs, problem framing, metrics, prioritization, and trade-offs... Or use 'Start Speaking' to dictate."
+                        {% if product_sense_round.is_submitted %}disabled{% endif %}
+                    >{% if product_sense_round.user_answer %}{{ product_sense_round.user_answer }}{% endif %}</textarea>
+                    
+                    {% if not product_sense_round.is_submitted %}
+                    <!-- Speech Control Buttons -->
+                    <div style="display: flex; gap: 10px; justify-content: flex-start; margin-top: 10px;">
+                        <button type="button" class="btn btn-outline-primary" id="startSpeechBtn" title="Start voice input">
+                            <i class="fas fa-microphone me-2"></i>Start Speaking
+                        </button>
+                        <button type="button" class="btn btn-outline-danger" id="stopSpeechBtn" style="display: none;" title="Stop voice input">
+                            <i class="fas fa-stop me-2"></i>Stop Speaking
+                        </button>
+                        <span id="speechStatus" style="display: none; align-self: center; color: #059669; font-weight: 600;">
+                            <i class="fas fa-circle-notch fa-spin me-2"></i>Listening...
+                        </span>
+                    </div>
+                    
+                    <!-- Speech Recognition Status -->
+                    <div id="speechNotSupported" style="display: none; text-align: left; padding: 10px; background: #fef3c7; border: 1px solid #fbbf24; border-radius: 6px; margin-top: 10px;">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <small>Speech recognition is not supported in this browser. Please type your answer.</small>
+                    </div>
+                    {% endif %}
+                </div>
+                
+                {% if not product_sense_round.is_submitted %}
+                <button type="submit" class="btn btn-primary btn-lg">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Answer
+                </button>
+                {% endif %}
+            </form>
+            
+            {% if product_sense_round.is_evaluated %}
+            <div class="mt-4 alert alert-success" style="border-radius: 12px;">
+                <h5 class="fw-bold mb-3">
+                    <i class="fas fa-check-circle me-2"></i>Evaluation Results
+                </h5>
+                <div class="mb-3">
+                    <strong>Score:</strong> {{ product_sense_round.evaluation_result.score }}/100
+                </div>
+                
+                {% if product_sense_round.evaluation_result.strengths %}
+                <div class="mb-3">
+                    <strong>Strengths:</strong>
+                    <ul>
+                        {% for strength in product_sense_round.evaluation_result.strengths %}
+                        <li>{{ strength }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                {% if product_sense_round.evaluation_result.improvements %}
+                <div class="mb-3">
+                    <strong>Areas for Improvement:</strong>
+                    <ul>
+                        {% for improvement in product_sense_round.evaluation_result.improvements %}
+                        <li>{{ improvement }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                
+                {% if product_sense_round.evaluation_result.feedback %}
+                <div class="mb-3">
+                    <strong>Detailed Feedback:</strong>
+                    <p style="white-space: pre-wrap;">{{ product_sense_round.evaluation_result.feedback }}</p>
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="mt-4">
+                <a href="{% url 'analytical_strategy' %}" class="btn-action btn-primary-action">
+                    <i class="fas fa-arrow-right me-2"></i>
+                    Next: Analytical + Strategy
+                </a>
+                <a href="{% url 'interview_analysis' %}" class="btn-action btn-outline-action">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Back to Resume Review
+                </a>
+            </div>
+            {% endif %}
+            
+            {% else %}
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Case is being generated. Please refresh the page.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if not product_sense_round.is_submitted %}
+<script>
+    // Speech Recognition (Web Speech API)
+    let recognition = null;
+    let isListening = false;
+    let finalTranscript = '';
+    let interimTranscript = '';
+    
+    const answerTextarea = document.getElementById('user_answer');
+    const startSpeechBtn = document.getElementById('startSpeechBtn');
+    const stopSpeechBtn = document.getElementById('stopSpeechBtn');
+    const speechStatus = document.getElementById('speechStatus');
+    const speechNotSupported = document.getElementById('speechNotSupported');
+    
+    // Initialize Web Speech API
+    function initializeSpeechRecognition() {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        
+        if (!SpeechRecognition) {
+            console.warn('Speech recognition not supported');
+            speechNotSupported.style.display = 'block';
+            startSpeechBtn.disabled = true;
+            return false;
+        }
+        
+        recognition = new SpeechRecognition();
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        
+        recognition.onstart = function() {
+            console.log('Speech recognition started');
+            isListening = true;
+            startSpeechBtn.style.display = 'none';
+            stopSpeechBtn.style.display = 'inline-block';
+            speechStatus.style.display = 'inline';
+        };
+        
+        recognition.onresult = function(event) {
+            interimTranscript = '';
+            
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript + ' ';
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            
+            // Update textarea with live transcription
+            answerTextarea.value = finalTranscript + interimTranscript;
+        };
+        
+        recognition.onerror = function(event) {
+            console.error('Speech recognition error:', event.error);
+            if (event.error === 'no-speech') {
+                return;
+            }
+            stopSpeechRecognition();
+        };
+        
+        recognition.onend = function() {
+            console.log('Speech recognition ended');
+            if (isListening) {
+                try {
+                    recognition.start();
+                } catch (e) {
+                    console.log('Could not restart recognition:', e);
+                    stopSpeechRecognition();
+                }
+            }
+        };
+        
+        return true;
+    }
+    
+    // Start speech recognition
+    function startSpeechRecognition() {
+        if (!recognition) {
+            if (!initializeSpeechRecognition()) {
+                alert('Speech recognition is not available. Please type your answer.');
+                return;
+            }
+        }
+        
+        finalTranscript = answerTextarea.value; // Preserve any existing text
+        interimTranscript = '';
+        
+        try {
+            recognition.start();
+        } catch (e) {
+            console.error('Error starting recognition:', e);
+        }
+    }
+    
+    // Stop speech recognition
+    function stopSpeechRecognition() {
+        if (recognition && isListening) {
+            isListening = false;
+            recognition.stop();
+            startSpeechBtn.style.display = 'inline-block';
+            stopSpeechBtn.style.display = 'none';
+            speechStatus.style.display = 'none';
+            
+            // Clean up final transcript
+            answerTextarea.value = finalTranscript.trim();
+        }
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeSpeechRecognition();
+        
+        // Event listeners
+        if (startSpeechBtn) {
+            startSpeechBtn.addEventListener('click', startSpeechRecognition);
+        }
+        if (stopSpeechBtn) {
+            stopSpeechBtn.addEventListener('click', stopSpeechRecognition);
+        }
+    });
+</script>
+{% endif %}
+
+<!-- Markdown rendering script -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+    // Configure marked options
+    marked.setOptions({
+        breaks: true,
+        gfm: true,
+        headerIds: true,
+        mangle: false
+    });
+    
+    // Render markdown case
+    document.addEventListener('DOMContentLoaded', function() {
+        // Render case markdown
+        const markdownElement = document.getElementById('case-markdown');
+        const renderedElement = document.getElementById('case-rendered');
+        
+        if (markdownElement && renderedElement) {
+            const markdownText = markdownElement.textContent.trim();
+            if (markdownText) {
+                renderedElement.innerHTML = marked.parse(markdownText);
+                renderedElement.style.fontSize = '15px';
+                renderedElement.style.color = '#1e293b';
+            }
+        }
+    });
+</script>
+
+<style>
+    /* Markdown styling */
+    #case-rendered h1,
+    #case-rendered h2 {
+        color: var(--primary-color);
+        font-weight: 700;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 0.5rem;
+    }
+    
+    #case-rendered h3 {
+        color: #475569;
+        font-weight: 600;
+        margin-top: 1.25rem;
+        margin-bottom: 0.75rem;
+    }
+    
+    #case-rendered h4 {
+        color: #64748b;
+        font-weight: 600;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    #case-rendered p {
+        margin-bottom: 1rem;
+        line-height: 1.8;
+    }
+    
+    #case-rendered ul,
+    #case-rendered ol {
+        margin-left: 1.5rem;
+        margin-bottom: 1rem;
+        padding-left: 1rem;
+    }
+    
+    #case-rendered li {
+        margin-bottom: 0.5rem;
+        line-height: 1.7;
+    }
+    
+    #case-rendered strong {
+        color: #1e293b;
+        font-weight: 600;
+    }
+    
+    #case-rendered code {
+        background-color: #e2e8f0;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        color: #dc2626;
+    }
+    
+    #case-rendered pre {
+        background-color: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin-bottom: 1rem;
+    }
+    
+    #case-rendered pre code {
+        background-color: transparent;
+        color: inherit;
+        padding: 0;
+    }
+    
+    #case-rendered blockquote {
+        border-left: 4px solid var(--primary-color);
+        padding-left: 1rem;
+        margin-left: 0;
+        margin-bottom: 1rem;
+        color: #64748b;
+        font-style: italic;
+    }
+</style>
+{% endblock %}
+

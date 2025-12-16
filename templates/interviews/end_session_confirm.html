@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+
+{% block title %}End Session - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    .confirm-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+    
+    .confirm-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 40px;
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    .confirm-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.3);
+    }
+    
+    .confirm-buttons {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .btn-confirm {
+        flex: 1;
+        border-radius: 12px;
+        padding: 16px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border: none;
+    }
+    
+    .btn-danger-confirm {
+        background: linear-gradient(135deg, var(--danger-color), #dc2626);
+        color: white;
+    }
+    
+    .btn-danger-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+    }
+    
+    .btn-secondary-confirm {
+        background: rgba(100, 116, 139, 0.1);
+        color: var(--dark-color);
+        border: 2px solid rgba(100, 116, 139, 0.2);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .btn-secondary-confirm:hover {
+        background: rgba(100, 116, 139, 0.2);
+        text-decoration: none;
+        color: var(--dark-color);
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirm-container">
+    <div class="container">
+        <div class="confirm-card">
+            <div class="confirm-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            
+            <h2 class="fw-bold mb-3">End Interview Session?</h2>
+            <p class="text-muted mb-4">
+                Are you sure you want to end your interview session for 
+                <strong>{{ session.get_company_display }}</strong>?
+            </p>
+            <p class="text-muted">
+                Your analysis results will be saved, but you'll need to start a new session 
+                to continue interview preparation.
+            </p>
+            
+            <form method="post" class="confirm-buttons">
+                {% csrf_token %}
+                <button type="submit" class="btn-confirm btn-danger-confirm">
+                    <i class="fas fa-stop me-2"></i>
+                    Yes, End Session
+                </button>
+                <a href="{% url 'interview_analysis' %}" class="btn-confirm btn-secondary-confirm">
+                    <i class="fas fa-arrow-left me-2"></i>
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

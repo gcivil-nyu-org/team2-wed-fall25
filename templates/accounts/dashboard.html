@@ -1,0 +1,912 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --profile-completion-width: {% if user.has_resume %}85%{% else %}60%{% endif %};
+        --interview-readiness-width: {% if user.has_resume %}45%{% else %}15%{% endif %};
+    }
+    .dashboard-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        padding-top: 100px;
+        padding-bottom: 40px;
+    }
+    
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 40px 20px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        border-radius: 20px;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    }
+    
+    .dashboard-header::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    .dashboard-header-content {
+        position: relative;
+        z-index: 2;
+    }
+    
+    .user-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        border: 3px solid rgba(255,255,255,0.3);
+        backdrop-filter: blur(10px);
+    }
+    
+    .dashboard-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        margin-bottom: 24px;
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-header-modern {
+        padding: 24px 30px 0;
+        background: transparent;
+        border: none;
+    }
+    
+    .card-body-modern {
+        padding: 20px 30px 30px;
+    }
+    
+    .status-card {
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 24px;
+        background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .status-card.success {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+        border-color: rgba(16, 185, 129, 0.2);
+    }
+    
+    .status-card.warning {
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+        border-color: rgba(245, 158, 11, 0.2);
+    }
+    
+    .status-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 20px;
+        flex-shrink: 0;
+    }
+    
+    .status-icon.success {
+        background: linear-gradient(135deg, var(--success-color), #059669);
+        color: white;
+    }
+    
+    .status-icon.warning {
+        background: linear-gradient(135deg, var(--warning-color), #d97706);
+        color: white;
+    }
+    
+    .feature-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+    }
+    
+    .feature-card-modern {
+        background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.7));
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255,255,255,0.3);
+        border-radius: 16px;
+        padding: 30px 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .feature-card-modern::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+        transition: left 0.5s;
+    }
+    
+    .feature-card-modern:hover::before {
+        left: 100%;
+    }
+    
+    .feature-card-modern:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .feature-card-modern.available {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        cursor: pointer;
+    }
+    
+    .feature-card-modern.coming-soon {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+    
+    .feature-icon-modern {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 1.8rem;
+        border: 2px solid rgba(255,255,255,0.3);
+        transition: all 0.3s ease;
+    }
+    
+    .feature-card-modern:not(.available) .feature-icon-modern {
+        background: linear-gradient(135deg, #64748b, #475569);
+    }
+    
+    .feature-card-modern:hover .feature-icon-modern {
+        transform: scale(1.1);
+    }
+    
+    .quick-actions-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        height: fit-content;
+    }
+    
+    .btn-action-modern {
+        border: 2px solid transparent;
+        border-radius: 12px;
+        padding: 16px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        width: 100%;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 12px;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+    }
+    
+    .btn-action-modern:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        text-decoration: none;
+    }
+    
+    .btn-primary-modern {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    .btn-success-modern {
+        background: linear-gradient(135deg, var(--success-color), #059669);
+        color: white;
+        border-color: var(--success-color);
+    }
+    
+    .btn-outline-modern {
+        background: rgba(102, 126, 234, 0.1);
+        color: var(--primary-color);
+        border-color: rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-outline-modern:hover {
+        background: rgba(102, 126, 234, 0.2);
+        color: var(--primary-color);
+        border-color: var(--primary-color);
+    }
+    
+    .btn-danger-modern {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--danger-color);
+        border-color: rgba(239, 68, 68, 0.3);
+    }
+    
+    .btn-danger-modern:hover {
+        background: rgba(239, 68, 68, 0.2);
+        color: var(--danger-color);
+        border-color: var(--danger-color);
+    }
+    
+    .stats-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 20px;
+        margin: 30px 0;
+    }
+    
+    .stat-item {
+        text-align: center;
+        padding: 20px;
+        background: rgba(255,255,255,0.7);
+        border-radius: 12px;
+        backdrop-filter: blur(10px);
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .stat-label {
+        font-size: 0.9rem;
+        color: var(--medium-gray);
+        font-weight: 500;
+        margin-top: 8px;
+    }
+    
+    .progress-section {
+        margin-top: 30px;
+    }
+    
+    .progress-item {
+        margin-bottom: 20px;
+    }
+    
+    .progress-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+    
+    .progress-modern {
+        height: 8px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.7);
+        overflow: hidden;
+        backdrop-filter: blur(10px);
+    }
+    
+    .progress-bar-modern {
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        border-radius: 10px;
+        transition: width 1s ease-in-out;
+        height: 100%;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(5deg); }
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    .coming-soon-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(100, 116, 139, 0.9);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        backdrop-filter: blur(10px);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .dashboard-container {
+            padding: 90px 16px 20px;
+        }
+        
+        .feature-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .stats-row {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        .dashboard-header {
+            margin-bottom: 24px;
+            padding: 30px 16px;
+        }
+        
+        .card-body-modern, .card-header-modern {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .stats-row {
+            grid-template-columns: 1fr;
+        }
+        
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+        
+        .feature-icon-modern {
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="container">
+        <!-- Welcome Header -->
+        <div class="dashboard-header">
+            <div class="dashboard-header-content">
+                <div class="user-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h1 class="h2 mb-2 fw-bold">Welcome back, {{ user.first_name }}!</h1>
+                <p class="mb-1 opacity-90">Ready to ace your {{ user.get_user_type_display }} preparation?</p>
+                <p class="mb-0 opacity-75">Member since {{ user.created_at|date:"F d, Y" }}</p>
+            </div>
+        </div>
+        
+        <!-- Active Session Banner -->
+        {% if active_session %}
+        <div class="dashboard-card" style="border-left: 5px solid var(--success-color);">
+            <div class="card-body-modern">
+                <div class="d-flex align-items-center justify-content-between flex-wrap">
+                    <div class="d-flex align-items-center mb-3 mb-md-0">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--success-color), #059669); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-right: 20px;">
+                            <i class="fas fa-rocket"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-1 text-success">
+                                <i class="fas fa-circle" style="font-size: 0.5rem; animation: pulse 2s infinite;"></i>
+                                Active Interview Session
+                            </h5>
+                            <p class="mb-0 text-muted">
+                                <strong>{{ active_session.get_company_display }}</strong> • 
+                                Started {{ active_session.created_at|timesince }} ago
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'interview_analysis' %}" class="btn btn-success" style="border-radius: 10px; padding: 10px 20px; font-weight: 600;">
+                            <i class="fas fa-eye me-2"></i>View Analysis
+                        </a>
+                        <a href="{% url 'end_session' %}" class="btn btn-outline-danger" style="border-radius: 10px; padding: 10px 20px; font-weight: 600;">
+                            <i class="fas fa-stop me-2"></i>End Session
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="row">
+            <!-- Main Content -->
+            <div class="col-lg-8">
+                <!-- Resume Status Card -->
+                <div class="dashboard-card">
+                    <div class="card-body-modern">
+                        <div class="status-card {% if user.has_resume %}success{% else %}warning{% endif %}">
+                            <div class="d-flex align-items-center">
+                                <div class="status-icon {% if user.has_resume %}success{% else %}warning{% endif %}">
+                                    {% if user.has_resume %}
+                                        <i class="fas fa-file-check"></i>
+                                    {% else %}
+                                        <i class="fas fa-file-upload"></i>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-grow-1">
+                                    {% if user.has_resume %}
+                                        <h5 class="mb-2 fw-bold text-success">
+                                            <i class="fas fa-check-circle me-2"></i>Resume Ready!
+                                        </h5>
+                                        <p class="mb-0 text-muted">Your resume is uploaded and ready for AI-powered analysis and personalized interview questions.</p>
+                                    {% else %}
+                                        <h5 class="mb-2 fw-bold text-warning">
+                                            <i class="fas fa-exclamation-triangle me-2"></i>Resume Needed
+                                        </h5>
+                                        <p class="mb-0 text-muted">Upload your resume to unlock personalized feedback, targeted interview questions, and skill assessments.</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Section -->
+                        <div class="progress-section">
+                            <h6 class="fw-bold mb-3">
+                                <i class="fas fa-chart-line me-2 text-primary"></i>Your Progress
+                            </h6>
+                            <div class="progress-item">
+                                <div class="progress-label">
+                                    <span>Profile Completion</span>
+                                    <span class="fw-bold">{% if user.has_resume %}85%{% else %}60%{% endif %}</span>
+                                </div>
+                                <div class="progress-modern">
+                                    <div class="progress-bar-modern" style="width: var(--profile-completion-width);"></div>
+                                </div>
+                            </div>
+                            <div class="progress-item">
+                                <div class="progress-label">
+                                    <span>Interview Readiness</span>
+                                    <span class="fw-bold">{% if user.has_resume %}45%{% else %}15%{% endif %}</span>
+                                </div>
+                                <div class="progress-modern">
+                                    <div class="progress-bar-modern" style="width: var(--interview-readiness-width);"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Stats Row -->
+                        <div class="stats-row">
+                            <div class="stat-item">
+                                <div class="stat-number">0</div>
+                                <div class="stat-label">Interviews Completed</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{% if user.has_resume %}1{% else %}0{% endif %}</div>
+                                <div class="stat-label">Documents Uploaded</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">0</div>
+                                <div class="stat-label">Skills Assessed</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">{{ user.created_at|timesince|slice:":2" }}</div>
+                                <div class="stat-label">Days Active</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Features Grid -->
+                <div class="dashboard-card">
+                    <div class="card-header-modern">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-rocket me-2 text-primary"></i>Available Tools
+                        </h5>
+                    </div>
+                    <div class="card-body-modern">
+                        <div class="feature-grid">
+                            <div class="feature-card-modern coming-soon">
+                                <div class="coming-soon-badge">Coming Soon</div>
+                                <div class="feature-icon-modern">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">AI Mock Interviews</h6>
+                                <p class="text-muted mb-0">Practice with AI-powered interview simulations tailored to your field</p>
+                            </div>
+                            
+                            <div class="feature-card-modern coming-soon">
+                                <div class="coming-soon-badge">Coming Soon</div>
+                                <div class="feature-icon-modern">
+                                    <i class="fas fa-file-alt"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">Resume Builder</h6>
+                                <p class="text-muted mb-0">Create and optimize professional resumes with AI suggestions</p>
+                            </div>
+                            
+                            <div class="feature-card-modern coming-soon">
+                                <div class="coming-soon-badge">Coming Soon</div>
+                                <div class="feature-icon-modern">
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">Skill Assessment</h6>
+                                <p class="text-muted mb-0">Test your technical and soft skills with personalized assessments</p>
+                            </div>
+                            
+                            <div class="feature-card-modern coming-soon">
+                                <div class="coming-soon-badge">Coming Soon</div>
+                                <div class="feature-icon-modern">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                                <h6 class="fw-bold mb-2">Progress Analytics</h6>
+                                <p class="text-muted mb-0">Track your improvement with detailed performance analytics</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sidebar -->
+            <div class="col-lg-4">
+                <!-- Quick Actions -->
+                <div class="quick-actions-card">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fas fa-bolt me-2 text-primary"></i>Quick Actions
+                    </h5>
+                    
+                    {% if not active_session %}
+                        <a href="{% url 'start_session' %}" class="btn-action-modern btn-primary-modern">
+                            <i class="fas fa-rocket me-3"></i>
+                            <div>
+                                <div class="fw-bold">Start Interview Session</div>
+                                <small class="opacity-75">Begin AI-powered preparation</small>
+                            </div>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'interview_analysis' %}" class="btn-action-modern btn-success-modern">
+                            <i class="fas fa-rocket me-3"></i>
+                            <div>
+                                <div class="fw-bold">Continue Session</div>
+                                <small class="opacity-75">Resume your interview prep</small>
+                            </div>
+                        </a>
+                    {% endif %}
+                    
+                    <a href="{% url 'profile' %}" class="btn-action-modern btn-outline-modern">
+                        <i class="fas fa-user me-3"></i>
+                        <div>
+                            <div class="fw-bold">View Profile</div>
+                            <small class="opacity-75">Manage your account settings</small>
+                        </div>
+                    </a>
+                    
+                    {% if not user.has_resume %}
+                        <button type="button" class="btn-action-modern btn-success-modern" data-bs-toggle="modal" data-bs-target="#uploadResumeModal">
+                            <i class="fas fa-upload me-3"></i>
+                            <div>
+                                <div class="fw-bold">Upload Resume</div>
+                                <small class="opacity-75">Add your resume now</small>
+                            </div>
+                        </button>
+                    {% else %}
+                        <a href="{% url 'resume_view' %}" class="btn-action-modern btn-outline-modern">
+                            <i class="fas fa-eye me-3"></i>
+                            <div>
+                                <div class="fw-bold">View Resume</div>
+                                <small class="opacity-75">Open in viewer</small>
+                            </div>
+                        </a>
+                    {% endif %}
+                    
+                    <button class="btn-action-modern btn-outline-modern" disabled style="opacity: 0.6; cursor: not-allowed;">
+                        <i class="fas fa-cog me-3"></i>
+                        <div>
+                            <div class="fw-bold">Settings</div>
+                            <small class="opacity-75">Coming soon</small>
+                        </div>
+                    </button>
+                    
+                    <div style="border-top: 1px solid rgba(0,0,0,0.1); margin: 20px 0; padding-top: 20px;">
+                        <a href="{% url 'logout' %}" class="btn-action-modern btn-danger-modern">
+                            <i class="fas fa-sign-out-alt me-3"></i>
+                            <div>
+                                <div class="fw-bold">Sign Out</div>
+                                <small class="opacity-75">Securely logout</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Tips Card -->
+                <div class="quick-actions-card mt-4">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-lightbulb me-2 text-warning"></i>Pro Tips
+                    </h5>
+                    <div class="alert alert-info" style="border: none; background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05)); border-radius: 12px;">
+                        <div class="d-flex">
+                            <i class="fas fa-info-circle text-info me-3 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold text-info mb-1">Complete Your Profile</h6>
+                                <p class="mb-0 small">{% if not user.has_resume %}Upload your resume to unlock personalized features and get better interview preparation.{% else %}Great! Your profile is looking good. Mock interviews will be available soon.{% endif %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upload Resume Modal -->
+<div class="modal fade" id="uploadResumeModal" tabindex="-1" aria-labelledby="uploadResumeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 20px; border: none;">
+            <div class="modal-header" style="border-bottom: 2px solid rgba(102, 126, 234, 0.1);">
+                <h5 class="modal-title" id="uploadResumeModalLabel" style="color: var(--primary-color); font-weight: 700;">
+                    <i class="fas fa-upload me-2"></i>Upload Resume
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadResumeForm" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="resumeFile" class="form-label fw-semibold">Select Your Resume (PDF only, max 5MB)</label>
+                        <input type="file" class="form-control" id="resumeFile" name="resume" accept=".pdf" required>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Upload your resume to unlock personalized features.
+                        </div>
+                    </div>
+                    <div id="uploadError" class="alert alert-danger d-none" role="alert">
+                        <i class="fas fa-exclamation-triangle me-2"></i>
+                        <span id="errorMessage"></span>
+                    </div>
+                    <div id="uploadProgress" class="d-none">
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border spinner-border-sm me-2" role="status">
+                                <span class="visually-hidden">Uploading...</span>
+                            </div>
+                            <span>Uploading resume...</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 2px solid rgba(102, 126, 234, 0.1);">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="border-radius: 10px;">Cancel</button>
+                <button type="button" class="btn btn-primary" id="uploadResumeBtn" style="border-radius: 10px; background: linear-gradient(135deg, var(--primary-color), var(--primary-dark)); border: none;">
+                    <i class="fas fa-check me-2"></i>Upload Resume
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate progress bars
+    const progressBars = document.querySelectorAll('.progress-bar-modern');
+    progressBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 500);
+    });
+    
+    // Animate stats counters
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+        const finalValue = stat.textContent;
+        if (!isNaN(finalValue) && finalValue !== '0') {
+            let currentValue = 0;
+            const increment = finalValue / 20;
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= finalValue) {
+                    currentValue = finalValue;
+                    clearInterval(timer);
+                }
+                stat.textContent = Math.floor(currentValue);
+            }, 50);
+        }
+    });
+    
+    // Add hover effects to feature cards
+    const featureCards = document.querySelectorAll('.feature-card-modern');
+    featureCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            if (!this.classList.contains('coming-soon')) {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+    
+    // Stagger animation for cards
+    const cards = document.querySelectorAll('.dashboard-card, .quick-actions-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 200 * index);
+    });
+    
+    // Add click feedback to buttons
+    const actionButtons = document.querySelectorAll('.btn-action-modern:not([disabled])');
+    actionButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Create ripple effect
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.background = 'rgba(255, 255, 255, 0.6)';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.animation = 'ripple 0.6s linear';
+            ripple.style.pointerEvents = 'none';
+            
+            this.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+    
+    // Add CSS for ripple animation
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        .btn-action-modern {
+            position: relative;
+            overflow: hidden;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    // Handle resume upload (only if upload modal exists)
+    const uploadModal = document.getElementById('uploadResumeModal');
+    if (uploadModal) {
+        const uploadBtn = document.getElementById('uploadResumeBtn');
+        const form = document.getElementById('uploadResumeForm');
+        const fileInput = document.getElementById('resumeFile');
+        const errorDiv = document.getElementById('uploadError');
+        const errorMessage = document.getElementById('errorMessage');
+        const progressDiv = document.getElementById('uploadProgress');
+        
+        uploadBtn.addEventListener('click', function() {
+            // Hide any previous errors
+            errorDiv.classList.add('d-none');
+            
+            // Validate file is selected
+            if (!fileInput.files || fileInput.files.length === 0) {
+                errorMessage.textContent = 'Please select a file to upload.';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            
+            // Client-side validation
+            if (file.size > 5 * 1024 * 1024) {
+                errorMessage.textContent = 'File size must be under 5MB.';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+            
+            if (!file.name.toLowerCase().endsWith('.pdf')) {
+                errorMessage.textContent = 'Only PDF files are allowed.';
+                errorDiv.classList.remove('d-none');
+                return;
+            }
+            
+            // Show progress, disable button
+            progressDiv.classList.remove('d-none');
+            uploadBtn.disabled = true;
+            
+            // Create FormData and submit
+            const formData = new FormData(form);
+            const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            fetch('{% url "resume_update" %}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Success! Reload the page to show the updated state
+                    window.location.reload();
+                } else {
+                    // Show errors
+                    progressDiv.classList.add('d-none');
+                    uploadBtn.disabled = false;
+                    errorMessage.textContent = data.errors ? data.errors.join(', ') : 'An error occurred while uploading the resume.';
+                    errorDiv.classList.remove('d-none');
+                }
+            })
+            .catch(error => {
+                // Handle network errors
+                progressDiv.classList.add('d-none');
+                uploadBtn.disabled = false;
+                errorMessage.textContent = 'Network error. Please try again.';
+                errorDiv.classList.remove('d-none');
+                console.error('Upload error:', error);
+            });
+        });
+        
+        // Reset form when modal is closed
+        uploadModal.addEventListener('hidden.bs.modal', function() {
+            form.reset();
+            errorDiv.classList.add('d-none');
+            progressDiv.classList.add('d-none');
+            uploadBtn.disabled = false;
+        });
+    }
+});
+</script>
+{% endblock %}
+

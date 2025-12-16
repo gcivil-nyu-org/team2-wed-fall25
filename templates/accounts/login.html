@@ -1,0 +1,478 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    .login-container {
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+        display: flex;
+        align-items: center;
+        padding-top: 100px; /* Account for fixed navbar */
+        padding-bottom: 40px;
+    }
+    
+    .login-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        overflow: hidden;
+        max-width: 450px;
+        width: 100%;
+    }
+    
+    .login-header {
+        text-align: center;
+        padding: 40px 40px 20px;
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        position: relative;
+    }
+    
+    .login-header::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: white;
+        border-radius: 20px 20px 0 0;
+    }
+    
+    .login-body {
+        padding: 20px 40px 40px;
+    }
+    
+    .form-floating-modern {
+        position: relative;
+        margin-bottom: 24px;
+    }
+    
+    .form-control-modern {
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 16px 20px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+        width: 100%;
+    }
+    
+    .form-control-modern:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: white;
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+    }
+    
+    .form-control-modern.is-valid {
+        border-color: var(--success-color);
+        background: #f0fdf4;
+    }
+    
+    .form-control-modern.is-invalid {
+        border-color: var(--danger-color);
+        background: #fef2f2;
+    }
+    
+    .form-label-modern {
+        position: absolute;
+        left: 20px;
+        top: 16px;
+        background: transparent;
+        padding: 0 8px;
+        color: #64748b;
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        pointer-events: none;
+        z-index: 1;
+    }
+    
+    .form-control-modern:focus + .form-label-modern,
+    .form-control-modern:not(:placeholder-shown) + .form-label-modern {
+        top: -8px;
+        left: 16px;
+        font-size: 12px;
+        color: var(--primary-color);
+        background: white;
+        font-weight: 600;
+    }
+    
+    .password-toggle {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #64748b;
+        cursor: pointer;
+        font-size: 18px;
+        transition: all 0.3s ease;
+        z-index: 2;
+    }
+    
+    .password-toggle:hover {
+        color: var(--primary-color);
+    }
+    
+    .btn-login {
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        border: none;
+        border-radius: 12px;
+        padding: 16px 24px;
+        font-size: 16px;
+        font-weight: 600;
+        color: white;
+        width: 100%;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+    
+    .btn-login:active {
+        transform: translateY(0);
+    }
+    
+    .btn-login.loading {
+        pointer-events: none;
+        opacity: 0.8;
+    }
+    
+    .loading-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .btn-login.loading .loading-overlay {
+        transform: translateX(0);
+    }
+    
+    .error-message {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .success-message {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #16a34a;
+        border-radius: 8px;
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .form-help-text {
+        font-size: 12px;
+        color: #64748b;
+        margin-top: 4px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+    
+    .signup-link {
+        text-align: center;
+        margin-top: 24px;
+        padding-top: 24px;
+        border-top: 1px solid #e2e8f0;
+    }
+    
+    .signup-link a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+    
+    .signup-link a:hover {
+        color: var(--primary-dark);
+        text-decoration: underline;
+    }
+    
+    /* Accessibility improvements */
+    .form-control-modern:focus {
+        outline: 2px solid var(--primary-color);
+        outline-offset: 2px;
+    }
+    
+    /* Animation for card entrance */
+    .login-card {
+        animation: slideInUp 0.6s ease-out;
+    }
+    
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* Responsive design */
+    @media (max-width: 576px) {
+        .login-container {
+            padding: 90px 16px 20px;
+        }
+        
+        .login-card {
+            margin: 0;
+        }
+        
+        .login-header, .login-body {
+            padding-left: 24px;
+            padding-right: 24px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6">
+                <div class="login-card">
+                    <div class="login-header">
+                        <div class="mb-2">
+                            <i class="fas fa-user-circle" style="font-size: 3rem; opacity: 0.9;"></i>
+                        </div>
+                        <h1 class="h3 mb-2 fw-bold">Welcome Back</h1>
+                        <p class="mb-0 opacity-90">Sign in to continue your journey</p>
+                    </div>
+                    
+                    <div class="login-body">
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert {% if message.tags == 'success' %}success-message{% else %}error-message{% endif %} alert-dismissible fade show" role="alert">
+                                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} me-2"></i>
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <form method="post" id="loginForm" novalidate>
+                            {% csrf_token %}
+                            
+                            <!-- Username Field -->
+                            <div class="form-floating-modern">
+                                <input 
+                                    type="text" 
+                                    class="form-control-modern {% if form.username.errors %}is-invalid{% endif %}" 
+                                    id="{{ form.username.id_for_label }}" 
+                                    name="{{ form.username.name }}"
+                                    value="{% if form.username.value %}{{ form.username.value }}{% endif %}"
+                                    placeholder=" "
+                                    required
+                                    autocomplete="username"
+                                    aria-describedby="{% if form.username.errors %}username-error{% endif %} username-help"
+                                >
+                                <label for="{{ form.username.id_for_label }}" class="form-label-modern">
+                                    <i class="fas fa-user me-2"></i>Username or Email
+                                </label>
+                                {% if form.username.errors %}
+                                    <div class="form-help-text text-danger" id="username-error" role="alert">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {% for error in form.username.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="form-help-text" id="username-help">
+                                        <i class="fas fa-info-circle"></i>
+                                        Enter your username or email address
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Password Field -->
+                            <div class="form-floating-modern">
+                                <input 
+                                    type="password" 
+                                    class="form-control-modern {% if form.password.errors %}is-invalid{% endif %}" 
+                                    id="{{ form.password.id_for_label }}" 
+                                    name="{{ form.password.name }}"
+                                    placeholder=" "
+                                    required
+                                    autocomplete="current-password"
+                                    aria-describedby="{% if form.password.errors %}password-error{% endif %} password-help"
+                                >
+                                <label for="{{ form.password.id_for_label }}" class="form-label-modern">
+                                    <i class="fas fa-lock me-2"></i>Password
+                                </label>
+                                <button type="button" class="password-toggle" aria-label="Toggle password visibility" tabindex="-1">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                {% if form.password.errors %}
+                                    <div class="form-help-text text-danger" id="password-error" role="alert">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {% for error in form.password.errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="form-help-text" id="password-help">
+                                        <i class="fas fa-shield-alt"></i>
+                                        Enter your secure password
+                                    </div>
+                                {% endif %}
+                            </div>
+                            
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn-login" id="loginBtn">
+                                <span class="btn-text">
+                                    <i class="fas fa-sign-in-alt me-2"></i>Sign In Securely
+                                </span>
+                                <div class="loading-overlay">
+                                    <div class="loading-spinner me-2"></div>
+                                    Signing in...
+                                </div>
+                            </button>
+                        </form>
+                        
+                        <!-- Signup Link -->
+                        <div class="signup-link">
+                            <p class="mb-0 text-muted">
+                                New to AcePrep? 
+                                <a href="{% url 'signup' %}">Create your account</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('loginForm');
+    const loginBtn = document.getElementById('loginBtn');
+    const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+    const passwordToggle = document.querySelector('.password-toggle');
+    const usernameInput = document.getElementById('{{ form.username.id_for_label }}');
+    
+    // Password visibility toggle
+    passwordToggle.addEventListener('click', function() {
+        const icon = this.querySelector('i');
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+            this.setAttribute('aria-label', 'Hide password');
+        } else {
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+            this.setAttribute('aria-label', 'Show password');
+        }
+    });
+    
+    // Form validation
+    function validateField(field, errorId) {
+        const errorDiv = document.getElementById(errorId);
+        if (field.value.trim() === '') {
+            field.classList.add('is-invalid');
+            field.classList.remove('is-valid');
+            return false;
+        } else {
+            field.classList.remove('is-invalid');
+            field.classList.add('is-valid');
+            return true;
+        }
+    }
+    
+    // Real-time validation
+    usernameInput.addEventListener('blur', () => validateField(usernameInput, 'username-error'));
+    passwordInput.addEventListener('blur', () => validateField(passwordInput, 'password-error'));
+    
+    // Form submission with loading state
+    loginForm.addEventListener('submit', function(e) {
+        const isUsernameValid = validateField(usernameInput, 'username-error');
+        const isPasswordValid = validateField(passwordInput, 'password-error');
+        
+        if (!isUsernameValid || !isPasswordValid) {
+            e.preventDefault();
+            return;
+        }
+        
+        // Add loading state
+        loginBtn.classList.add('loading');
+        loginBtn.setAttribute('disabled', 'disabled');
+        
+        // Focus management for accessibility
+        loginBtn.focus();
+    });
+    
+    // Keyboard navigation improvements
+    document.addEventListener('keydown', function(e) {
+        // Enter key on password toggle
+        if (e.target === passwordToggle && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            passwordToggle.click();
+        }
+    });
+    
+    // Auto-focus first empty field
+    if (!usernameInput.value) {
+        usernameInput.focus();
+    } else if (!passwordInput.value) {
+        passwordInput.focus();
+    }
+    
+    // Remove loading state if back button is pressed
+    window.addEventListener('pageshow', function(event) {
+        if (event.persisted) {
+            loginBtn.classList.remove('loading');
+            loginBtn.removeAttribute('disabled');
+        }
+    });
+    
+    // Animate form elements on load
+    const formElements = document.querySelectorAll('.form-floating-modern, .btn-login');
+    formElements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            element.style.transition = 'all 0.4s ease';
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }, 100 * (index + 1));
+    });
+});
+</script>
+{% endblock %}
+

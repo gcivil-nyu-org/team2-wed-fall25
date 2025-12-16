@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ forum.name }} - AcePrep Forums{% endblock %}
+
+{% block extra_css %}
+<style>
+    .topic-card {
+        background: white;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius);
+        padding: 20px;
+        margin-bottom: 15px;
+        transition: all 0.3s ease;
+    }
+    
+    .topic-card:hover {
+        box-shadow: var(--shadow-md);
+        border-color: var(--primary-color);
+    }
+    
+    .topic-card.pinned {
+        background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+        border-left: 4px solid var(--primary-color);
+    }
+    
+    .topic-card.locked {
+        opacity: 0.7;
+    }
+    
+    .topic-meta {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+        font-size: 0.85rem;
+        color: var(--medium-gray);
+    }
+    
+    .pinned-badge {
+        background: var(--primary-color);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        margin-right: 8px;
+    }
+    
+    .locked-icon {
+        color: var(--danger-color);
+        margin-right: 8px;
+    }
+    
+    .forum-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 40px 0;
+        margin-top: 70px;
+        border-radius: 0 0 var(--border-radius) var(--border-radius);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="forum-header">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="mb-2">
+                    <i class="fas {{ forum.icon }} me-2"></i>{{ forum.name }}
+                </h1>
+                <p class="mb-0">{{ forum.description }}</p>
+            </div>
+            {% if user.is_authenticated %}
+                <a href="{% url 'topic_create' forum.id %}" class="btn btn-light btn-modern">
+                    <i class="fas fa-plus me-2"></i>New Topic
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div class="container my-4">
+    <div class="row">
+        <div class="col-12">
+            {% if is_mentor %}
+                <div class="alert alert-info">
+                    <i class="fas fa-user-tie me-2"></i>
+                    <strong>You are a mentor</strong> in this forum. Help guide discussions and share your expertise!
+                </div>
+            {% endif %}
+            
+            {% if page_obj %}
+                <div class="mb-4">
+                    <h3 class="mb-3">Topics</h3>
+                    {% for topic in page_obj %}
+                        <div class="topic-card {% if topic.is_pinned %}pinned{% endif %} {% if topic.is_locked %}locked{% endif %}">
+                            <h5 class="mb-2">
+                                {% if topic.is_pinned %}
+                                    <span class="pinned-badge">PINNED</span>
+                                {% endif %}
+                                {% if topic.is_locked %}
+                                    <i class="fas fa-lock locked-icon"></i>
+                                {% endif %}
+                                <a href="{% url 'topic_detail' topic.id %}" class="text-decoration-none text-dark">
+                                    {{ topic.title }}
+                                </a>
+                            </h5>
+                            <p class="text-muted mb-2">{{ topic.description|truncatewords:30 }}</p>
+                            
+                            <div class="topic-meta">
+                                <span>
+                                    <i class="fas fa-user me-1"></i>
+                                    {{ topic.author.username }}
+                                </span>
+                                <span>
+                                    <i class="fas fa-comments me-1"></i>
+                                    {{ topic.reply_count }} replies
+                                </span>
+                                <span>
+                                    <i class="fas fa-eye me-1"></i>
+                                    {{ topic.view_count }} views
+                                </span>
+                                <span>
+                                    <i class="fas fa-clock me-1"></i>
+                                    {% if topic.last_activity %}{{ topic.last_activity|timesince }} ago{% else %}{{ topic.created_at|timesince }} ago{% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                    <!-- Pagination -->
+                    {% if page_obj.has_other_pages %}
+                        <nav aria-label="Topics pagination">
+                            <ul class="pagination justify-content-center">
+                                {% if page_obj.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% endif %}
+                                
+                                {% for num in page_obj.paginator.page_range %}
+                                    {% if page_obj.number == num %}
+                                        <li class="page-item active">
+                                            <span class="page-link">{{ num }}</span>
+                                        </li>
+                                    {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                                {% if page_obj.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-comments fa-4x text-muted mb-3"></i>
+                    <h3 class="text-muted">No topics yet</h3>
+                    <p class="text-muted">Be the first to start a discussion!</p>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'topic_create' forum.id %}" class="btn btn-primary-modern mt-3">
+                            <i class="fas fa-plus me-2"></i>Create First Topic
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+            
+            <div class="mt-4">
+                <a href="{% url 'forum_list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Forums
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

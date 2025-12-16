@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}Case Studies - AcePrep Forums{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-4">
+                <i class="fas fa-book me-2 text-primary"></i>Case Studies
+            </h1>
+            <p class="text-muted mb-4">Explore real-world case studies shared by peers and mentors.</p>
+            
+            {% if page_obj %}
+                {% for post in page_obj %}
+                    <div class="card-modern mb-3">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h5 class="mb-2">
+                                        <a href="{% url 'topic_detail' post.topic.id %}" class="text-decoration-none">
+                                            {{ post.topic.title }}
+                                        </a>
+                                        <span class="badge bg-success ms-2">Case Study</span>
+                                    </h5>
+                                    <p class="text-muted mb-2">{{ post.content|truncatewords:50 }}</p>
+                                    <small class="text-muted">
+                                        <i class="fas fa-user me-1"></i>{{ post.author.username }} • 
+                                        <i class="fas fa-comments me-1"></i>{{ post.topic.forum.name }} • 
+                                        <i class="fas fa-clock me-1"></i>{{ post.created_at|timesince }} ago
+                                    </small>
+                                </div>
+                                <a href="{% url 'topic_detail' post.topic.id %}" class="btn btn-sm btn-outline-primary">
+                                    View <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                
+                <!-- Pagination -->
+                {% if page_obj.has_other_pages %}
+                    <nav aria-label="Case studies pagination">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ num }}</span>
+                                    </li>
+                                {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            {% else %}
+                <div class="text-center py-5">
+                    <i class="fas fa-book fa-4x text-muted mb-3"></i>
+                    <h3 class="text-muted">No case studies yet</h3>
+                    <p class="text-muted">Be the first to share a case study!</p>
+                </div>
+            {% endif %}
+            
+            <div class="mt-4">
+                <a href="{% url 'forum_list' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Forums
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
