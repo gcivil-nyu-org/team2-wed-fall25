@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Reply to {{ topic.title }}{% endblock %}
+
+{% block content %}
+<div class="container my-5" style="margin-top: 100px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card-modern">
+                <div class="card-body p-4">
+                    <h2 class="mb-4">
+                        <i class="fas fa-reply me-2 text-primary"></i>Reply to Topic
+                    </h2>
+                    
+                    <nav aria-label="breadcrumb" class="mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'forum_list' %}">Forums</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'forum_detail' forum.id %}">{{ forum.name }}</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'topic_detail' topic.id %}">{{ topic.title|truncatewords:5 }}</a></li>
+                            <li class="breadcrumb-item active">Reply</li>
+                        </ol>
+                    </nav>
+                    
+                    <div class="alert alert-info mb-4">
+                        <strong>Topic:</strong> {{ topic.title }}
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.content.id_for_label }}" class="form-label">
+                                <strong>Your Reply</strong>
+                            </label>
+                            {{ form.content }}
+                            {% if form.content.errors %}
+                                <div class="text-danger small">{{ form.content.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                {{ form.is_case_study }}
+                                <label class="form-check-label" for="{{ form.is_case_study.id_for_label }}">
+                                    {{ form.is_case_study.label }}
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                {{ form.is_preparation_strategy }}
+                                <label class="form-check-label" for="{{ form.is_preparation_strategy.id_for_label }}">
+                                    {{ form.is_preparation_strategy.label }}
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary-modern">
+                                <i class="fas fa-paper-plane me-2"></i>Post Reply
+                            </button>
+                            <a href="{% url 'topic_detail' topic.id %}" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

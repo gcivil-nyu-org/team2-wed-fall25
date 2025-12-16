@@ -45,6 +45,7 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     path("interviews/", include("interviews.urls")),
     path("resumes/", include("resumes.urls")),
+    path("forums/", include("forums.urls")),
     path("api/auth/", include("accounts.urls")),  # API endpoints
     # path('api/profiles/', include('profiles.urls')),
     # path('api/interviews/', include('interviews.urls')),

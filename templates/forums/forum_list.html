@@ -1,0 +1,162 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Collaboration Forums - AcePrep{% endblock %}
+
+{% block extra_css %}
+<style>
+    .forum-card {
+        transition: all 0.3s ease;
+        border: 1px solid rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius);
+        padding: 25px;
+        margin-bottom: 20px;
+        background: white;
+    }
+    
+    .forum-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--primary-color);
+    }
+    
+    .forum-icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 20px;
+    }
+    
+    .forum-stats {
+        display: flex;
+        gap: 20px;
+        margin-top: 15px;
+        color: var(--medium-gray);
+        font-size: 0.9rem;
+    }
+    
+    .stat-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .mentor-badge {
+        background: linear-gradient(135deg, var(--success-color), #059669);
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 10px;
+    }
+    
+    .page-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        color: white;
+        padding: 80px 0 50px;
+        margin-top: 70px;
+        text-align: center;
+    }
+    
+    .special-links {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+    }
+    
+    .special-link-card {
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .special-link-card:hover {
+        background: rgba(255, 255, 255, 0.25);
+        transform: translateY(-2px);
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h1 class="display-4 mb-3"><i class="fas fa-comments me-3"></i>Collaboration Forums</h1>
+        <p class="lead">Connect with peers and mentors. Share insights, case studies, and preparation strategies.</p>
+        
+        <div class="special-links">
+            <a href="{% url 'case_studies_list' %}" class="special-link-card">
+                <i class="fas fa-book me-2"></i>Case Studies
+            </a>
+            <a href="{% url 'preparation_strategies_list' %}" class="special-link-card">
+                <i class="fas fa-lightbulb me-2"></i>Preparation Strategies
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    {% if forums %}
+        <div class="row">
+            {% for forum in forums %}
+                <div class="col-md-6 col-lg-4">
+                    <div class="forum-card">
+                        <div class="d-flex align-items-start">
+                            <div class="forum-icon">
+                                <i class="fas {{ forum.icon }}"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h4 class="mb-2">
+                                    <a href="{% url 'forum_detail' forum.id %}" class="text-decoration-none text-dark">
+                                        {{ forum.name }}
+                                    </a>
+                                    {% if forum.id in mentored_forums %}
+                                        <span class="mentor-badge">Mentor</span>
+                                    {% endif %}
+                                </h4>
+                                <p class="text-muted mb-3">{{ forum.description|truncatewords:20 }}</p>
+                                
+                                <div class="forum-stats">
+                                    <div class="stat-item">
+                                        <i class="fas fa-comments"></i>
+                                        <span>{{ forum.topic_count_annotated }} Topics</span>
+                                    </div>
+                                    <div class="stat-item">
+                                        <i class="fas fa-reply"></i>
+                                        <span>{{ forum.post_count_annotated }} Posts</span>
+                                    </div>
+                                </div>
+                                
+                                <a href="{% url 'forum_detail' forum.id %}" class="btn btn-primary-modern btn-sm mt-3">
+                                    View Forum <i class="fas fa-arrow-right ms-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5">
+            <i class="fas fa-comments fa-4x text-muted mb-3"></i>
+            <h3 class="text-muted">No forums available yet</h3>
+            <p class="text-muted">Check back soon for discussion forums!</p>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
