@@ -1,3 +1,5 @@
+# forums/views.py
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -5,7 +7,7 @@ from django.db.models import Count, Max, Q
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import CommentForm, PostForm, TopicForm
-from .models import Forum, MentorAssignment, Post, PostVote, Topic
+from .models import Forum, MentorAssignment, Post, PostVote, Topic, Topic
 
 
 def forum_list(request):
@@ -55,8 +57,9 @@ def forum_detail(request, forum_id):
         return redirect("login")
 
     # Get topics with additional info
+    # FIX APPLIED: Renamed annotation to 'num_replies' to avoid conflict with Topic model @property
     topics = forum.topics.annotate(
-        reply_count=Count("posts") - 1, last_activity=Max("posts__created_at")
+        num_replies=Count("posts") - 1, last_activity=Max("posts__created_at")
     ).order_by("-is_pinned", "-created_at")
 
     # Pagination
@@ -97,7 +100,8 @@ def topic_create(request, forum_id):
             topic.author = request.user
             topic.save()
 
-            # Create initial post, unused assignment so removed for flake8
+            # Logic to create initial Post would go here, if needed.
+            
             messages.success(request, "Topic created successfully!")
             return redirect("topic_detail", topic_id=topic.pk)
     else:
@@ -163,7 +167,7 @@ def post_create(request, topic_id):
         return redirect("topic_detail", topic_id=topic_id)
 
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST) 
         if form.is_valid():
             post = form.save(commit=False)
             post.topic = topic
