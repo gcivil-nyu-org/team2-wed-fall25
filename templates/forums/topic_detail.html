@@ -55,9 +55,9 @@
         color: var(--dark-color);
         word-wrap: break-word;
         overflow-wrap: break-word;
-        white-space: pre-wrap;
         max-width: 100%;
         overflow: visible;
+        white-space: normal;
     }
     
     .post-content p {
@@ -66,6 +66,11 @@
     
     .post-content p:last-child {
         margin-bottom: 0;
+    }
+    
+    .post-card {
+        overflow: visible;
+        min-height: auto;
     }
     
     .post-footer {
