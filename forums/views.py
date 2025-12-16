@@ -54,7 +54,7 @@ def forum_detail(request, forum_id):
     
     # Get topics with additional info
     topics = forum.topics.annotate(
-        reply_count=Count('posts') - 1,
+        reply_count_annotated=Count('posts') - 1,
         last_activity=Max('posts__created_at')
     ).order_by('-is_pinned', '-created_at')
     
