@@ -2,8 +2,11 @@ from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from accounts.forms import (CustomAuthenticationForm, CustomUserCreationForm,
-                            ResumeUpdateForm)
+from accounts.forms import (
+    CustomAuthenticationForm,
+    CustomUserCreationForm,
+    ResumeUpdateForm,
+)
 
 User = get_user_model()
 

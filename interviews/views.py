@@ -17,8 +17,13 @@ from django.urls import reverse
 from companies.models import Company
 
 from .gemini_service import GeminiAnalyzer
-from .models import (AnalyticalStrategyRound, CodingRound, InterviewSession,
-                     ProductSenseRound, SystemDesignRound)
+from .models import (
+    AnalyticalStrategyRound,
+    CodingRound,
+    InterviewSession,
+    ProductSenseRound,
+    SystemDesignRound,
+)
 from .rag_service import RAGService
 
 logger = logging.getLogger(__name__)
