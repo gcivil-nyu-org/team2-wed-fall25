@@ -1,6 +1,21 @@
+# .coveragerc
+
 [run]
-source = .
+# FIX: Explicitly list the app directories to measure. 
+# This prevents coverage from trying to measure every file in the root (like venv).
+source = 
+    accounts
+    ai_feedback
+    companies
+    core
+    forums
+    interviews
+    profiles
+    resumes
+
+# Your detailed list of files/patterns to omit (ignore).
 omit =
+    # Common Django/setup files
     */migrations/*
     */admin.py
     */apps.py
@@ -8,7 +23,9 @@ omit =
     */wsgi.py
     */celery.py
     */routing.py
-
+    manage.py
+    
+    # Specific application files to omit
     # Accounts
     accounts/views.py
     accounts/serializers.py
