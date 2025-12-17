@@ -1,3 +1,6 @@
+# Team Project repo
+[![Build Status](https://app.travis-ci.com/gcivil-nyu-org/team2-wed-fall25.svg?token=wr3jyRhzLkupEBEF3Hyv&branch=sahil_feature_branch)](https://app.travis-ci.com/gcivil-nyu-org/team2-wed-fall25)
+[![Coverage Status](https://coveralls.io/repos/github/gcivil-nyu-org/team2-wed-fall25/badge.svg?branch=sahil_feature_branch&v=2)](https://coveralls.io/github/gcivil-nyu-org/team2-wed-fall25?branch=sahil_feature_branch&v=2)
 
 
 # 🧠 AcePrep — AI-Powered Interview Preparation Platform
