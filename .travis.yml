@@ -1,5 +1,8 @@
+# .travis.yml
+
 language: python
 python:
+  # Using the Python version specified in your setup
   - "3.11"
 
 # Install dependencies in a virtualenv
@@ -15,7 +18,8 @@ script:
   - source venv/bin/activate
   - black --check .
   - flake8 .
-  - coverage run --source='accounts,ai_feedback,companies,core,forums,interviews,profiles,resumes' manage.py test
+  # --- FIX: Removed --source flag. .coveragerc handles inclusion now.
+  - coverage run manage.py test 
   - coverage report -m
 
 # Send coverage to Coveralls
